@@ -1,0 +1,12 @@
+## stocktake robot
+Recreation of capstone project in gazebo
+
+## \#TODO
+- [ ] model
+- [ ]
+- [ ]
+- [ ]
+- [ ]
+
+
+

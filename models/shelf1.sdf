@@ -1,0 +1,170 @@
+<?xml version='1.0'?>
+<sdf version='1.11'>
+<model name='mm'>
+  <static>true</static>
+
+  <link name='base1'>
+	<pose>0.5 0.2 1.75 0 0 0</pose>
+	<visual name='base1-v'>
+		<geometry>
+		  <box>
+		    <size>1 0.4 0.1</size>
+		  </box>
+		</geometry>
+		<material>
+		  <diffuse>0.726 0.726 0.726 1</diffuse>
+		  <ambient>0.726 0.726 0.726 1</ambient>
+		  <specular>0.726 0.726 0.726 1</specular>
+		</material>
+	</visual>
+	<collision name='base1-c'>
+		<geometry>
+		  <box>
+		    <size>1 0.4 0.1</size>
+		  </box>
+		</geometry>
+	</collision>
+  </link>
+
+  <link name='base2'>
+	<pose>0.5 0.2 1.15 0 0 0</pose>
+	<visual name='base2-v'>
+		<geometry>
+		  <box>
+		    <size>1 0.4 0.1</size>
+		  </box>
+		</geometry>
+		<material>
+		  <diffuse>0.726 0.726 0.726 1</diffuse>
+		  <ambient>0.726 0.726 0.726 1</ambient>
+		  <specular>0.726 0.726 0.726 1</specular>
+		</material>
+	</visual>
+	<collision name='base2-c'>
+		<geometry>
+		  <box>
+		    <size>1 0.4 0.1</size>
+		  </box>
+		</geometry>
+	</collision>
+  </link>
+
+  <link name='base3'>
+	<pose>0.5 0.2 0.55 0 0 0</pose>
+	<visual name='base3-v'>
+		<geometry>
+		  <box>
+		    <size>1 0.4 0.1</size>
+		  </box>
+		</geometry>
+		<material>
+		  <diffuse>0.726 0.726 0.726 1</diffuse>
+		  <ambient>0.726 0.726 0.726 1</ambient>
+		  <specular>0.726 0.726 0.726 1</specular>
+		</material>
+	</visual>
+	<collision name='base3-c'>
+		<geometry>
+		  <box>
+		    <size>1 0.4 0.1</size>
+		  </box>
+		</geometry>
+	</collision>
+  </link>
+
+  <link name='leg1'>
+	<pose>0.05 0.05 0.9 0 0 0</pose>
+	<visual name='leg1-v'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	  <material>
+		<diffuse>0.726 0.726 0.726 1</diffuse>
+		<ambient>0.726 0.726 0.726 1</ambient>
+		<specular>0.726 0.726 0.726 1</specular>
+	  </material>
+	</visual>
+	<collision name='leg1-c'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	</collision>
+  </link>
+
+  <link name='leg2'>
+	<pose>0.05 0.35 0.9 0 0 0</pose>
+	<visual name='leg2-v'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	  <material>
+		<diffuse>0.726 0.726 0.726 1</diffuse>
+		<ambient>0.726 0.726 0.726 1</ambient>
+		<specular>0.726 0.726 0.726 1</specular>
+	  </material>
+	</visual>
+	<collision name='leg2-c'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	</collision>
+  </link>
+
+  <link name='leg3'>
+	<pose>0.95 0.05 0.9 0 0 0</pose>
+	<visual name='leg3-v'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	  <material>
+		<diffuse>0.726 0.726 0.726 1</diffuse>
+		<ambient>0.726 0.726 0.726 1</ambient>
+		<specular>0.726 0.726 0.726 1</specular>
+	  </material>
+	</visual>
+	<collision name='leg3-c'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	</collision>
+  </link>
+
+  <link name='leg4'>
+	<pose>0.95 0.35 0.9 0 0 0</pose>
+	<visual name='leg4-v'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	  <material>
+		<diffuse>0.726 0.726 0.726 1</diffuse>
+		<ambient>0.726 0.726 0.726 1</ambient>
+		<specular>0.726 0.726 0.726 1</specular>
+	  </material>
+	</visual>
+	<collision name='leg4-c'>
+	  <geometry>
+	    <box>
+		  <size>0.1 0.1 1.8</size>
+		</box>
+	  </geometry>
+	</collision>
+  </link>
+
+</model>
+</sdf>
+
+
