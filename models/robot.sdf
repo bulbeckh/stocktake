@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<sdf version='1.11'>
+  <model name='robot-model'>
+	<!--- add links, joints, plugins, meshes, etc. -->
+
+
+
+
+  </model>
+</sdf>

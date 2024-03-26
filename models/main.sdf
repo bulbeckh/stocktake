@@ -3,10 +3,19 @@
   <world name='default'>
 
 	<!-- models -->
+  <include>
+    <uri>file://walls.sdf</uri>
+  </include>
+
 	<include>
 	  <uri>file://shelf1.sdf</uri>
+    <pose degrees='true'>10 0 0 0 0 90</pose>
 	</include>
 
+	<include>
+    <name>shelf2</name>
+	  <uri>file://shelf1.sdf</uri>
+	</include>
 
 
 	<!-- Defaults -->

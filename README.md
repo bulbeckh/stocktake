@@ -1,12 +1,12 @@
 ## stocktake robot
 Recreation of capstone project in gazebo
 
-## \#TODO
-- [ ] model
+### \#TODO
+- [ ] Create model
 - [ ]
 - [ ]
 - [ ]
 - [ ]
 
-
-
+### Features
+- xx
