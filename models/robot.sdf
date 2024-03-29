@@ -19,9 +19,70 @@
         </material>
       </visual>
       <collision name='robot-base-c'>
-        <!-- mesh -->
+        <geometry>
+          <mesh>
+            <uri>file://robot_base.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
       </collision>
     </link>
+
+    <include>
+      <name>wheel-frontleft</name>
+      <pose degrees='true'>0.1 0.075 0 0 0 90</pose>
+      <uri>file://omni.sdf</uri>
+    </include>
+
+    <include>
+      <name>wheel-backleft</name>
+      <pose degrees='true'>-0.1 0.075 0 0 0 90</pose>
+      <uri>file://omni.sdf</uri>
+    </include>
+
+    <include>
+      <name>wheel-frontright</name>
+      <pose degrees='true'>0.1 -0.075 0 0 0 90</pose>
+      <uri>file://omni.sdf</uri>
+    </include>
+
+    <include>
+      <name>wheel-backright</name>
+      <pose degrees='true'>-0.1 -0.075 0 0 0 90</pose>
+      <uri>file://omni.sdf</uri>
+    </include>
+
+    <joint name='frontleft' type='revolute'>
+      <parent>robot-base</parent>
+      <child>wheel-frontleft</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+    </joint>
+
+    <joint name='frontright' type='revolute'>
+      <parent>robot-base</parent>
+      <child>wheel-frontright</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+    </joint>
+
+    <joint name='backleft' type='revolute'>
+      <parent>robot-base</parent>
+      <child>wheel-backleft</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+    </joint>
+
+    <joint name='backright' type='revolute'>
+      <parent>robot-base</parent>
+      <child>wheel-backright</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+    </joint>
 
   </model>
 </sdf>
