@@ -17,6 +17,28 @@
 	  <uri>file://shelf1.sdf</uri>
 	</include>
 
+  <include>
+    <name>robot</name>
+    <pose>5 5 0 0 0 0</pose>
+    <uri>file://robot.sdf</uri>
+  </include>
+
+  <!-- TESTING UNITS -->
+  <!--
+  <model name='test-cube'>
+    <pose>2 3 0 0 0 0</pose>
+    <link name='tc-l'>
+      <visual name='tc-v'>
+        <geometry>
+          <mesh>
+            <uri>file://cube1m.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+  -->
 
 	<!-- Defaults -->
     <physics name="1ms" type="ignored">

@@ -2,9 +2,26 @@
 <sdf version='1.11'>
   <model name='robot-model'>
 	<!--- add links, joints, plugins, meshes, etc. -->
-
-
-
+    <link name='robot-base'>
+      <pose>0 0 0 0 0 0</pose>
+      <visual name='robot-base-v'>
+        <!-- mesh -->
+        <geometry>
+          <mesh>
+            <uri>file://robot_base.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-base-c'>
+        <!-- mesh -->
+      </collision>
+    </link>
 
   </model>
 </sdf>
