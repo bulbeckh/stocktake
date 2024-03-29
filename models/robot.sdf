@@ -30,7 +30,7 @@
 
     <include>
       <name>wheel-frontleft</name>
-      <pose degrees='true'>0.1 0.075 0 0 0 90</pose>
+      <pose degrees='true'>0.1 0.075 0 0 0 -90</pose>
       <uri>file://omni.sdf</uri>
     </include>
 
@@ -42,7 +42,7 @@
 
     <include>
       <name>wheel-frontright</name>
-      <pose degrees='true'>0.1 -0.075 0 0 0 90</pose>
+      <pose degrees='true'>0.1 -0.075 0 0 0 -90</pose>
       <uri>file://omni.sdf</uri>
     </include>
 
@@ -83,6 +83,8 @@
         <xyz>1 0 0</xyz>
       </axis>
     </joint>
+
+    <plugin filename='StocktakeRobot'></plugin>
 
   </model>
 </sdf>
