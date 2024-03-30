@@ -23,6 +23,12 @@
     <uri>file://robot.sdf</uri>
   </include>
 
+  <include>
+    <name>mecanumwheel</name>
+    <pose> 7 7 1 0 0 0</pose>
+    <uri>file://mecanum.sdf</uri>
+  </include>
+
   <!-- TESTING UNITS -->
   <!--
   <model name='test-cube'>

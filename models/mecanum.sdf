@@ -1,0 +1,130 @@
+<?xml version='1.0'?>
+<sdf version='1.11'>
+  <model name='mecanum-wheel'>
+	<!-- keep static for now -->
+    <static>true</static>
+
+	<link name='mw-l1'>
+	  <pose>0 0 0.03 0 0 0.3927</pose>
+	  <visual name='mw-l1-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l1-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l2'>
+	  <pose>0.0212 0 0.0212 0 0.7854 0.3927</pose>
+	  <visual name='mw-l2-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l2-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l3'>
+	  <pose>0.03 0 0 0 1.5707 0.3926</pose>
+	  <visual name='mw-l3-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l3-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l4'>
+	  <pose>0.0212 0 -0.0212 3.1415 0.7854 -2.7488</pose>
+	  <visual name='mw-l4-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l4-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l5'>
+	  <pose>0 0 -0.03 3.1415 0 -2.7488</pose>
+	  <visual name='mw-l5-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l5-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l6'>
+	  <pose>-0.0212 0 -0.0212 3.1415 -0.78539 -2.7488</pose>
+	  <visual name='mw-l6-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l6-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l7'>
+	  <pose>-0.03 0 0 3.1415 -1.5707 -2.7489</pose>
+	  <visual name='mw-l7-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l7-c'>
+	  </collision>
+	</link>
+
+	<link name='mw-l8'>
+	  <pose>-0.0212 0 0.0212 0 -0.7854 0.3927</pose>
+	  <visual name='mw-l8-v'>
+	  	<geometry>
+		  <mesh>
+		    <uri>file://mecanum-roller.stl</uri>
+			<scale>0.001 0.001 0.001</scale>
+		  </mesh>
+		</geometry>
+	  </visual>
+	  <collision name='mw-l8-c'>
+	  </collision>
+	</link>
+
+
+
+
+
+
+
+
+
+
+
+  </model>
+</sdf>
