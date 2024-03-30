@@ -20,17 +20,20 @@ print('x1: {}, x2: {}'.format(0.03*np.cos(np.pi/4), 0.03*np.sin(np.pi/4)))
 
 ## 
 
+
 for i in range(0,8):
-	Rz = np.array([[np.cos(np.pi/8), -np.sin(np.pi/8), 0],\
-				[np.sin(np.pi/8), np.cos(np.pi/8), 0],\
+	## These angles should switch between +-pi/8 for mecanum and mecanum mirror
+
+	Rz = np.array([[np.cos(-1*np.pi/8), -np.sin(-1*np.pi/8), 0],\
+				[np.sin(-1*np.pi/8), np.cos(-1*np.pi/8), 0],\
 				[0, 0, 1]])
 
 	Ry = np.array([[np.cos(i*np.pi/4), 0, np.sin(i*np.pi/4)],\
 				[0, 1, 0],\
 				[-np.sin(i*np.pi/4), 0, np.cos(i*np.pi/4)]])
 
-	rotation = np.matmul(Rz, Ry)
-	#rotation = np.matmul(Ry, Rz)
+	#rotation = np.matmul(Rz, Ry)
+	rotation = np.matmul(Ry, Rz)
 
 	rpy_x = np.arctan2(rotation[2][1],rotation[2][2])
 	rpy_y = np.arctan2(-rotation[2][0],np.sqrt(rotation[2][1]**2+rotation[2][2]**2))

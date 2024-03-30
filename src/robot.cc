@@ -30,24 +30,20 @@ void StocktakeRobot::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::Entity
 		jvel_fl->Data() = {this->wheel_velocities[0]};
 	}
 
-	/*
 	if (!jvel_fr) { _ecm.CreateComponent(wheel_frontright, gz::sim::components::JointVelocityCmd({this->wheel_velocities[1]}));
 	} else {
 		jvel_fr->Data() = {this->wheel_velocities[1]};
 	}
-	*/
 
 	if (!jvel_bl) { _ecm.CreateComponent(wheel_backleft, gz::sim::components::JointVelocityCmd({this->wheel_velocities[2]}));
 	} else {
 		jvel_bl->Data() = {this->wheel_velocities[2]};
 	}
 
-	/*
 	if (!jvel_br) { _ecm.CreateComponent(wheel_backright, gz::sim::components::JointVelocityCmd({this->wheel_velocities[3]}));
 	} else {
 		jvel_br->Data() = {this->wheel_velocities[3]};
 	}
-	*/
 
 	return;
 

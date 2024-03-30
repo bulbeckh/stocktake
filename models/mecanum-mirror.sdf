@@ -25,7 +25,7 @@
 	</link>
 
 	<link name='mw-l1'>
-	  <pose>0 0 0.03 0 0 0.3927</pose>
+	  <pose>0 0 0.03 0 0 -0.3927</pose>
       <inertial>
         <mass>0.00113845</mass>
         <inertia>
@@ -104,7 +104,7 @@
 	</link>
 
 	<link name='mw-l2'>
-	  <pose>0.0212 0 0.0212 0.3654 0.7119 0.5299</pose>
+	  <pose>0.0212 0 0.0212 -0.3654 0.7119 -0.5299</pose>
 	  <visual name='mw-l2-v'>
 	  	<geometry>
 		  <mesh>
@@ -169,7 +169,7 @@
 	</link>
 
 	<link name='mw-l3'>
-	  <pose>0.03 0 0 1.5707 1.178 1.5707</pose>
+	  <pose>0.03 0 0 -1.5707 1.178 -1.5707</pose>
 	  <visual name='mw-l3-v'>
 	  	<geometry>
 		  <mesh>
@@ -234,7 +234,7 @@
 	</link>
 
 	<link name='mw-l4'>
-	  <pose>0.0212 0 -0.0212 2.7761 0.7119 2.6116</pose>
+	  <pose>0.0212 0 -0.0212 -2.7761 0.7119 -2.6116</pose>
 	  <visual name='mw-l4-v'>
 	  	<geometry>
 		  <mesh>
@@ -299,7 +299,7 @@
 	</link>
 
 	<link name='mw-l5'>
-	  <pose>0 0 -0.03 0 0 2.7488</pose>
+	  <pose>0 0 -0.03 0 0 -2.7488</pose>
 	  <visual name='mw-l5-v'>
 	  	<geometry>
 		  <mesh>
@@ -364,7 +364,7 @@
 	</link>
 
 	<link name='mw-l6'>
-	  <pose>-0.0212 0 -0.0212 -2.776 -0.7119 2.6117</pose>
+	  <pose>-0.0212 0 -0.0212 2.776 -0.7119 -2.6117</pose>
 	  <visual name='mw-l6-v'>
 	  	<geometry>
 		  <mesh>
@@ -429,7 +429,7 @@
 	</link>
 
 	<link name='mw-l7'>
-	  <pose>-0.03 0 0 -1.5707 -1.17809 1.5707</pose>
+	  <pose>-0.03 0 0 1.5707 -1.17809 -1.5707</pose>
 	  <visual name='mw-l7-v'>
 	  	<geometry>
 		  <mesh>
@@ -494,7 +494,7 @@
 	</link>
 
 	<link name='mw-l8'>
-	  <pose>-0.0212 0 0.0212 -0.3654 -0.7119 0.5299</pose>
+	  <pose>-0.0212 0 0.0212 0.3654 -0.7119 -0.5299</pose>
 	  <visual name='mw-l8-v'>
 	  	<geometry>
 		  <mesh>

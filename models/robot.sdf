@@ -26,61 +26,68 @@
           </mesh>
         </geometry>
       </collision>
+      <inertial auto='true'>
+        <mass>1</mass>
+      </inertial>
     </link>
 
     <include>
       <name>wheel-frontleft</name>
-      <pose degrees='true'>0.1 0.075 0 0 0 -90</pose>
-      <uri>file://omni.sdf</uri>
+      <pose degrees='true'>0.1 0.075 0 0 0 0</pose>
+      <uri>file://mecanum-mirror.sdf</uri>
     </include>
 
     <include>
       <name>wheel-backleft</name>
-      <pose degrees='true'>-0.1 0.075 0 0 0 90</pose>
-      <uri>file://omni.sdf</uri>
+      <pose degrees='true'>-0.1 0.075 0 0 0 0</pose>
+      <uri>file://mecanum.sdf</uri>
     </include>
 
     <include>
       <name>wheel-frontright</name>
-      <pose degrees='true'>0.1 -0.075 0 0 0 -90</pose>
-      <uri>file://omni.sdf</uri>
+      <pose degrees='true'>0.1 -0.075 0 0 0 0</pose>
+      <uri>file://mecanum.sdf</uri>
     </include>
 
     <include>
       <name>wheel-backright</name>
-      <pose degrees='true'>-0.1 -0.075 0 0 0 90</pose>
-      <uri>file://omni.sdf</uri>
+      <pose degrees='true'>-0.1 -0.075 0 0 0 0</pose>
+      <uri>file://mecanum-mirror.sdf</uri>
     </include>
 
     <joint name='frontleft' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
       <parent>robot-base</parent>
       <child>wheel-frontleft</child>
       <axis>
-        <xyz>1 0 0</xyz>
+        <xyz>0 1 0</xyz>
       </axis>
     </joint>
 
     <joint name='frontright' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
       <parent>robot-base</parent>
       <child>wheel-frontright</child>
       <axis>
-        <xyz>1 0 0</xyz>
+        <xyz>0 1 0</xyz>
       </axis>
     </joint>
 
     <joint name='backleft' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
       <parent>robot-base</parent>
       <child>wheel-backleft</child>
       <axis>
-        <xyz>1 0 0</xyz>
+        <xyz>0 1 0</xyz>
       </axis>
     </joint>
 
     <joint name='backright' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
       <parent>robot-base</parent>
       <child>wheel-backright</child>
       <axis>
-        <xyz>1 0 0</xyz>
+        <xyz>0 1 0</xyz>
       </axis>
     </joint>
 
