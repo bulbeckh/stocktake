@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.11'>
-  <model name='mecanum'>
+  <model name='mecanum-wheel'>
 	<!-- keep static for now -->
     <static>false</static>
 
@@ -25,7 +25,7 @@
 	</link>
 
 	<link name='mw-l1'>
-	  <pose>0 0 0.03 0 0 0.3927</pose>
+	  <pose>0 0 0.03 0 0 -0.3927</pose>
       <inertial>
         <mass>0.00113845</mass>
         <inertia>
@@ -36,6 +36,7 @@
           <iyz>0</iyz>
           <izz>1.47666e-08</izz>
         </inertia>
+        <pose frame=''>0 0 0 0 -0 0</pose>
       </inertial>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -53,23 +54,23 @@
 		    <uri>file://mecanum-roller.stl</uri>
 			<scale>0.001 0.001 0.001</scale>
 		  </mesh>
-		  </geometry>
+		</geometry>
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -103,7 +104,7 @@
 	</link>
 
 	<link name='mw-l2'>
-	  <pose>0.0212 0 0.0212 0.3654 0.7119 0.5299</pose>
+	  <pose>0.0212 0 0.0212 -0.3654 0.7119 -0.5299</pose>
 	  <visual name='mw-l2-v'>
 	  	<geometry>
 		  <mesh>
@@ -122,19 +123,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -168,7 +169,7 @@
 	</link>
 
 	<link name='mw-l3'>
-	  <pose>0.03 0 0 1.5707 1.178 1.5707</pose>
+	  <pose>0.03 0 0 -1.5707 1.178 -1.5707</pose>
 	  <visual name='mw-l3-v'>
 	  	<geometry>
 		  <mesh>
@@ -187,19 +188,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -233,7 +234,7 @@
 	</link>
 
 	<link name='mw-l4'>
-	  <pose>0.0212 0 -0.0212 2.7761 0.7119 2.6116</pose>
+	  <pose>0.0212 0 -0.0212 -2.7761 0.7119 -2.6116</pose>
 	  <visual name='mw-l4-v'>
 	  	<geometry>
 		  <mesh>
@@ -252,19 +253,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -298,7 +299,7 @@
 	</link>
 
 	<link name='mw-l5'>
-	  <pose>0 0 -0.03 0 0 2.7488</pose>
+	  <pose>0 0 -0.03 0 0 -2.7488</pose>
 	  <visual name='mw-l5-v'>
 	  	<geometry>
 		  <mesh>
@@ -317,19 +318,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -363,7 +364,7 @@
 	</link>
 
 	<link name='mw-l6'>
-	  <pose>-0.0212 0 -0.0212 -2.776 -0.7119 2.6117</pose>
+	  <pose>-0.0212 0 -0.0212 2.776 -0.7119 -2.6117</pose>
 	  <visual name='mw-l6-v'>
 	  	<geometry>
 		  <mesh>
@@ -382,19 +383,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -428,7 +429,7 @@
 	</link>
 
 	<link name='mw-l7'>
-	  <pose>-0.03 0 0 -1.5707 -1.17809 1.5707</pose>
+	  <pose>-0.03 0 0 1.5707 -1.17809 -1.5707</pose>
 	  <visual name='mw-l7-v'>
 	  	<geometry>
 		  <mesh>
@@ -447,19 +448,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -493,7 +494,7 @@
 	</link>
 
 	<link name='mw-l8'>
-	  <pose>-0.0212 0 0.0212 -0.3654 -0.7119 0.5299</pose>
+	  <pose>-0.0212 0 0.0212 0.3654 -0.7119 -0.5299</pose>
 	  <visual name='mw-l8-v'>
 	  	<geometry>
 		  <mesh>
@@ -512,19 +513,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -564,6 +565,7 @@
 	  <child>mw-l1</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -597,6 +599,7 @@
 	  <child>mw-l2</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -630,6 +633,7 @@
 	  <child>mw-l3</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -663,6 +667,7 @@
 	  <child>mw-l4</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -696,6 +701,7 @@
 	  <child>mw-l5</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -729,6 +735,7 @@
 	  <child>mw-l6</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -762,6 +769,7 @@
 	  <child>mw-l7</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>
@@ -795,6 +803,7 @@
 	  <child>mw-l8</child>
 	  <axis>
 	    <xyz>0 1 0</xyz>
+        <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>-1.79769e+308</lower>
           <upper>1.79769e+308</upper>

@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.22)
 find_package(gz-cmake3 REQUIRED)
 find_package(sdformat14 REQUIRED)
 
+find_package(fmt REQUIRED)
+
 gz_find_package(gz-sim8 REQUIRED)
 
 set(GZ_PLUGIN_VER ${gz-plugin2_VERSION_MAJOR})
@@ -10,6 +12,10 @@ set(GZ_COMMON_VER ${gz-common5_VERSION_MAJOR})
 
 add_library(StocktakeRobot SHARED src/robot.cc)
 set_property(TARGET StocktakeRobot PROPERTY CXX_STANDARD 17)
+
+add_library(ParamSweep SHARED src/paramsweep.cc src/format.cc)
+set_property(TARGET StocktakeRobot PROPERTY CXX_STANDARD 17)
+
 
 #add_library(StoreGen SHARED src/tankcontroller.cc)
 #set_property(TARGET StoreGen PROPERTY CXX_STANDARD 17)
@@ -23,14 +29,22 @@ set(include_dirs
 	${gz-math7_INCLUDE_DIRS}
 	${gz-transport13_INCLUDE_DIRS}
 	${sdformat14_INCLUDE_DIRS}
+	${fmt_INCLUDE_DIRS}
 )
 
 target_include_directories(StocktakeRobot PUBLIC ${include_dirs})
+target_include_directories(ParamSweep PUBLIC ${include_dirs})
 #target_include_directories(TankController PUBLIC ${include_dirs})
 
 target_link_libraries(StocktakeRobot
 	gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
 	gz-plugin${GZ_PLUGIN_VER}::gz-plugin${GZ_PLUGIN_VER}
+)
+
+target_link_libraries(ParamSweep
+	gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
+	gz-plugin${GZ_PLUGIN_VER}::gz-plugin${GZ_PLUGIN_VER}
+	fmt
 )
 
 #target_link_libraries(TankController

@@ -2,6 +2,15 @@
 <sdf version='1.11'>
   <world name='default'>
 
+  <!-- NOTE including other world system plugins will disable the default ones -->
+  <plugin filename='ParamSweep'></plugin>
+
+  <!-- DEFAULTS -->
+  <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+  <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+  <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"></plugin>
+  <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+
 	<!-- models -->
   <include>
     <uri>file://walls.sdf</uri>
@@ -17,6 +26,7 @@
 	  <uri>file://shelf1.sdf</uri>
 	</include>
 
+	<!--
   <include>
     <name>robot</name>
     <pose>5 5 0.05 0 0 0</pose>
@@ -28,6 +38,7 @@
     <pose> 7 7 1 0 0 0</pose>
     <uri>file://mecanum.sdf</uri>
   </include>
+	-->
 
   <!-- TESTING UNITS -->
   <!--

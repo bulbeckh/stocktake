@@ -57,19 +57,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -122,19 +122,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -187,19 +187,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -252,19 +252,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -317,19 +317,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -382,19 +382,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -447,19 +447,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
@@ -512,19 +512,19 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>{0}</mu>
+              <mu2>{1}</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>{2}</slip1>
+              <slip2>{3}</slip2>
             </ode>
             <torsional>
-              <coefficient>1</coefficient>
+              <coefficient>{4}</coefficient>
               <patch_radius>0</patch_radius>
               <surface_radius>0</surface_radius>
               <use_patch_radius>1</use_patch_radius>
               <ode>
-                <slip>0</slip>
+                <slip>{5}</slip>
               </ode>
             </torsional>
           </friction>
