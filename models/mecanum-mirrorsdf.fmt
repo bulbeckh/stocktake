@@ -75,28 +75,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -140,28 +140,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -205,28 +205,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -270,28 +270,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -335,28 +335,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -400,28 +400,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -465,28 +465,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>
@@ -530,28 +530,28 @@
             </torsional>
           </friction>
           <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
+            <restitution_coefficient>{6}</restitution_coefficient>
+            <threshold>{7}</threshold>
           </bounce>
           <contact>
             <collide_without_contact>0</collide_without_contact>
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
               <max_vel>0.01</max_vel>
               <min_depth>0</min_depth>
             </ode>
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
+              <soft_cfm>{8}</soft_cfm>
+              <soft_erp>{9}</soft_erp>
+              <kp>{10}</kp>
+              <kd>{11}</kd>
             </bullet>
           </contact>
         </surface>

@@ -11,11 +11,7 @@ void SDFFormatter::generateSDF(std::string path, std::string outname, std::vecto
 	std::string pre_format((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
 	
 	// DEBUG
-	if (true) std::cout << pre_format << "\n";
-
-	for (int i=0;i<6;i++) {
-		std::cout << params[i] << "\n";
-	}
+	if (false) std::cout << pre_format << "\n";
 
 	// Format
 	/* NOTE: Expecting fixed length array in params */
@@ -25,11 +21,17 @@ void SDFFormatter::generateSDF(std::string path, std::string outname, std::vecto
 		params[2],	
 		params[3],
 		params[4],
-		params[5]
+		params[5],
+		params[6],
+		params[7],
+		params[8],
+		params[9],
+		params[10],
+		params[11]
 	);
 		
 	// DEBUG
-	if (true) std::cout << post_format << "\n";
+	if (false) std::cout << post_format << "\n";
 
 	// Output to a string
 	std::ofstream outfile(outname);

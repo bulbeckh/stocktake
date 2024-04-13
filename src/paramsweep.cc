@@ -27,7 +27,15 @@ bool ParamSweep::CreateEntity()
 
 	/* NOTE: Needs to be full path name */
 	request.set_sdf_filename("/home/henry/Documents/robotics/stocktake/models/robot.sdf");
-	request.set_pose(
+
+	auto r_pos = request.mutable_pose();
+
+	auto r_vec = r_pos->mutable_position();
+	r_vec->set_x(5);
+	r_vec->set_y(5);
+	r_vec->set_z(2);
+
+	std::cout << "HAS POSE: " << request.has_pose() << "\n";
 
 	// NOTE: What's the difference between result and result_msg - why are they both args
 	auto ex = this->entitycreation_node.Request("/world/default/create",
@@ -57,17 +65,36 @@ void ParamSweep::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::EntityComp
 	 * 3. slip2 - default 0
 	 * 4. torsional coeff - default 1
 	 * 5. torsional slp - default 0
+	 * 6. bounce restitution coefficient - default 0
+	 * 7. bounce threshold - default 1e+06
+	 * 8. soft cfm - default 0
+	 * 9. soft erp - default 0.2
+	 * 10. kp - default 1e+13
+	 * 11. kd - default 1
 	 * 
 	*/
 
 	/* Generate the SDF with the required parameters and then create the Entity */
 	if (i==1000)
 	{
-		std::vector<std::string> paramv = {"0", "0", "100", "0", "1", "0"};
+		std::vector<std::string> paramv = {
+			"100", // mu
+			"1",   // mu1
+			"0",   // slip1
+			"10",   // slip2
+			"1",   // torsional coeff
+			"0",   // torsional slp
+			"0",   // bounce restitution coeff
+			"1e+06", // bounce threshold
+			"0.5",   // soft cfm
+			"0.2", // soft erp
+			"1e+13", // kp
+			"1"    // kd
+		};
+
 		sf.generateSDF("/home/henry/Documents/robotics/stocktake/models/mecanumsdf.fmt",
 						"/home/henry/Documents/robotics/stocktake/models/mecanum.sdf", paramv);
 
-		// repeat but with mecanum-mirror
 		sf.generateSDF("/home/henry/Documents/robotics/stocktake/models/mecanum-mirrorsdf.fmt",
 						"/home/henry/Documents/robotics/stocktake/models/mecanum-mirror.sdf", paramv);
 	

@@ -57,11 +57,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -82,7 +82,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -92,7 +92,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -122,11 +122,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -147,7 +147,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -157,7 +157,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -187,11 +187,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -212,7 +212,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -222,7 +222,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -252,11 +252,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -277,7 +277,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -287,7 +287,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -317,11 +317,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -342,7 +342,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -352,7 +352,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -382,11 +382,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -407,7 +407,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -417,7 +417,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -447,11 +447,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -472,7 +472,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -482,7 +482,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -512,11 +512,11 @@
         <surface>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>100</mu>
+              <mu2>1</mu2>
               <fdir1>0 0 0</fdir1>
-              <slip1>100</slip1>
-              <slip2>0</slip2>
+              <slip1>0</slip1>
+              <slip2>10</slip2>
             </ode>
             <torsional>
               <coefficient>1</coefficient>
@@ -537,7 +537,7 @@
             <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
             <collide_bitmask>1</collide_bitmask>
             <ode>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>
@@ -547,7 +547,7 @@
             <bullet>
               <split_impulse>1</split_impulse>
               <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
+              <soft_cfm>0.5</soft_cfm>
               <soft_erp>0.2</soft_erp>
               <kp>1e+13</kp>
               <kd>1</kd>

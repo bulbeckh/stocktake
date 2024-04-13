@@ -18,21 +18,21 @@ if __name__=="__main__":
 print('x1: {}, x2: {}'.format(0.03*np.cos(np.pi/4), 0.03*np.sin(np.pi/4)))
 
 
-## 
-
+## REDO for 
 
 for i in range(0,8):
 	## These angles should switch between +-pi/8 for mecanum and mecanum mirror
 
-	Rz = np.array([[np.cos(-1*np.pi/8), -np.sin(-1*np.pi/8), 0],\
-				[np.sin(-1*np.pi/8), np.cos(-1*np.pi/8), 0],\
+	## Rotation about z-axis to turn each mecanum link
+	Rz = np.array([[np.cos(-1*np.pi/4), -np.sin(-1*np.pi/4), 0],\
+				[np.sin(-1*np.pi/4), np.cos(-1*np.pi/4), 0],\
 				[0, 0, 1]])
 
+	## Rotation about y-axis for each of the links
 	Ry = np.array([[np.cos(i*np.pi/4), 0, np.sin(i*np.pi/4)],\
 				[0, 1, 0],\
 				[-np.sin(i*np.pi/4), 0, np.cos(i*np.pi/4)]])
 
-	#rotation = np.matmul(Rz, Ry)
 	rotation = np.matmul(Ry, Rz)
 
 	rpy_x = np.arctan2(rotation[2][1],rotation[2][2])

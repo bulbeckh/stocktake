@@ -27,7 +27,7 @@
         </geometry>
       </collision>
       <inertial auto='true'>
-        <mass>1</mass>
+        <mass>1000</mass>
       </inertial>
     </link>
 
