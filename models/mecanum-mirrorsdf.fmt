@@ -25,7 +25,7 @@
 	</link>
 
 	<link name='mw-l1'>
-	  <pose>0 0 0.03 0 0 -0.3927</pose>
+	  <pose>0 0 0.03 0 0 -0.785</pose>
       <inertial>
         <mass>0.00113845</mass>
         <inertia>
@@ -104,7 +104,7 @@
 	</link>
 
 	<link name='mw-l2'>
-	  <pose>0.0212 0 0.0212 -0.3654 0.7119 -0.5299</pose>
+	  <pose>0.0212 0 0.0212 -0.615 0.5235 -0.9553</pose>
 	  <visual name='mw-l2-v'>
 	  	<geometry>
 		  <mesh>

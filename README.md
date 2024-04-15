@@ -20,6 +20,8 @@ The omni wheels are not the correct type - they don't allow for planar motion. N
 
 ### Features
 - xx
-
+- http://ode.org/wiki/index.php/Manual#Concepts
+- https://classic.gazebosim.org/tutorials?tut=physics_params&cat=physics#Frictionparameters
+- https://protobuf.dev/getting-started/cpptutorial/
 
 
