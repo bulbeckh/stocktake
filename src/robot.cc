@@ -4,6 +4,9 @@
 #include <gz/sim/Util.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/msgs.hh>
+#include <gz/math.hh>
+
+#include <math.h>
 
 void StocktakeRobot::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::EntityComponentManager &_ecm)
 {
@@ -24,7 +27,14 @@ void StocktakeRobot::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::Entity
 	auto jvel_bl = _ecm.Component<gz::sim::components::JointVelocityCmd>(wheel_backleft);
 	auto jvel_br = _ecm.Component<gz::sim::components::JointVelocityCmd>(wheel_backright);
 
-	// 
+	// Simulation repeats 1000 times per second
+	// Period of rotation should be 2 seconds 2pi/n = 2000
+
+	static int counter=0;
+	if (counter%1000=0) gzwarn << gz::math::GZ_PI << "\n";
+	counter+=1;
+		
+
 	if (!jvel_fl) { _ecm.CreateComponent(wheel_frontleft, gz::sim::components::JointVelocityCmd({this->wheel_velocities[0]}));
 	} else {
 		jvel_fl->Data() = {this->wheel_velocities[0]};

@@ -9,41 +9,58 @@ See mecanum wheel sketch for more detail
 '''
 
 import numpy as np
-
-if __name__=="__main__":
-	for i in range(0,8):
-		## Units in metres
-		radius=0.03
-
-print('x1: {}, x2: {}'.format(0.03*np.cos(np.pi/4), 0.03*np.sin(np.pi/4)))
-
-
-## REDO for 
-
-for i in range(0,8):
-	## These angles should switch between +-pi/8 for mecanum and mecanum mirror
-
-	## Rotation about z-axis to turn each mecanum link
-	Rz = np.array([[np.cos(-1*np.pi/4), -np.sin(-1*np.pi/4), 0],\
-				[np.sin(-1*np.pi/4), np.cos(-1*np.pi/4), 0],\
-				[0, 0, 1]])
-
-	## Rotation about y-axis for each of the links
-	Ry = np.array([[np.cos(i*np.pi/4), 0, np.sin(i*np.pi/4)],\
-				[0, 1, 0],\
-				[-np.sin(i*np.pi/4), 0, np.cos(i*np.pi/4)]])
-
-	rotation = np.matmul(Ry, Rz)
-
-	rpy_x = np.arctan2(rotation[2][1],rotation[2][2])
-	rpy_y = np.arctan2(-rotation[2][0],np.sqrt(rotation[2][1]**2+rotation[2][2]**2))
-	rpy_z = np.arctan2(rotation[1][0], rotation[0][0])
-
-	print(f'link {i}: {rpy_x} {rpy_y} {rpy_z}')
-
-
 import xml.etree.ElementTree as ET
 
+class MecanumJoint:
+	def __init__(self, num):
+		self.num = num
+
+	def construct(self):
+		root = ET.Element('joint', attrib={'name':f'mw-j{self.num}', 'type':'revolute'})
+		pose = ET.SubElement(root, 'pose')
+		pose.text = '0 0 0 0 0 0'
+		parent = ET.SubElement(root, 'parent')
+		parent.text = 'mecanum-base'
+		child = ET.SubElement(root, 'child')
+		child.text = f'mw-l{self.num}'
+		
+		axis = ET.SubElement(root, 'axis')
+		xyz = ET.SubElement(axis, 'xyz')
+		xyz.text = '0 1 0'
+		limit = ET.SubElement(axis, 'limit')
+		lower = ET.SubElement(limit, 'lower')
+		lower.text = '-1.79769e+308'
+		upper = ET.SubElement(limit, 'upper')
+		upper.text = '1.79769e+308'
+		effort = ET.SubElement(limit, 'effort')
+		effort.text = '-1'
+		velocity = ET.SubElement(limit, 'velocity')
+		velocity.text = '-1'
+
+		dynamics = ET.SubElement(axis, 'dynamics')
+		spring_ref = ET.SubElement(dynamics, 'spring_reference')
+		spring_ref.text = '0'
+		spring_stiff = ET.SubElement(dynamics, 'spring_stiffness')
+		spring_stiff.text = '0'
+		damping = ET.SubElement(dynamics, 'damping')
+		damping.text = '0'
+		friction = ET.SubElement(dynamics, 'friction')
+		friction.text = '0'
+
+		physics = ET.SubElement(root, 'physics')
+		ode = ET.SubElement(physics, 'ode')
+		limit = ET.SubElement(ode, 'limit')
+		cfm = ET.SubElement(limit, 'cfm')
+		cfm.text = '0'
+		erp = ET.SubElement(limit, 'erp')
+		erp.text = '0.2'
+		susp = ET.SubElement(ode, 'suspension')
+		cfm = ET.SubElement(susp, 'cfm')
+		cfm.text = '0'
+		erp = ET.SubElement(susp, 'erp')
+		erp.text = '0.2'
+
+		return root
 
 class MecanumLink:
 	def __init__(self, pose, num):
@@ -60,17 +77,17 @@ class MecanumLink:
 		self.izz = 1.47666e-08
 
 		## Friction Parameters
-		self.mu = 100
+		self.mu = 1
 		self.mu2 = 1
 		self.fdir1 = '0 0 0'
-		self.slip1 = 0
+		self.slip1 = 1000
 		self.slip2 = 0
 		self.tor_coeff = 1
 		self.tor_slip = 0
 		self.bounce_coeff = 0
 		self.bounce_thresh = 1e+06
 		self.soft_cfm = 0.5
-		self.soft_erp = 0.2
+		self.soft_erp = 0.8
 		self.kp = 1e+13
 		self.kd = 1
 
@@ -158,33 +175,118 @@ class MecanumLink:
 		threshold = ET.SubElement(bounce, 'threshold')
 		threshold.text = str(self.bounce_thresh)
 
+		contact = ET.SubElement(surface,'contact')
+		collide = ET.SubElement(contact, 'collide_without_contact')
+		collide.text = '0'
+		collide_without_contact_bit = ET.SubElement(contact, 'collide_without_contact_bitmask')
+		collide_without_contact_bit.text = '1'
+		collide_bit = ET.SubElement(contact, 'collide_bitmask')
+		collide_bit.text = '1'
+
+		ode = ET.SubElement(contact, 'ode')
+		soft_cfm = ET.SubElement(ode, 'soft_cfm')
+		soft_cfm.text = str(self.soft_cfm)
+		soft_erp = ET.SubElement(ode, 'soft_erp')
+		soft_erp.text = str(self.soft_erp)
+		kp = ET.SubElement(ode, 'kp')
+		kp.text = f'{self.kp:.0e}'
+		kd = ET.SubElement(ode, 'kd')
+		kd.text = str(self.kd)
+		max_vel = ET.SubElement(ode, 'max_vel')
+		max_vel.text = '0.01'
+		min_depth = ET.SubElement(ode, 'min_depth')
+		min_depth.text = '0'
+	
+		bullet = ET.SubElement(contact, 'bullet')
+		split_impulse = ET.SubElement(bullet, 'split_impulse')
+		split_impulse.text = '1'
+		split_impulse_pen = ET.SubElement(bullet, 'split_impulse_penetration_threshold')
+		split_impulse_pen.text = '-0.01'
+		
+		soft_cfm = ET.SubElement(bullet, 'soft_cfm')
+		soft_cfm.text = str(self.soft_cfm)
+		soft_erp = ET.SubElement(bullet, 'soft_erp')
+		soft_erp.text = str(self.soft_erp)
+		kp = ET.SubElement(bullet, 'kp')
+		kp.text = f'{self.kp:.0e}'
+		kd = ET.SubElement(bullet, 'kd')
+		kd.text = str(self.kd)
+
+
 		##NOTE: add contact params
 
 		return root
 
-root = ET.Element('sdf', attrib={'version': '1.11'})
-model = ET.SubElement(root, 'model', attrib={'name': 'mecanum-wheel'})
-static = ET.SubElement(model, 'static')
-static.text = 'false'
 
-mecanumbase = ET.SubElement(model, 'link', attrib={'name':'mecanum-base'})
-mb_pose = ET.SubElement(mecanumbase, 'pose')
-mb_pose.text = '0 0 0 0 0 0'
+for g in [1,-1]:
+	root = ET.Element('sdf', attrib={'version': '1.11'})
+	model = ET.SubElement(root, 'model', attrib={'name': 'mecanum-wheel'})
+	static = ET.SubElement(model, 'static')
+	static.text = 'false'
 
-mb_vis = ET.SubElement(mecanumbase, 'visual', attrib={'name':'mb-v'})
-mb_geom = ET.SubElement(mb_vis, 'geometry')
-mb_cyl = ET.SubElement(mb_geom, 'cylinder')
-mb_rad = ET.SubElement(mb_cyl, 'radius')
-mb_rad.text = '0.015'
-mb_length = ET.SubElement(mb_cyl, 'length')
-mb_length.text = '0.01'
+	mecanumbase = ET.SubElement(model, 'link', attrib={'name':'mecanum-base'})
+	mb_pose = ET.SubElement(mecanumbase, 'pose')
+	mb_pose.text = '0 0 0 0 0 0'
 
-mb_col = ET.SubElement(mecanumbase, 'collision', attrib={'name':'mb-c'})
-mb_col.append(mb_geom)
+	mb_vis = ET.SubElement(mecanumbase, 'visual', attrib={'name':'mb-v'})
+	mb_geom = ET.SubElement(mb_vis, 'geometry')
+	mb_cyl = ET.SubElement(mb_geom, 'cylinder')
+	mb_rad = ET.SubElement(mb_cyl, 'radius')
+	mb_rad.text = '0.015'
+	mb_length = ET.SubElement(mb_cyl, 'length')
+	mb_length.text = '0.01'
 
-model.append(MecanumLink('0 0 0.03 0 0 -0.785',1).construct())
+	mb_col = ET.SubElement(mecanumbase, 'collision', attrib={'name':'mb-c'})
+	mb_col.append(mb_geom)
 
-ET.indent(root, space=' ')
-print(ET.tostring(root, encoding='unicode'))
+	## Create Links
+	for i in range(0,8):
+		## Calculate Pose Translation
+		radius = 0.03
+		link_x = radius*np.sin(i*np.pi/4)
+		link_y = 0
+		link_z = radius*np.cos(i*np.pi/4)
+
+		print("Model {}: x={}, y={}, z={}".format(i, link_x, link_y, link_z))
+
+		## Calculate Pose Angles
+		# These angles should switch between +-pi/8 for mecanum and mecanum mirror
+
+		# Rotation about z-axis to turn each mecanum link
+		Rz = np.array([[np.cos(g*np.pi/4), -np.sin(g*np.pi/4), 0],\
+				[np.sin(g*np.pi/4), np.cos(g*np.pi/4), 0],\
+				[0, 0, 1]])
+
+		# Rotation about y-axis for each of the links
+		Ry = np.array([[np.cos(i*np.pi/4), 0, np.sin(i*np.pi/4)],\
+				[0, 1, 0],\
+				[-np.sin(i*np.pi/4), 0, np.cos(i*np.pi/4)]])
+
+		##Extrinsic Rotation
+		rotation = np.matmul(Ry, Rz)
+
+		rpy_x = np.arctan2(rotation[2][1],rotation[2][2])
+		rpy_y = np.arctan2(-rotation[2][0],np.sqrt(rotation[2][1]**2+rotation[2][2]**2))
+		rpy_z = np.arctan2(rotation[1][0], rotation[0][0])
+
+		## Create Model
+		model.append(MecanumLink(f'{link_x} {link_y} {link_z} {rpy_x} {rpy_y} {rpy_z}',i+1).construct())
+
+	## Create Joints
+	for i in range(0,8):
+		model.append(MecanumJoint(i+1).construct())
+
+	ET.indent(root, space=' ')
+	print(ET.tostring(root, encoding='unicode'))
+
+	if g==1:
+		outname = 'gen_mecanum.sdf'
+	else:
+		outname = 'gen_mecanum_mirror.sdf'
+
+	with open(f'../models/{outname}','w') as wfile:
+		wfile.write(ET.tostring(root, encoding='unicode'))
+
+
 
 

@@ -3,7 +3,7 @@
   <world name='default'>
 
   <!-- NOTE including other world system plugins will disable the default ones -->
-  <plugin filename='ParamSweep'></plugin>
+  <!--plugin filename='ParamSweep'></plugin-->
 
   <!-- DEFAULTS -->
   <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
@@ -11,53 +11,16 @@
   <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"></plugin>
   <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
 
-	<!-- models -->
-  <include>
-    <uri>file://walls.sdf</uri>
-  </include>
-
-	<include>
+	<!--include>
 	  <uri>file://shelf1.sdf</uri>
     <pose degrees='true'>10 0 0 0 0 90</pose>
-	</include>
+	</include-->
 
 	<include>
-    <name>shelf2</name>
-	  <uri>file://shelf1.sdf</uri>
+		<uri>file://robot.sdf</uri>
+		<pose degrees='true'>0 0 0.1 0 0 0</pose>
 	</include>
 
-	<!--
-  <include>
-    <name>robot</name>
-    <pose>5 5 0.05 0 0 0</pose>
-    <uri>file://robot.sdf</uri>
-  </include>
-
-  <include>
-    <name>mecanumwheel</name>
-    <pose> 7 7 1 0 0 0</pose>
-    <uri>file://mecanum.sdf</uri>
-  </include>
-	-->
-
-  <!-- TESTING UNITS -->
-  <!--
-  <model name='test-cube'>
-    <pose>2 3 0 0 0 0</pose>
-    <link name='tc-l'>
-      <visual name='tc-v'>
-        <geometry>
-          <mesh>
-            <uri>file://cube1m.stl</uri>
-            <scale>0.001 0.001 0.001</scale>
-          </mesh>
-        </geometry>
-      </visual>
-    </link>
-  </model>
-  -->
-
-	<!-- Defaults -->
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>

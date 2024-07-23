@@ -92,12 +92,14 @@ void ParamSweep::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::EntityComp
 			"1"    // kd
 		};
 
+		/*
 		sf.generateSDF("/home/henry/Documents/robotics/stocktake/models/mecanumsdf.fmt",
 						"/home/henry/Documents/robotics/stocktake/models/mecanum.sdf", paramv);
 
 		sf.generateSDF("/home/henry/Documents/robotics/stocktake/models/mecanum-mirrorsdf.fmt",
 						"/home/henry/Documents/robotics/stocktake/models/mecanum-mirror.sdf", paramv);
-	
+		*/
+
 		CreateEntity();
 	}
 

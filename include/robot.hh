@@ -23,7 +23,9 @@ class StocktakeRobot :
 	private:
 		/* Holds the current wheel velocities.
 		Ordered in frontleft, frontright, backleft, backright */
-		std::vector<double> wheel_velocities={1.4, -1.4, -1.4, 1.4};
+	
+		// NOTE: Previously this was +-1.4
+		std::vector<double> wheel_velocities={3.6, -3.6, -3.6, 3.6};
 
 	public:
 		void PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::EntityComponentManager &_ecm) override;
