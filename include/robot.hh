@@ -6,7 +6,9 @@
 
 */
 
-#include <gz/sim/System.hh>
+#pragma once
+
+#include "gz/sim/System.hh"
 #include <gz/sim/Entity.hh>
 #include <gz/transport.hh>
 #include <gz/msgs.hh>
@@ -36,3 +38,4 @@ class StocktakeRobot :
 				gz::sim::EventManager &_eventMgr) override;
 
 };
+

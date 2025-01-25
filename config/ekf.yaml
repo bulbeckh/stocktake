@@ -1,0 +1,29 @@
+/localization/ekf_filter_node:
+  ros__parameters:
+    use_sim_time: true
+    frequency: 30.0
+    two_d_mode: true
+    publish_acceleration: false
+    publish_tf: true
+    print_diagnostics: true
+    map_frame: map  # Defaults to "map" if unspecified
+    odom_frame: odom  # Defaults to "odom" if unspecified
+    base_link_frame: base_link  # Defaults to "base_link" if unspecified
+    world_frame: odom  # Defaults to the value of odom_frame if unspecified
+    debug: true
+    debug_out_file: /home/henry/Documents/stocktake/debug/out.txt
+
+    odom0: /model/robotmodel/odometry
+    odom0_config: [false, false, false,
+                   false, false, false,
+                   true, false, false,
+                   false, false, true,
+                   false, false, false]
+    imu0: /imu
+    imu0_config: [false, false, false,
+                  false, false, true,
+                  false, false, false,
+                  false, false, true,
+                  true, false, false]
+
+

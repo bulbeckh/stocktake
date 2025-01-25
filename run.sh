@@ -3,7 +3,7 @@
 #./util/mecanum_angle.py
 
 ## Call utilities
-./util/layout.py > ./models/out.sdf
+python3 ./util/layout.py > ./models/storelayout.sdf
 
 if [[ $? -eq 0 ]]; then
 	echo "Generated layout.sdf"
@@ -20,4 +20,5 @@ fi
 # ros2 launch xx xx
 
 ## Start simulation
-gz sim -v4 main.sdf
+gz sim -r -v4 main.sdf
+

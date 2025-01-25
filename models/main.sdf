@@ -11,6 +11,12 @@
   <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"></plugin>
   <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
 
+	<plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+		<initial_orientation_as_reference>false</initial_orientation_as_reference>
+	</plugin>
+
+	<plugin filename="RFIDTagManager"></plugin>
+
 	<!--include>
 	  <uri>file://shelf1.sdf</uri>
     <pose degrees='true'>10 0 0 0 0 90</pose>
@@ -19,6 +25,10 @@
 	<include>
 		<uri>file://robot.sdf</uri>
 		<pose degrees='true'>0 0 0.1 0 0 0</pose>
+	</include>
+
+	<include>
+		<uri>file://storelayout.sdf</uri>
 	</include>
 
     <physics name="1ms" type="ignored">

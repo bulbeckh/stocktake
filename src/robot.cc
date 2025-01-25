@@ -31,7 +31,7 @@ void StocktakeRobot::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::Entity
 	// Period of rotation should be 2 seconds 2pi/n = 2000
 
 	static int counter=0;
-	if (counter%1000=0) gzwarn << gz::math::GZ_PI << "\n";
+	if (counter%1000==0) gzwarn << "counter reached: " << counter << "\n";
 	counter+=1;
 		
 

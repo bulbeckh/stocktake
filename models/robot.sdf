@@ -1,7 +1,6 @@
 <?xml version='1.0'?>
 <sdf version='1.11'>
-  <model name='robot-model'>
-
+  <model name='robotmodel'>
     <link name='robot-base'>
       <pose>0 0 0 0 0 0</pose>
       <visual name='robot-base-v'>
@@ -31,15 +30,15 @@
       </inertial>
     </link>
 
-	<link name='wheel-frontleft'>
+		<link name='wheel-frontleft'>
       <pose degrees='true'>0.1 0.075 0 90 0 0</pose>
       <visual name='robot-frontleft-v'>
         <!-- mesh -->
         <geometry>
-			<cylinder>
-				<radius>0.02</radius>
-				<length>0.02</length>
-			</cylinder>
+					<cylinder>
+						<radius>0.02</radius>
+						<length>0.02</length>
+					</cylinder>
         </geometry>
         <material>
           <diffuse>1 0 0 1</diffuse>
@@ -49,10 +48,10 @@
       </visual>
       <collision name='robot-frontleft-c'>
         <geometry>
-			<cylinder>
-				<radius>0.02</radius>
-				<length>0.02</length>
-			</cylinder>
+					<!-- NOTE Different geometries for collision and visual --> 
+					<sphere>
+						<radius>0.02</radius>
+					</sphere>
         </geometry>
       </collision>
       <inertial auto='true'>
@@ -61,14 +60,14 @@
 	</link>
 	
 	<link name='wheel-backleft'>
-      <pose degrees='true'>-0.1 0.075 0 90 0 0</pose>
+      <pose degrees='true'>-0.1 0.075 0 -90 0 0</pose>
       <visual name='robot-backleft-v'>
         <!-- mesh -->
         <geometry>
-			<cylinder>
-				<radius>0.02</radius>
-				<length>0.02</length>
-			</cylinder>
+					<cylinder>
+						<radius>0.02</radius>
+						<length>0.02</length>
+					</cylinder>
         </geometry>
         <material>
           <diffuse>1 0 0 1</diffuse>
@@ -78,10 +77,10 @@
       </visual>
       <collision name='robot-backleft-c'>
         <geometry>
-			<cylinder>
-				<radius>0.02</radius>
-				<length>0.02</length>
-			</cylinder>
+					<cylinder>
+						<radius>0.02</radius>
+						<length>0.02</length>
+					</cylinder>
         </geometry>
       </collision>
       <inertial auto='true'>
@@ -107,10 +106,10 @@
       </visual>
       <collision name='robot-frontright-c'>
         <geometry>
-			<cylinder>
-				<radius>0.02</radius>
-				<length>0.02</length>
-			</cylinder>
+					<!-- NOTE Different geometries for collision and visual --> 
+					<sphere>
+						<radius>0.02</radius>
+					</sphere>
         </geometry>
       </collision>
       <inertial auto='true'>
@@ -119,7 +118,7 @@
 	</link>
 
 	<link name='wheel-backright'>
-      <pose degrees='true'>-0.1 -0.075 0 90 0 0</pose>
+      <pose degrees='true'>-0.1 -0.075 0 -90 0 0</pose>
       <visual name='robot-backright-v'>
         <!-- mesh -->
         <geometry>
@@ -147,7 +146,7 @@
       </inertial>
 	</link>
 
-    <joint name='frontleft' type='revolute'>
+    <joint name='frontleft' type='ball'>
       <pose>0 0 0 0 0 0</pose>
       <parent>robot-base</parent>
       <child>wheel-frontleft</child>
@@ -156,7 +155,7 @@
       </axis>
     </joint>
 
-    <joint name='frontright' type='revolute'>
+    <joint name='frontright' type='ball'>
       <pose>0 0 0 0 0 0</pose>
       <parent>robot-base</parent>
       <child>wheel-frontright</child>
@@ -185,7 +184,6 @@
 
     <!-- plugin filename='StocktakeRobot'></plugin -->
 	
-	<!-- add diff drive plugin here -->
 	
 	<link name='robot-lidar'>
 		<pose>0 0 0.05 0 0 0</pose>
@@ -214,29 +212,28 @@
 
 		<sensor name='robot-lidar' type='gpu_lidar'>
 			<topic>lidar</topic>
-			<update_rate>10</update_rate>
-			<always_on>1</always_on>
+			<update_rate>5</update_rate>
+			<always_on>true</always_on>
 			<visualize>true</visualize>
 			<ray>
 				<scan>
 					<horizontal>
-						<samples>640</samples>
-						<resolution>1</resolution>
-						<min_angle>-1.396263</min_angle>
-						<max_angle>1.396263</max_angle>
+						<samples>360</samples>
+						<resolution>1.00</resolution>
+						<min_angle>0.000</min_angle>
+						<max_angle>6.280</max_angle>
 					</horizontal>
-					<vertical>
-						<samples>640</samples>
-						<resolution>1</resolution>
-						<min_angle>-1.396263</min_angle>
-						<max_angle>1.396263</max_angle>
-					</vertical>
 				</scan>
 				<range>
-					<min>0.08</min>
-					<max>10.0</max>
-					<resolution>0.01</resolution>
+					<min>0.12</min>
+					<max>10</max>
+					<resolution>0.01500</resolution>
 				</range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
 			</ray>
 		</sensor>
 	</link>
@@ -253,11 +250,16 @@
     <plugin
         filename="gz-sim-diff-drive-system"
         name="gz::sim::systems::DiffDrive">
-        <left_joint>frontleft</left_joint>
-        <right_joint>frontright</right_joint>
-        <wheel_separation>1.5</wheel_separation>
+        <left_joint>backleft</left_joint>
+        <right_joint>backright</right_joint>
+        <wheel_separation>0.15</wheel_separation>
         <wheel_radius>0.02</wheel_radius>
-        <odom_publish_frequency>1</odom_publish_frequency>
+
+				<!-- Only change these to the frames if we want to use the wheel odom as a sole source -->
+				<!--frame_id>odom</frame_id-->
+				<!--child_frame_id>base_link</child_frame_id-->
+				<!--tf_topic>/tf</tf_topic-->
+
         <max_linear_acceleration>1</max_linear_acceleration>
         <min_linear_acceleration>-1</min_linear_acceleration>
         <max_angular_acceleration>2</max_angular_acceleration>
@@ -280,6 +282,67 @@
 				<box><size>0.02 0.02 0.02</size></box>
 			</geometry>
 		</collision>
+
+		<sensor name="imu-sensor" type="imu">
+			<topic>imu</topic>
+			<update_rate>100</update_rate>
+			<always_on>true</always_on>
+			<visualize>true</visualize>
+			<imu>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </z>
+        </linear_acceleration> 
+      </imu>
+		</sensor>
 	</link>
 	
     <joint name='imujoint' type='fixed'>

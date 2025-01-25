@@ -1,0 +1,3483 @@
+<sdf version="1.11">
+ <model name="store-model">
+  <static>true</static>
+  <link name="store-shelf-l0-shelf0">
+   <pose>2.5 9.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v0-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l0-shelf1">
+   <pose>2.5 9.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v0-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l0-shelf2">
+   <pose>2.5 9.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v0-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l0-support0">
+   <pose>2.05 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v0-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l0-support1">
+   <pose>2.95 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v0-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l0-support2">
+   <pose>2.05 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v0-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l0-support3">
+   <pose>2.95 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v0-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c0-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-shelf0">
+   <pose>2.5 8.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v1-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-shelf1">
+   <pose>2.5 8.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v1-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-shelf2">
+   <pose>2.5 8.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v1-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-support0">
+   <pose>2.05 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v1-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-support1">
+   <pose>2.95 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v1-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-support2">
+   <pose>2.05 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v1-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l1-support3">
+   <pose>2.95 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v1-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c1-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-shelf0">
+   <pose>2.5 7.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v2-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-shelf1">
+   <pose>2.5 7.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v2-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-shelf2">
+   <pose>2.5 7.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v2-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-support0">
+   <pose>2.05 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v2-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-support1">
+   <pose>2.95 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v2-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-support2">
+   <pose>2.05 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v2-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l2-support3">
+   <pose>2.95 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v2-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c2-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-shelf0">
+   <pose>3.5 7.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v3-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-shelf1">
+   <pose>3.5 7.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v3-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-shelf2">
+   <pose>3.5 7.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v3-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-support0">
+   <pose>3.05 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v3-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-support1">
+   <pose>3.95 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v3-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-support2">
+   <pose>3.05 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v3-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l3-support3">
+   <pose>3.95 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v3-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c3-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-shelf0">
+   <pose>3.5 8.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v4-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-shelf1">
+   <pose>3.5 8.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v4-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-shelf2">
+   <pose>3.5 8.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v4-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-support0">
+   <pose>3.05 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v4-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-support1">
+   <pose>3.95 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v4-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-support2">
+   <pose>3.05 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v4-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l4-support3">
+   <pose>3.95 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v4-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c4-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-shelf0">
+   <pose>3.5 9.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v5-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-shelf1">
+   <pose>3.5 9.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v5-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-shelf2">
+   <pose>3.5 9.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v5-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-support0">
+   <pose>3.05 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v5-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-support1">
+   <pose>3.95 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v5-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-support2">
+   <pose>3.05 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v5-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l5-support3">
+   <pose>3.95 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v5-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c5-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-shelf0">
+   <pose>-0.5 7.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v6-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-shelf1">
+   <pose>-0.5 7.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v6-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-shelf2">
+   <pose>-0.5 7.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v6-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-support0">
+   <pose>-0.95 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v6-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-support1">
+   <pose>-0.05 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v6-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-support2">
+   <pose>-0.95 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v6-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l6-support3">
+   <pose>-0.05 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v6-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c6-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-shelf0">
+   <pose>-0.5 8.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v7-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-shelf1">
+   <pose>-0.5 8.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v7-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-shelf2">
+   <pose>-0.5 8.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v7-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-support0">
+   <pose>-0.95 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v7-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-support1">
+   <pose>-0.05 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v7-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-support2">
+   <pose>-0.95 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v7-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l7-support3">
+   <pose>-0.05 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v7-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c7-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-shelf0">
+   <pose>-0.5 9.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v8-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-shelf1">
+   <pose>-0.5 9.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v8-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-shelf2">
+   <pose>-0.5 9.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v8-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-support0">
+   <pose>-0.95 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v8-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-support1">
+   <pose>-0.05 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v8-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-support2">
+   <pose>-0.95 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v8-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l8-support3">
+   <pose>-0.05 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v8-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c8-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-shelf0">
+   <pose>0.5 7.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v9-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-shelf1">
+   <pose>0.5 7.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v9-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-shelf2">
+   <pose>0.5 7.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v9-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-support0">
+   <pose>0.05 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v9-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-support1">
+   <pose>0.95 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v9-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-support2">
+   <pose>0.05 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v9-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l9-support3">
+   <pose>0.95 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v9-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c9-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-shelf0">
+   <pose>0.5 8.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v10-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-shelf1">
+   <pose>0.5 8.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v10-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-shelf2">
+   <pose>0.5 8.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v10-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-support0">
+   <pose>0.05 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v10-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-support1">
+   <pose>0.95 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v10-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-support2">
+   <pose>0.05 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v10-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l10-support3">
+   <pose>0.95 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v10-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c10-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-shelf0">
+   <pose>0.5 9.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v11-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-shelf1">
+   <pose>0.5 9.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v11-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-shelf2">
+   <pose>0.5 9.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v11-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-support0">
+   <pose>0.05 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v11-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-support1">
+   <pose>0.95 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v11-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-support2">
+   <pose>0.05 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v11-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l11-support3">
+   <pose>0.95 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v11-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c11-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-shelf0">
+   <pose>-3.5 7.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v12-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-shelf1">
+   <pose>-3.5 7.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v12-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-shelf2">
+   <pose>-3.5 7.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v12-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-support0">
+   <pose>-3.95 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v12-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-support1">
+   <pose>-3.05 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v12-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-support2">
+   <pose>-3.95 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v12-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l12-support3">
+   <pose>-3.05 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v12-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c12-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-shelf0">
+   <pose>-3.5 8.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v13-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-shelf1">
+   <pose>-3.5 8.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v13-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-shelf2">
+   <pose>-3.5 8.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v13-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-support0">
+   <pose>-3.95 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v13-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-support1">
+   <pose>-3.05 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v13-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-support2">
+   <pose>-3.95 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v13-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l13-support3">
+   <pose>-3.05 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v13-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c13-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-shelf0">
+   <pose>-3.5 9.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v14-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-shelf1">
+   <pose>-3.5 9.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v14-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-shelf2">
+   <pose>-3.5 9.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v14-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-support0">
+   <pose>-3.95 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v14-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-support1">
+   <pose>-3.05 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v14-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-support2">
+   <pose>-3.95 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v14-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l14-support3">
+   <pose>-3.05 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v14-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c14-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-shelf0">
+   <pose>-2.5 7.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v15-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-shelf1">
+   <pose>-2.5 7.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v15-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-shelf2">
+   <pose>-2.5 7.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v15-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-support0">
+   <pose>-2.95 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v15-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-support1">
+   <pose>-2.05 7.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v15-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-support2">
+   <pose>-2.95 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v15-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l15-support3">
+   <pose>-2.05 7.3500000000000005 0.5 0 0 0</pose>
+   <visual name="store-shelf-v15-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c15-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-shelf0">
+   <pose>-2.5 8.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v16-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-shelf1">
+   <pose>-2.5 8.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v16-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-shelf2">
+   <pose>-2.5 8.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v16-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-support0">
+   <pose>-2.95 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v16-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-support1">
+   <pose>-2.05 8.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v16-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-support2">
+   <pose>-2.95 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v16-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l16-support3">
+   <pose>-2.05 8.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v16-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c16-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-shelf0">
+   <pose>-2.5 9.2 0.95 0 0 0</pose>
+   <visual name="store-shelf-v17-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-shelf0">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-shelf1">
+   <pose>-2.5 9.2 0.6166666666666666 0 0 0</pose>
+   <visual name="store-shelf-v17-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-shelf1">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-shelf2">
+   <pose>-2.5 9.2 0.2833333333333333 0 0 0</pose>
+   <visual name="store-shelf-v17-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-shelf2">
+    <geometry>
+     <box>
+      <size>1 0.4 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-support0">
+   <pose>-2.95 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v17-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-support1">
+   <pose>-2.05 9.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v17-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-support2">
+   <pose>-2.95 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v17-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l17-support3">
+   <pose>-2.05 9.35 0.5 0 0 0</pose>
+   <visual name="store-shelf-v17-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c17-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l18-shelf0">
+   <pose>-3.5 1.0 0.95 0 0 0</pose>
+   <visual name="store-shelf-v18-shelf0">
+    <geometry>
+     <box>
+      <size>1 2 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c18-shelf0">
+    <geometry>
+     <box>
+      <size>1 2 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l18-support0">
+   <pose>-3.95 0.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v18-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c18-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l18-support1">
+   <pose>-3.05 0.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v18-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c18-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l18-support2">
+   <pose>-3.95 1.95 0.5 0 0 0</pose>
+   <visual name="store-shelf-v18-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c18-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l18-support3">
+   <pose>-3.05 1.95 0.5 0 0 0</pose>
+   <visual name="store-shelf-v18-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c18-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l19-shelf0">
+   <pose>-3.5 -3.0 0.95 0 0 0</pose>
+   <visual name="store-shelf-v19-shelf0">
+    <geometry>
+     <box>
+      <size>1 2 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c19-shelf0">
+    <geometry>
+     <box>
+      <size>1 2 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l19-support0">
+   <pose>-3.95 -3.95 0.5 0 0 0</pose>
+   <visual name="store-shelf-v19-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c19-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l19-support1">
+   <pose>-3.05 -3.95 0.5 0 0 0</pose>
+   <visual name="store-shelf-v19-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c19-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l19-support2">
+   <pose>-3.95 -2.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v19-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c19-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l19-support3">
+   <pose>-3.05 -2.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v19-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c19-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l20-shelf0">
+   <pose>1.0 1.5 0.95 0 0 0</pose>
+   <visual name="store-shelf-v20-shelf0">
+    <geometry>
+     <box>
+      <size>2 1 0.1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c20-shelf0">
+    <geometry>
+     <box>
+      <size>2 1 0.1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l20-support0">
+   <pose>0.05 1.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v20-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c20-support0">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l20-support1">
+   <pose>1.95 1.05 0.5 0 0 0</pose>
+   <visual name="store-shelf-v20-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c20-support1">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l20-support2">
+   <pose>0.05 1.95 0.5 0 0 0</pose>
+   <visual name="store-shelf-v20-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c20-support2">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-shelf-l20-support3">
+   <pose>1.95 1.95 0.5 0 0 0</pose>
+   <visual name="store-shelf-v20-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-shelf-c20-support3">
+    <geometry>
+     <box>
+      <size>0.1 0.1 1</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-walls-link0">
+   <pose>5.1 0.0 1.0 0 0 0</pose>
+   <visual name="store-walls-v-wall0">
+    <geometry>
+     <box>
+      <size>0.2 20 2</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-walls-c-wall0">
+    <geometry>
+     <box>
+      <size>0.2 20 2</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-walls-link1">
+   <pose>-5.1000000000000005 0.0 1.0 0 0 0</pose>
+   <visual name="store-walls-v-wall1">
+    <geometry>
+     <box>
+      <size>0.2 20 2</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-walls-c-wall1">
+    <geometry>
+     <box>
+      <size>0.2 20 2</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-walls-link2">
+   <pose>0.0 10.1 1.0 0 0 0</pose>
+   <visual name="store-walls-v-wall2">
+    <geometry>
+     <box>
+      <size>10.4 0.2 2</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-walls-c-wall2">
+    <geometry>
+     <box>
+      <size>10.4 0.2 2</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-walls-link3">
+   <pose>0.0 -10.1 1.0 0 0 0</pose>
+   <visual name="store-walls-v-wall3">
+    <geometry>
+     <box>
+      <size>10.4 0.2 2</size>
+     </box>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-walls-c-wall3">
+    <geometry>
+     <box>
+      <size>10.4 0.2 2</size>
+     </box>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link0">
+   <pose>3 -4 0.07 0 0 0</pose>
+   <visual name="store-rt-v0">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c0">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link1">
+   <pose>3 -4 0.5 0 0 0</pose>
+   <visual name="store-rt-v1">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c1">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link2">
+   <pose>3 -4 0.95 0 0 0</pose>
+   <visual name="store-rt-v2">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c2">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link3">
+   <pose>2 -7 0.07 0 0 0</pose>
+   <visual name="store-rt-v3">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c3">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link4">
+   <pose>2 -7 0.5 0 0 0</pose>
+   <visual name="store-rt-v4">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c4">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link5">
+   <pose>2 -7 0.95 0 0 0</pose>
+   <visual name="store-rt-v5">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c5">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link6">
+   <pose>-3 -7 0.07 0 0 0</pose>
+   <visual name="store-rt-v6">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c6">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link7">
+   <pose>-3 -7 0.5 0 0 0</pose>
+   <visual name="store-rt-v7">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c7">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link8">
+   <pose>-3 -7 0.95 0 0 0</pose>
+   <visual name="store-rt-v8">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c8">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link9">
+   <pose>-1 -3 0.07 0 0 0</pose>
+   <visual name="store-rt-v9">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c9">
+    <geometry>
+     <cylinder>
+      <radius>0.4</radius>
+      <length>0.14</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link10">
+   <pose>-1 -3 0.5 0 0 0</pose>
+   <visual name="store-rt-v10">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c10">
+    <geometry>
+     <cylinder>
+      <radius>0.1</radius>
+      <length>1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+  <link name="store-rt-link11">
+   <pose>-1 -3 0.95 0 0 0</pose>
+   <visual name="store-rt-v11">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+    <material>
+     <diffuse>0.726 0.726 0.726 1</diffuse>
+     <ambient>0.726 0.726 0.726 1</ambient>
+     <specular>0.726 0.726 0.726 1</specular>
+    </material>
+   </visual>
+   <collision name="store-rt-c11">
+    <geometry>
+     <cylinder>
+      <radius>0.7</radius>
+      <length>0.1</length>
+     </cylinder>
+    </geometry>
+   </collision>
+  </link>
+ </model>
+</sdf>
