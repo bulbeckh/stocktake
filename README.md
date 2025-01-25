@@ -20,7 +20,7 @@ NOTE: The omni wheels are not the correct type - they don't allow for planar mot
 - **config/**: Navigation2 configuration files for controller, amcl, ekf, and costmaps
 - **models/**: Location of SDF models for Mecanum wheels, robot base, and store layout
 
-### `\#TODO`
+### `#TODO`
 - [ ] Mecanum and Omni-directional Movement
 - [ ] Procedural Store Generation
 - [x] Robot SDF
@@ -31,7 +31,7 @@ NOTE: The omni wheels are not the correct type - they don't allow for planar mot
 - [ ] ROS Package Setup
 - [ ] Behaviour Tree or Robot State Machine + Simulation of stocktake process
 
-### Features
+### Background
 - http://ode.org/wiki/index.php/Manual#Concepts
 - https://classic.gazebosim.org/tutorials?tut=physics_params&cat=physics#Frictionparameters
 
