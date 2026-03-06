@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="shelf">
+
+    <!-- Typical for furniture / environment props -->
+    <static>true</static>
+
+    <link name="link">
+
+      <!-- Pose of the shelf model frame relative to where it is spawned.
+           Adjust if your OBJ’s origin isn't where you want it. -->
+		<!--pose>0.5 0.25 0.75 0 0 0</pose-->
+
+      <pose degrees="true">0.5 0.05 0 90 0 -90</pose>
+
+      <!-- Visual (the pretty mesh) -->
+      <visual name="visual">
+		<geometry>
+          <mesh>
+            <uri>model://shelf/meshes/shelf1.obj</uri>
+            <scale>1 1 1</scale>
+			</mesh>
+
+		  <!--box>
+			  <size>1 0.5 1.5</size>
+		  </box-->
+	  	</geometry>
+	    <material>
+			<!-- Neutral grey -->
+			<ambient>0.6 0.6 0.6 1</ambient>
+			<diffuse>0.6 0.6 0.6 1</diffuse>
+			<specular>0.5 0.5 0.5 1</specular>
+		</material>
+        <!-- Optional: if you want it to cast shadows -->
+        <cast_shadows>true</cast_shadows>
+      </visual>
+
+      <collision name="collision_upright_left">
+        <pose>0 0.30 0.75 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.04 0.04 1.50</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <!-- If you ever make it dynamic, these help. For static=true, they don't matter much. -->
+      <inertial>
+        <mass>20.0</mass>
+        <inertia>
+          <ixx>1.0</ixx> <ixy>0.0</ixy> <ixz>0.0</ixz>
+          <iyy>1.0</iyy> <iyz>0.0</iyz>
+          <izz>1.0</izz>
+        </inertia>
+      </inertial>
+
+    </link>
+  </model>
+</sdf>

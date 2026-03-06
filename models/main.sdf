@@ -15,7 +15,8 @@
 		<initial_orientation_as_reference>false</initial_orientation_as_reference>
 	</plugin>
 
-	<plugin filename="RFIDTagManager"></plugin>
+	<!-- TODO Add new RFID plugin here -->
+	<!--plugin filename="RFIDTagManager"></plugin-->
 
 	<!--include>
 	  <uri>file://shelf1.sdf</uri>

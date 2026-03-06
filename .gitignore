@@ -2,3 +2,4 @@ OpenBase/**
 cad/**
 build/**
 debug/**
+**/*.pyc

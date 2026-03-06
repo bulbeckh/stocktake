@@ -57,26 +57,16 @@ set(include_dirs
 	${sdformat14_INCLUDE_DIRS}
 )
 
-add_library(StocktakeRobot SHARED src/robot.cc)
-set_property(TARGET StocktakeRobot PROPERTY CXX_STANDARD 17)
 
-target_include_directories(StocktakeRobot PUBLIC ${include_dirs})
-target_link_libraries(StocktakeRobot
-	gz-common5
-	gz-plugin2
-	gz-transport13
-	gz-sim8
-)
-
-add_library(RFIDTagManager SHARED src/rfidtagmanager.cc src/rfidtag.cc)
-target_include_directories(RFIDTagManager PUBLIC ${include_dirs})
-target_link_libraries(RFIDTagManager
-	gz-common5
-	gz-msgs10
-	gz-math7
-	gz-transport13
-	sdformat14
-)
+#add_library(StocktakeRobot SHARED src/robot.cc)
+#set_property(TARGET StocktakeRobot PROPERTY CXX_STANDARD 17)
+#target_include_directories(StocktakeRobot PUBLIC ${include_dirs})
+#target_link_libraries(StocktakeRobot
+#gz-common5
+#gz-plugin2
+#gz-transport13
+#gz-sim8
+#)
 
 
 

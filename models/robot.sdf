@@ -182,8 +182,6 @@
       </axis>
     </joint>
 
-    <!-- plugin filename='StocktakeRobot'></plugin -->
-	
 	
 	<link name='robot-lidar'>
 		<pose>0 0 0.05 0 0 0</pose>
@@ -247,18 +245,16 @@
       </axis>
     </joint>
 
-    <plugin
-        filename="gz-sim-diff-drive-system"
-        name="gz::sim::systems::DiffDrive">
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
         <left_joint>backleft</left_joint>
         <right_joint>backright</right_joint>
         <wheel_separation>0.15</wheel_separation>
         <wheel_radius>0.02</wheel_radius>
 
-				<!-- Only change these to the frames if we want to use the wheel odom as a sole source -->
-				<!--frame_id>odom</frame_id-->
-				<!--child_frame_id>base_link</child_frame_id-->
-				<!--tf_topic>/tf</tf_topic-->
+		<!-- Only change these to the frames if we want to use the wheel odom as a sole source -->
+		<frame_id>odom</frame_id>
+		<child_frame_id>base_link</child_frame_id>
+		<tf_topic>/tf</tf_topic>
 
         <max_linear_acceleration>1</max_linear_acceleration>
         <min_linear_acceleration>-1</min_linear_acceleration>

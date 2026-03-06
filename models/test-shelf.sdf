@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="default">
+
+    <!-- Physics -->
+    <physics name="default_physics" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <!-- Lighting -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.5 -1</direction>
+    </light>
+
+	<!-- Ground plane -->
+	<include>
+		<uri>model://floor</uri>
+	</include>
+
+    <!-- Your shelf -->
+    <include>
+		<uri>model://shelf</uri>
+		<pose>0 0 0 0 0 0</pose>
+  </include>
+
+  <include>
+	  <uri>model://cereal</uri>
+	  <pose degrees="true">5 5 2 0 0 0</pose>
+  </include>
+
+  </world>
+</sdf>
