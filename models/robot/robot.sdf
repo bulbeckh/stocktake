@@ -7,7 +7,7 @@
         <!-- mesh -->
         <geometry>
           <mesh>
-            <uri>file://robot_base.stl</uri>
+			  <uri>model://robot/meshes/robot_base.stl</uri>
             <scale>0.001 0.001 0.001</scale>
           </mesh>
         </geometry>
@@ -20,7 +20,7 @@
       <collision name='robot-base-c'>
         <geometry>
           <mesh>
-            <uri>file://robot_base.stl</uri>
+			  <uri>model://robot/meshes/robot_base.stl</uri>
             <scale>0.001 0.001 0.001</scale>
           </mesh>
         </geometry>

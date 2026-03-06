@@ -24,7 +24,7 @@
 	</include-->
 
 	<include>
-		<uri>file://robot.sdf</uri>
+		<uri>model://robot</uri>
 		<pose degrees='true'>0 0 0.1 0 0 0</pose>
 	</include>
 

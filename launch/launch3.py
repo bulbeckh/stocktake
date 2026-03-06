@@ -146,7 +146,7 @@ def generate_launch_description() -> LaunchDescription:
     '''
 
 
-    with open('../models/robot.sdf', 'r') as infp:
+    with open('../models/robot/robot.sdf', 'r') as infp:
         robot_description = infp.read()
 
     start_robot_state_publisher_cmd = Node(
@@ -247,7 +247,7 @@ def generate_launch_description() -> LaunchDescription:
 
     ## TODO Update world_sdf with path to sdf
     gazebo_server = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-s', '../models/main.sdf'],
+        cmd=['gz', 'sim', '-r', '-s', '../worlds/default.sdf'],
         output='screen',
     )
 
