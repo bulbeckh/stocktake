@@ -2,23 +2,7 @@ import csv
 
 sdf_store_str_head = """<?xml version="1.0" ?>
 <sdf version="1.7">
-  <world name="default">
-
-    <!-- Physics -->
-    <physics name="default_physics" type="ode">
-      <max_step_size>0.001</max_step_size>
-      <real_time_factor>1.0</real_time_factor>
-      <real_time_update_rate>1000</real_time_update_rate>
-    </physics>
-
-    <!-- Lighting -->
-    <light type="directional" name="sun">
-      <cast_shadows>true</cast_shadows>
-      <pose>0 0 10 0 0 0</pose>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.2 0.2 0.2 1</specular>
-      <direction>-0.5 0.5 -1</direction>
-    </light>
+  <model name="store-layout">
 
     <!-- Ground plane -->
 	<include>
@@ -26,7 +10,7 @@ sdf_store_str_head = """<?xml version="1.0" ?>
 	</include>
 
 	<include>
-		<uri>file://robot.sdf</uri>
+		<uri>model://robot</uri>
 		<pose degrees='true'>7 1 0.1 0 0 0</pose>
 	</include>
 
@@ -134,13 +118,10 @@ sdf_store_str_head = """<?xml version="1.0" ?>
           </collision>
         </link>
     </model>
-
-
-
 """
 
 sdf_store_str_tail = """
-  </world>
+  </model>
 </sdf>"""
 
 if __name__=="__main__":
@@ -171,7 +152,7 @@ if __name__=="__main__":
     for i,p in enumerate(shelf_poses):
 
         out_str += f"""<include>
-      <uri>model://shelf2</uri>
+      <uri>model://shelf</uri>
       <name>shelf_{i}</name>
       <static>true</static>
       <pose degrees="true">{p[0]} {p[1]} {p[2]} {p[3]} {p[4]} {p[5]}</pose>
@@ -181,7 +162,7 @@ if __name__=="__main__":
 
 
     ## Create the sdf model
-    with open('./formatted_out.sdf','w') as wfile:
+    with open('./out_generated.sdf','w') as wfile:
         wfile.write(out_str)
 
     ## Generate a config JSON with shelf (RFID tag) locations
