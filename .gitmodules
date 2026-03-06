@@ -1,0 +1,3 @@
+[submodule "gazebo-rfid-plugin"]
+	path = gazebo-rfid-plugin
+	url = https://github.com/bulbeckh/gazebo-rfid-plugin
