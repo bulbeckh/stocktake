@@ -1,0 +1,66 @@
+<?xml version='1.0'?>
+<sdf version='1.11'>
+  <world name='default'>
+
+  <!-- NOTE including other world system plugins will disable the default ones -->
+  <!--plugin filename='ParamSweep'></plugin-->
+
+  <!-- DEFAULTS -->
+  <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+  <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+  <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"></plugin>
+  <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+
+	<plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+		<initial_orientation_as_reference>false</initial_orientation_as_reference>
+	</plugin>
+
+	<!-- Store Model (either default.sdf or out_generated.sdf)
+		The store model will load the store shelves, walls, counter, items, etc. as well as the
+		robot (because intial robot pose will be dependent on generated store layout when using
+		procedurally generated store.
+	-->
+
+	<!--include>
+		<uri>file://worlds/generate/out_generated.sdf</uri>
+	</include-->
+
+	<include>
+		<uri>file://worlds/storelayout.sdf</uri>
+	</include>
+
+	<include>
+		<uri>model://robot</uri>
+	</include>
+
+	<!-- RFID Manager Plugin -->
+	<plugin filename="librfidPlugin" name="RFIDManagerPlugin"></plugin>
+
+	<!-- TODO Remove this - temporary -->
+	<include>
+		<uri>model://rfid-scanner</uri>
+		<pose>-2 -2 1 0 0 0</pose>
+		<static>true</static>
+	</include>
+
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+  </world>
+</sdf>

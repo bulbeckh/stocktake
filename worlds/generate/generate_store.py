@@ -125,6 +125,8 @@ sdf_store_str_tail = """
 </sdf>"""
 
 if __name__=="__main__":
+
+
     shelf_poses = []
 
     ## Bottom Shelves
