@@ -109,7 +109,7 @@ def generate_launch_description() -> LaunchDescription:
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
         'use_robot_state_pub',
-        default_value='True',
+        default_value='False',
         description='Whether to start the robot state publisher',
     )
 
@@ -126,7 +126,10 @@ def generate_launch_description() -> LaunchDescription:
         source_file=slam_params_file,
         root_key=namespace,
         param_rewrites={
-            'base_frame': 'robot-base',
+            'base_frame': 'robot_base',
+            'odom_frame': 'odom',
+            'map_frame': 'map',
+            'scan_topic': '/scan',
             'max_laser_range': '10.0',
             'minimum_travel_distance': '0.1',
             'minimum_travel_heading': '0.1',
@@ -134,20 +137,18 @@ def generate_launch_description() -> LaunchDescription:
         convert_types=True,
     )
 
-    '''
     configured_params = RewrittenYaml(
         source_file=params_file,
         root_key=namespace,
         param_rewrites={
-            'bt_navigator.navigate_to_pose.enable_groot_monitoring': 'true',
-            'bt_navigator.navigate_through_poses.enable_groot_monitoring': 'true',
-            'bt_navigator.navigate_to_pose.groot_server_port': '1666',
-            'bt_navigator.navigate_through_poses.groot_server_port': '1667',
+            'global_costmap.global_costmap.ros__parameters.origin_x': '-25.0',
+            'global_costmap.global_costmap.ros__parameters.origin_y': '-25.0',
+            'global_costmap.global_costmap.ros__parameters.obstacle_layer.scan.sensor_frame': 'store_layout/robotmodel/robot_lidar/robot_lidar',
+            'local_costmap.local_costmap.ros__parameters.voxel_layer.scan.sensor_frame': 'store_layout/robotmodel/robot_lidar/robot_lidar',
+            'collision_monitor.ros__parameters.scan.topic': '/scan',
         },
         convert_types=True,
     )
-    '''
-
 
     with open('../models/robot/robot.sdf', 'r') as infp:
         robot_description = infp.read()
@@ -183,7 +184,7 @@ def generate_launch_description() -> LaunchDescription:
             'map': map_yaml_file,
             'graph': graph_filepath,
             'use_sim_time': use_sim_time,
-            'params_file': params_file, ##configured_params,
+            'params_file': configured_params, ## params_file,
             'slam_params_file': slam_params_configured,
             'autostart': autostart,
             'use_composition': use_composition,
@@ -203,15 +204,32 @@ def generate_launch_description() -> LaunchDescription:
             output='screen',
             arguments=[
                 '--frame-id',
-                'robot-lidar',
+                'robot_lidar',
                 '--child-frame-id',
-                'store-layout/robotmodel/robot-lidar/robot-lidar'
+                'store_layout/robotmodel/robot_lidar/robot_lidar'
             ],
             parameters=[
                 {'use_sim_time': use_sim_time}
             ],
     )
-    
+
+    static_transform2_cmd = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='static_transform_publisher2',
+            namespace='',
+            output='screen',
+            arguments=[
+                '--frame-id',
+                'robot_base',
+                '--child-frame-id',
+                'robot_lidar',
+            ],
+            parameters=[
+                {'use_sim_time': use_sim_time}
+            ],
+    )
+
     static_transform3_cmd = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -222,13 +240,14 @@ def generate_launch_description() -> LaunchDescription:
                 '--frame-id',
                 'base_link',
                 '--child-frame-id',
-                'robot-base'
+                'robot_base'
             ],
             parameters=[
                 {'use_sim_time': use_sim_time}
             ],
     )
 
+    ## TODO We should be changing the frame parameters in nav2 stack rather than have static bridge - need to change
     static_transform4_cmd = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -247,10 +266,9 @@ def generate_launch_description() -> LaunchDescription:
     )
 
 
-
     ## TODO Update world_sdf with path to sdf
     gazebo_server = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-s', '../worlds/main.sdf'],
+        cmd=['gz', 'sim', '-r', '-s', '../worlds/default.sdf'],
         output='screen',
     )
 
@@ -271,12 +289,11 @@ def generate_launch_description() -> LaunchDescription:
             output='screen',
             arguments=[
                 '/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-                '--ros-args',
-                '-p',
-                'override_frame_id:=robot-lidar'
             ],
             parameters=[
-                {'use_sim_time': use_sim_time}
+                {'use_sim_time': use_sim_time,
+                 'expand_gz_topic_names': True,
+                 }
             ],
             remappings=[
                 # Optional: remap gz topic to ROS topic
@@ -342,6 +359,24 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
+    ## Camera bridge
+    ros_gz_camera_bridge_cmd = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="camera_image_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/robotmodel/link/camera_front/sensor/front_camera/image'
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+            remappings=[
+                (
+                    "/world/default/model/robotmodel/link/camera_front/sensor/front_camera/image",
+                    "/camera/image_raw",
+                ),
+            ],
+    )
+
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -371,11 +406,13 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(ros_gz_bridge3_cmd)
     ld.add_action(ros_gz_bridge4_cmd)
     ld.add_action(ros_gz_bridge5_cmd)
+    ld.add_action(ros_gz_camera_bridge_cmd)
 
     # Add the actions to launch all of the navigation nodes
-    ld.add_action(start_robot_state_publisher_cmd)
+    #ld.add_action(start_robot_state_publisher_cmd)
 
     ld.add_action(static_transform_cmd)
+    ld.add_action(static_transform2_cmd)
     ld.add_action(static_transform3_cmd)
     ld.add_action(static_transform4_cmd)
 

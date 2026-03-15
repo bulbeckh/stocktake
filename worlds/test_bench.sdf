@@ -2,9 +2,6 @@
 <sdf version='1.11'>
   <world name='default'>
 
-  <!-- NOTE including other world system plugins will disable the default ones -->
-  <!--plugin filename='ParamSweep'></plugin-->
-
   <!-- DEFAULTS -->
   <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
   <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
@@ -15,33 +12,36 @@
 		<initial_orientation_as_reference>false</initial_orientation_as_reference>
 	</plugin>
 
-	<!-- Store Model (either default.sdf or out_generated.sdf)
-		The store model will load the store shelves, walls, counter, items, etc. as well as the
-		robot (because intial robot pose will be dependent on generated store layout when using
-		procedurally generated store.
-	-->
-
-	<!--include>
-		<uri>file://worlds/generate/out_generated.sdf</uri>
-	</include-->
-
+	<!-- Include robot and groundplane and that's it -->
 	<include>
-		<uri>file://worlds/storelayout.sdf</uri>
+		<uri>model://counter2</uri>
+		<pose>0 0 0 0 0 0</pose>
 	</include>
 
-	<include>
-		<uri>model://robot</uri>
-	</include>
-
-	<!-- RFID Manager Plugin -->
-	<plugin filename="librfidPlugin" name="RFIDManagerPlugin"></plugin>
-
-	<!-- TODO Remove this - temporary -->
-	<include>
-		<uri>model://rfid-scanner</uri>
-		<pose>-2 -2 1 0 0 0</pose>
+    <model name="ground">
 		<static>true</static>
-	</include>
+		<pose>0 0 0 0 0 0</pose>
+      	<link name="link">
+
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+		</geometry>
+        </visual>
+      </link>
+    </model>
 
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>

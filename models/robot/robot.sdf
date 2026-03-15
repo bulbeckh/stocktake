@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <sdf version='1.11'>
   <model name='robotmodel'>
-    <link name='robot-base'>
+    <link name='robot_base'>
       <pose>0 0 0 0 0 0</pose>
       <visual name='robot-base-v'>
         <!-- mesh -->
@@ -148,7 +148,7 @@
 
     <joint name='frontleft' type='ball'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
+      <parent>robot_base</parent>
       <child>wheel-frontleft</child>
       <axis>
         <xyz>0 0 1</xyz>
@@ -157,7 +157,7 @@
 
     <joint name='frontright' type='ball'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
+      <parent>robot_base</parent>
       <child>wheel-frontright</child>
       <axis>
         <xyz>0 0 1</xyz>
@@ -166,7 +166,7 @@
 
     <joint name='backleft' type='revolute'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
+      <parent>robot_base</parent>
       <child>wheel-backleft</child>
       <axis>
         <xyz>0 0 1</xyz>
@@ -175,7 +175,7 @@
 
     <joint name='backright' type='revolute'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
+      <parent>robot_base</parent>
       <child>wheel-backright</child>
       <axis>
         <xyz>0 0 1</xyz>
@@ -183,7 +183,7 @@
     </joint>
 
 	
-	<link name='robot-lidar'>
+	<link name='robot_lidar'>
 		<pose>0 0 0.05 0 0 0</pose>
       <visual name='robot-lidar-v'>
         <!-- mesh -->
@@ -208,7 +208,7 @@
         </geometry>
       </collision>
 
-		<sensor name='robot-lidar' type='gpu_lidar'>
+		<sensor name='robot_lidar' type='gpu_lidar'>
 			<topic>lidar</topic>
 			<update_rate>5</update_rate>
 			<always_on>true</always_on>
@@ -238,8 +238,8 @@
 
     <joint name='lidarjoint' type='fixed'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
-      <child>robot-lidar</child>
+      <parent>robot_base</parent>
+      <child>robot_lidar</child>
       <axis>
         <xyz>1 0 0</xyz>
       </axis>
@@ -400,7 +400,7 @@
 	
     <joint name='imujoint' type='fixed'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
+      <parent>robot_base</parent>
       <child>imu</child>
       <axis>
         <xyz>1 0 0</xyz>
@@ -409,7 +409,7 @@
 
     <joint name='camerajoint' type='fixed'>
       <pose>0 0 0 0 0 0</pose>
-      <parent>robot-base</parent>
+      <parent>robot_base</parent>
       <child>camera_front</child>
       <axis>
         <xyz>1 0 0</xyz>

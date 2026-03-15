@@ -3,3 +3,4 @@ cad/**
 build/**
 debug/**
 **/*.pyc
+rosbag*
