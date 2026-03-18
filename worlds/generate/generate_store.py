@@ -5,7 +5,6 @@ sdf_store_str_head = """<?xml version="1.0" ?>
   <model name="store_layout">
 
     <!-- Ground plane -->
-	/include>
     <model name="floor">
 		<static>true</static>
 		<pose>7 5 0 0 0 0</pose>

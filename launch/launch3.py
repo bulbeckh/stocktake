@@ -146,6 +146,8 @@ def generate_launch_description() -> LaunchDescription:
             'global_costmap.global_costmap.ros__parameters.obstacle_layer.scan.sensor_frame': 'store_layout/robotmodel/robot_lidar/robot_lidar',
             'local_costmap.local_costmap.ros__parameters.voxel_layer.scan.sensor_frame': 'store_layout/robotmodel/robot_lidar/robot_lidar',
             'collision_monitor.ros__parameters.scan.topic': '/scan',
+            'local_costmap.local_costmap.ros__parameters.inflation_layer.inflation_radius': '0.4',
+            'global_costmap.global_costmap.ros__parameters.inflation_layer.inflation_radius': '0.4',
         },
         convert_types=True,
     )
@@ -268,7 +270,7 @@ def generate_launch_description() -> LaunchDescription:
 
     ## TODO Update world_sdf with path to sdf
     gazebo_server = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-s', '../worlds/default.sdf'],
+        cmd=['gz', 'sim', '-r', '-s', '../worlds/simplestore.sdf'],
         output='screen',
     )
 
@@ -366,12 +368,12 @@ def generate_launch_description() -> LaunchDescription:
             name="camera_image_bridge",
             output="screen",
             arguments=[
-                '/world/default/model/robotmodel/link/camera_front/sensor/front_camera/image'
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/front_camera/image'
             ],
             parameters=[{"use_sim_time": use_sim_time}],
             remappings=[
                 (
-                    "/world/default/model/robotmodel/link/camera_front/sensor/front_camera/image",
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/front_camera/image",
                     "/camera/image_raw",
                 ),
             ],

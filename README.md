@@ -9,6 +9,20 @@ source setup.sh
 ros2 launch launch3.py
 ```
 
+Added ros2 explore-lite port (https://github.com/robo-friends/m-explore-ros2/tree/main)
+```bash
+source install/setup.bash
+ros2 launch explore_lite explore.launch.py
+```
+
+Added stella_vslam (will replace 2D lidar soon) (https://github.com/stella-cv/stella_vslam_ros)
+```bash
+source install/setup.bash
+## In ros2_ws dir (will move to main package soon)
+ros2 run stella_vslam_ros run_slam -v orb_vocab.fbow -c gz_camera.yaml --ros-args -p publish_tf:=false
+```
+
+
 ## Navigation Stack
 We use the [Navigation2](https://github.com/ros-navigation/navigation2) ROS2 package for the planning, control, state estimation, and behaviour tree.
 
@@ -47,7 +61,8 @@ TODO Remove route and docking servers
 ## Behaviour Tree Overview
 `TODO`
 
-
+## Map Exploration
+[m-explore-ros2](https://github.com/robo-friends/m-explore-ros2/tree/main) ROS2 Explore Lite port
 
 ### Libraries
 - [OpenBase](https://github.com/GUiRitter/OpenBase) Omni Wheel STL files

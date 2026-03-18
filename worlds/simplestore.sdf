@@ -1,0 +1,374 @@
+<?xml version='1.0'?>
+<sdf version='1.11'>
+  <world name='default'>
+
+  <!-- NOTE including other world system plugins will disable the default ones -->
+  <!--plugin filename='ParamSweep'></plugin-->
+
+  <!-- DEFAULTS -->
+  <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+  <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+  <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"></plugin>
+  <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+
+	<plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+		<initial_orientation_as_reference>false</initial_orientation_as_reference>
+	</plugin>
+
+	<!-- Store Model (either default.sdf or out_generated.sdf)
+		The store model will load the store shelves, walls, counter, items, etc. as well as the
+		robot (because intial robot pose will be dependent on generated store layout when using
+		procedurally generated store.
+	-->
+
+
+	<model name="store_layout">
+
+	<include>
+		<uri>model://robot</uri>
+		<pose degrees='true'>2 2 0.1 0 0 0</pose>
+	</include>
+
+
+	<model name='obstacle-c'>
+        <static>true</static>
+        <pose>-4 0 0.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <box>
+					  <size>1 1 1</size>
+				  </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<box>
+					<size>1 1 1</size>
+				</box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle-d'>
+        <static>true</static>
+        <pose>-3 -3 0.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <box>
+					  <size>1 1 1</size>
+				  </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<box>
+					<size>1 1 1</size>
+				</box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle-a'>
+        <static>true</static>
+        <pose>1 -1 0.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <box>
+					  <size>1 1 1</size>
+				  </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<box>
+					<size>1 1 1</size>
+				</box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle-b'>
+        <static>true</static>
+        <pose>-2 1 0.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <box>
+					  <size>1 1 1</size>
+				  </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<box>
+					<size>1 1 1</size>
+				</box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+
+	<model name='obstacle1'>
+        <static>true</static>
+        <pose>4 2 1 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <cylinder>
+					  <radius>0.5</radius>
+					  <length>2</length>
+				  </cylinder>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<cylinder>
+					<radius>0.5</radius>
+					<length>2</length>
+				</cylinder>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle2'>
+        <static>true</static>
+        <pose>-4 -3 1 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <cylinder>
+					  <radius>0.5</radius>
+					  <length>2</length>
+				  </cylinder>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<cylinder>
+					<radius>0.5</radius>
+					<length>2</length>
+				</cylinder>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle3'>
+        <static>true</static>
+        <pose>3 -3 1 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <cylinder>
+					  <radius>0.5</radius>
+					  <length>2</length>
+				  </cylinder>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<cylinder>
+					<radius>0.5</radius>
+					<length>2</length>
+				</cylinder>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle4'>
+        <static>true</static>
+        <pose>-2 5 1 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <cylinder>
+					  <radius>0.5</radius>
+					  <length>2</length>
+				  </cylinder>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<cylinder>
+					<radius>0.5</radius>
+					<length>2</length>
+				</cylinder>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+	<model name='obstacle5'>
+        <static>true</static>
+        <pose>2 1 1 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+			  <geometry>
+				  <cylinder>
+					  <radius>0.5</radius>
+					  <length>2</length>
+				  </cylinder>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+				<cylinder>
+					<radius>0.5</radius>
+					<length>2</length>
+				</cylinder>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+
+	<model name="wall-left">
+        <static>true</static>
+        <pose>-5.1 0 1.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>0.2 10 3</size>
+              </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+              <box>
+                <size>0.2 10 3</size>
+              </box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+
+	<model name="wall-right">
+        <static>true</static>
+        <pose>5.1 0 1.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>0.2 10 3</size>
+              </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+              <box>
+                <size>0.2 10 3</size>
+              </box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+
+	<model name="wall-top">
+        <static>true</static>
+        <pose>0 5.1 1.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>10 0.2 3</size>
+              </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+              <box>
+                <size>10 0.2 3</size>
+              </box>
+            </geometry>
+          </collision>
+        </link>
+	</model>
+
+	<model name="wall-bottom">
+        <static>true</static>
+        <pose>0 -5.1 1.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>10 0.2 3</size>
+              </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+              <box>
+                <size>10 0.2 3</size>
+              </box>
+            </geometry>
+          </collision>
+        </link>
+    </model>
+
+		<!-- Ground plane -->
+		<model name="floor">
+			<static>true</static>
+			<pose>0 0 0 0 0 0</pose>
+		  <link name="link">
+
+			<collision name="collision">
+			  <geometry>
+				<plane>
+				  <normal>0 0 1</normal>
+				  <size>10 10</size>
+				</plane>
+			  </geometry>
+			</collision>
+
+			<visual name="visual">
+			  <geometry>
+				<plane>
+				  <normal>0 0 1</normal>
+				  <size>10 10</size>
+				</plane>
+				</geometry>
+
+				<material>
+					<ambient>1 1 1 1</ambient>
+					<diffuse>1 1 1 1</diffuse>
+					<specular>0.1 0.1 0.1 1</specular>
+				</material>
+			</visual>
+		  </link>
+	  </model>
+  	</model>
+
+
+
+	<!-- RFID Manager Plugin -->
+	<plugin filename="librfidPlugin" name="RFIDManagerPlugin"></plugin>
+
+	<!-- TODO Remove this - temporary -->
+	<include>
+		<uri>model://rfid-scanner</uri>
+		<pose>-2 -2 1 0 0 0</pose>
+		<static>true</static>
+	</include>
+
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+  </world>
+</sdf>

@@ -25,10 +25,6 @@
 		<uri>file://worlds/generate/out_generated.sdf</uri>
 	</include>
 
-	<!--include>
-		<uri>file://worlds/default-layout.sdf</uri>
-	</include-->
-
 	<!-- RFID Manager Plugin -->
 	<plugin filename="librfidPlugin" name="RFIDManagerPlugin"></plugin>
 
