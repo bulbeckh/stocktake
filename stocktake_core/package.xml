@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>stocktake_core</name>
+  <version>0.0.1</version>
+  <description>Core launch files for stocktake navigation and simulation start</description>
+
+  <maintainer email="henrybulbeck@gmail.com">Henry Bulbeck</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <exec_depend>gazebo_rfid_plugin</exec_depend>
+</package>

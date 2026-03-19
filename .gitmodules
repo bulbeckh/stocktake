@@ -1,3 +1,6 @@
 [submodule "gazebo-rfid-plugin"]
 	path = gazebo-rfid-plugin
 	url = https://github.com/bulbeckh/gazebo-rfid-plugin
+[submodule "m-explore-ros2"]
+	path = m-explore-ros2
+	url = https://github.com/robo-friends/m-explore-ros2.git
