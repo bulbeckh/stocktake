@@ -2,17 +2,54 @@
 ## Stocktake Robot Simulation
 Recreation of capstone project in gazebo
 
-### Running
+### Building
+
+#### Install build dependencies
 ```bash
-source /opt/ros/jazzy/setup.bash
-source setup.sh
-ros2 launch launch3.py
+sudo apt install python3-virtualenv
 ```
 
-Added ros2 explore-lite port (https://github.com/robo-friends/m-explore-ros2/tree/main)
 ```bash
-source install/setup.bash
-ros2 launch explore_lite explore.launch.py
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws
+git clone --recurse-submodules https://github.com/bulbeckh/stocktake.git
+source /opt/ros/jazzy/setup.bash
+```
+
+Create virtual environment at root of our workspace folder
+```bash
+virtualenv ./venv
+source ./venv/bin/activate
+pip3 install colcon
+touch ./venv/COLCON_IGNORE
+```
+
+We then need to install the nvidia-swagger python package. You can find full install install instructions [in the repo](https://github.com/nvidia-isaac/SWAGGER).
+```bash
+cd ~
+git clone git@github.com:nvidia-isaac/SWAGGER.git
+cd SWAGGER
+git lfs pull
+
+## Install nvidia-swagger deps
+sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0
+
+## Install package in our virtual environment
+pip install -e .
+```
+
+`TODO` Add stella_vslam instructions
+
+Build all packages
+```bash
+cd ~/ros_ws
+colcon build --symlink-install
+```
+
+### Launch
+TODO
+```bash
+ros2 launch launch3.py
 ```
 
 Added stella_vslam (will replace 2D lidar soon) (https://github.com/stella-cv/stella_vslam_ros)
@@ -22,41 +59,19 @@ source install/setup.bash
 ros2 run stella_vslam_ros run_slam -v orb_vocab.fbow -c gz_camera.yaml --ros-args -p publish_tf:=false
 ```
 
+### Packages
+| Package | Description |
+| --- | --- |
+| `stocktake_core` | Nodes for mapping and autonomous navigation (Nav2) and simulation (Gazebo) |
+| `stocktake_orchestration` | Nodes for robot state machine and interface with frontend |
+| `stocktake_nvidia_swagger` | Nodes for waypoint generation from map, via nvidia-swagger package |
+| `stocktake_nvidia_swagger_msgs` | Custom messages for waypoint generation |
+| `stocktake_frontend` | Frontend for stocktake/robot control web interface
+| `m-explore-ros2` | ROS2 package for map exploration |
+
 
 ## Navigation Stack
-We use the [Navigation2](https://github.com/ros-navigation/navigation2) ROS2 package for the planning, control, state estimation, and behaviour tree.
-
-### Controller
-- `nav2_mppi_controller::MPPIController`
-    - ConstraintCritic
-    - CostCritic
-    - GoalCritic
-    - GoalAngleCritic
-    - PathAlignCritic
-    - PathFollowCritic
-    - PathAngleCritic
-    - PreferForwardCritic
-
-### Planner
-- `nav2_navfn_planner::NavfnPlanner`
-
-### Local Costmap
-- `nav2_costmap_2d::VoxelLayer`
-- `nav2_costmap_2d::InflationLayer`
-
-### Global Costmap
-- `nav2_costmap_2d::StaticLayer`
-- `nav2_costmap_2d::InflationLayer`
-- `nav2_costmap_2d::ObstacleLayer`
-
-### Behaviour Tree
-- `nav2_bt_navigator::NavigateToPoseNavigator`
-- `nav2_bt_navigator::NavigateThroughPosesNavigator`
-
-### Smoother
-- `nav2_smoother::SimpleSmoother`
-
-TODO Remove route and docking servers
+`TODO` We use the [Navigation2](https://github.com/ros-navigation/navigation2) ROS2 package for the planning, control, state estimation, and behaviour tree.
 
 ## Behaviour Tree Overview
 `TODO`
@@ -67,5 +82,4 @@ TODO Remove route and docking servers
 ### Libraries
 - [OpenBase](https://github.com/GUiRitter/OpenBase) Omni Wheel STL files
 - [Navigation2](https://github.com/ros-navigation/navigation2) Navigation planners, costmaps
-
 

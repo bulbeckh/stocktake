@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>stocktake_nvidia_swagger_msgs</name>
+  <version>0.0.1</version>
+  <description>Custom graph messages and service for NVIDIA-SWAGGER waypoint graph generation</description>
+  <maintainer email="henrybulbeck@gmail.com">Henry Bulbeck</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+</package>

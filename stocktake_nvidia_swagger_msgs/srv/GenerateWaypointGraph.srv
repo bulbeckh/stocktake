@@ -1,0 +1,5 @@
+string map_path
+---
+stocktake_nvidia_swagger_msgs/WaypointGraph graph
+bool success
+string message

@@ -1,0 +1,2 @@
+stocktake_nvidia_swagger_msgs/WaypointNode[] nodes
+stocktake_nvidia_swagger_msgs/WaypointEdge[] edges
