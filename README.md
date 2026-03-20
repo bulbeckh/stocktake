@@ -9,6 +9,7 @@ Recreation of capstone project in gazebo
 sudo apt install python3-virtualenv
 ```
 
+Clone the repository
 ```bash
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws
@@ -16,15 +17,23 @@ git clone --recurse-submodules https://github.com/bulbeckh/stocktake.git
 source /opt/ros/jazzy/setup.bash
 ```
 
+Build all packages
+```bash
+cd ~/ros_ws
+colcon build
+source ./install/setup.bash
+```
+
+In order to run our nvidia-swagger ROS2 node, we have a python dependency on the nvidia-swagger python package.
+
 Create virtual environment at root of our workspace folder
 ```bash
 virtualenv ./venv
 source ./venv/bin/activate
-pip3 install colcon
 touch ./venv/COLCON_IGNORE
 ```
 
-We then need to install the nvidia-swagger python package. You can find full install install instructions [in the repo](https://github.com/nvidia-isaac/SWAGGER).
+Install the nvidia-swagger python package (while in the virtual env). You can find full install install instructions [in the repo](https://github.com/nvidia-isaac/SWAGGER).
 ```bash
 cd ~
 git clone git@github.com:nvidia-isaac/SWAGGER.git
@@ -39,12 +48,6 @@ pip install -e .
 ```
 
 `TODO` Add stella_vslam instructions
-
-Build all packages
-```bash
-cd ~/ros_ws
-colcon build --symlink-install
-```
 
 ### Launch
 TODO

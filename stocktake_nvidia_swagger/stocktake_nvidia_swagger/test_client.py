@@ -20,7 +20,7 @@ class GraphClient(Node):
         return self.cli.call_async(req)
 
 
-def main():
+def main(args=None) -> None:
     if len(sys.argv) < 2:
         print("Usage: ros2 run swagger_graph_server test_client.py /path/to/map.png")
         return
