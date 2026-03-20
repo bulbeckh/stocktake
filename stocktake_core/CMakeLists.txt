@@ -1,12 +1,18 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.8)
+project(stocktake_core)
 
-project(StocktakeRobot)
+find_package(ament_cmake REQUIRED)
 
-## TODO Custom plugins/packages will need to be added here but for now, we just include the RFID subdirectory
+install(DIRECTORY launch models worlds
+  DESTINATION share/${PROJECT_NAME}
+)
 
-add_subdirectory(gazebo-rfid-plugin)
+ament_environment_hooks(
+  "${CMAKE_CURRENT_SOURCE_DIR}/hooks/stocktake_core_pkg.dsv.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/hooks/stocktake_core_pkg.sh.in"
+)
 
-
+ament_package()
 
 
 

@@ -17,7 +17,8 @@ def generate_launch_description() -> LaunchDescription:
 
     bringup_dir = get_package_share_directory('nav2_bringup')
     launch_dir = os.path.join(bringup_dir, 'launch')
-    sim_dir = get_package_share_directory('nav2_minimal_tb3_sim')
+
+    stocktake_core_dir = get_package_share_directory('stocktake_core')
 
     # Create the launch configuration variables
     slam = LaunchConfiguration('slam')
@@ -152,7 +153,7 @@ def generate_launch_description() -> LaunchDescription:
         convert_types=True,
     )
 
-    with open('../models/robot/robot.sdf', 'r') as infp:
+    with open(os.path.join(stocktake_core_dir, 'models/robot/robot.sdf'), 'r') as infp:
         robot_description = infp.read()
 
     start_robot_state_publisher_cmd = Node(
@@ -270,7 +271,7 @@ def generate_launch_description() -> LaunchDescription:
 
     ## TODO Update world_sdf with path to sdf
     gazebo_server = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-s', '../worlds/simplestore.sdf'],
+        cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/simplestore.sdf')],
         output='screen',
     )
 
