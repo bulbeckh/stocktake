@@ -86,7 +86,7 @@ def generate_launch_description() -> LaunchDescription:
 
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition',
-        default_value='True',
+        default_value='False',
         description='Whether to use composed bringup',
     )
 
@@ -127,13 +127,14 @@ def generate_launch_description() -> LaunchDescription:
         source_file=slam_params_file,
         root_key=namespace,
         param_rewrites={
-            'base_frame': 'robot_base',
-            'odom_frame': 'odom',
-            'map_frame': 'map',
-            'scan_topic': '/scan',
-            'max_laser_range': '10.0',
-            'minimum_travel_distance': '0.1',
-            'minimum_travel_heading': '0.1',
+            'slam_toolbox.ros__parameters.base_frame': 'robot_base',
+            'slam_toolbox.ros__parameters.odom_frame': 'odom',
+            'slam_toolbox.ros__parameters.map_frame': 'map',
+            'slam_toolbox.ros__parameters.scan_topic': '/scan',
+            'slam_toolbox.ros__parameters.max_laser_range': '10.0',
+            'slam_toolbox.ros__parameters.minimum_travel_distance': '0.1',
+            'slam_toolbox.ros__parameters.minimum_travel_heading': '0.1',
+            'slam_toolbox.ros__parameters.debug_logging': 'True',
         },
         convert_types=True,
     )
@@ -402,7 +403,7 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(declare_use_respawn_cmd)
 
     ld.add_action(gazebo_server)
-    ld.add_action(gazebo_client)
+    #ld.add_action(gazebo_client)
 
     ld.add_action(ros_gz_bridge_cmd)
     ld.add_action(ros_gz_bridge2_cmd)

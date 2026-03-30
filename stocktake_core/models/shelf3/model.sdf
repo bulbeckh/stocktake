@@ -16,7 +16,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://shelf3/meshes/shelf-model-latest.glb</uri>
+            <uri>model://shelf3/meshes/shelftest.glb</uri>
           </mesh>
         </geometry>
 	</visual>

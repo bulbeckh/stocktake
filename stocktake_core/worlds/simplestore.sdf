@@ -26,7 +26,7 @@
 
 	<include>
 		<uri>model://robot</uri>
-		<pose degrees='true'>2 2 0.1 0 0 0</pose>
+		<pose degrees='true'>0 0 0.1 0 0 0</pose>
 	</include>
 
 

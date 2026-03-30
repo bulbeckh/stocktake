@@ -52,7 +52,14 @@ pip install -e .
 ### Launch
 TODO
 ```bash
-ros2 launch launch3.py
+# Launch core + navigation
+ros2 launch stocktake_core launch3.py
+
+# Run orchestration
+ros2 run stocktake_orchestration stocktake_orchestration
+
+# Run the SWAGGER server node
+ros2 run stocktake_nvidia_swagger server_node
 ```
 
 Added stella_vslam (will replace 2D lidar soon) (https://github.com/stella-cv/stella_vslam_ros)
