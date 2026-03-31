@@ -1,4 +1,3 @@
-
 ## Stocktake Robot Simulation
 Recreation of capstone project in gazebo
 
@@ -50,18 +49,41 @@ pip install -e .
 `TODO` Add stella_vslam instructions
 
 ### Launch
-TODO
+Ensure we have first built all packages and sourced the install
 ```bash
+source install/setup.bash
+```
+
+NOTE Each of these will soon be launched together via a single launch file
+NOTE Using stocktake_orchestration2 package - will soon remove original and replace with 'stocktake_orchestration2'
+```bash
+# Run orchestration
+ros2 run stocktake_orchestration2 stocktake_orchestration
+
 # Launch core + navigation
 ros2 launch stocktake_core launch3.py
 
-# Run orchestration
-ros2 run stocktake_orchestration stocktake_orchestration
+# Run the explore-lite node (orchestration attempts to make it start in paused state) (NOTE Default launch file for now but will soon use an updated launch command)
+ros2 launch explore_lite explore.launch.py
+```
+
+We also need to run the swagger server node but this requires us to be using our virtual environment
+```bash
+cd ~/ros2_ws
+source ./venv/bin/activate
 
 # Run the SWAGGER server node
 ros2 run stocktake_nvidia_swagger server_node
 ```
 
+We then start the web interface, navigate to the web page, which should automatically connect to the orchestration node websocket.
+```bash
+# Start the web interface
+cd stocktake/stocktake_frontend/frontend
+npm run dev
+```
+
+TODO
 Added stella_vslam (will replace 2D lidar soon) (https://github.com/stella-cv/stella_vslam_ros)
 ```bash
 source install/setup.bash

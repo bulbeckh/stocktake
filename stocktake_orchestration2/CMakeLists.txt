@@ -1,0 +1,60 @@
+cmake_minimum_required(VERSION 3.8)
+project(stocktake_orchestration2)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(explore_lite_msgs REQUIRED)
+find_package(nav2_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(stocktake_nvidia_swagger_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(Threads REQUIRED)
+
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  # the following line skips the linter which checks for copyrights
+  # comment the line when a copyright and license is added to all source files
+  set(ament_cmake_copyright_FOUND TRUE)
+  # the following line skips cpplint (only works in a git repo)
+  # comment the line when this package is in a git repo and when
+  # a copyright and license is added to all source files
+  set(ament_cmake_cpplint_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
+
+add_executable(stocktake_orchestration
+  src/orchestration.cpp
+  src/websocket_orchestration_node.cpp
+  src/workflow_transition_actions.cpp
+)
+ament_target_dependencies(stocktake_orchestration
+  explore_lite_msgs
+  nav2_msgs
+  rclcpp
+  stocktake_nvidia_swagger_msgs
+  std_msgs
+)
+
+target_include_directories(stocktake_orchestration PRIVATE
+	include/
+	${Boost_INCLUDE_DIRS}
+)
+
+target_compile_features(stocktake_orchestration PRIVATE cxx_std_17)
+target_link_libraries(stocktake_orchestration
+  Boost::system
+  Threads::Threads
+)
+
+install(TARGETS
+  stocktake_orchestration
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_package()
