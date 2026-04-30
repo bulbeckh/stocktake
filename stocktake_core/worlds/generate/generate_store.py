@@ -125,7 +125,8 @@ if __name__=="__main__":
 
     ## Top Shelves
     for i in range(0,11):
-        shelf_poses.append((1.5+i,10,0,0,0,180))
+        #shelf_poses.append((1.5+i,10,0,0,0,180))
+        pass
 
     ## Left Shelves
     for i in range(0,10):
@@ -151,19 +152,40 @@ if __name__=="__main__":
     for i,p in enumerate(shelf_poses):
 
         out_str += f"""<include>
-      <uri>model://shelf</uri>
+      <uri>model://shelf-a</uri>
       <name>shelf_{i}</name>
       <static>true</static>
       <pose degrees="true">{p[0]} {p[1]} {p[2]} {p[3]} {p[4]} {p[5]}</pose>
 </include>"""
 
     ## Add Walls
+    '''
     out_str += generate_wall('wall-left', -0.1, 5, 1.5, 0, 0, 0, 0.2, 10, 3)
     out_str += generate_wall('wall-top', 7, 10.1, 1.5, 0, 0, 0, 14, 0.2, 3)
     out_str += generate_wall('wall-bottom', 7, -0.1, 1.5, 0, 0, 0, 14, 0.2, 3)
     out_str += generate_wall('wall-right', 14.1, 5, 1.5, 0, 0, 0, 0.2, 10, 3)
     out_str += generate_wall('wall-bench-top', 12.1, 7.5, 1.5, 0, 0, 0, 0.2, 5, 3)
     out_str += generate_wall('wall-bench-bottom', 12.1, 0.5, 1.5, 0, 0, 0, 0.2, 1, 3)
+    '''
+
+    out_str += """<include>
+    <uri>model://wall-east</uri>
+    <name>wall_east</name>
+    <static>true</static>
+    <pose degrees="true">0 10 0 0 0 180</pose>
+</include>
+<include>
+    <uri>model://wall-south</uri>
+    <name>wall_south</name>
+    <static>true</static>
+    <pose degrees="true">0 0 0 0 0 0</pose>
+</include>
+<include>
+    <uri>model://wall-north</uri>
+    <name>wall_north</name>
+    <static>true</static>
+    <pose degrees="true">14 10.1 0 0 0 0</pose>
+</include>"""
 
     ## Add lights
     for i in range(0, 8):
@@ -179,12 +201,6 @@ if __name__=="__main__":
 
 
 
-    out_str += sdf_store_str_tail
-
-    ## Create the sdf model
-    with open('./out_generated.sdf','w') as wfile:
-        wfile.write(out_str)
-
     ## Generate a config JSON with shelf (RFID tag) locations
     ## Each shelf will have four shelves, each with three free spots
 
@@ -195,24 +211,34 @@ if __name__=="__main__":
 
         for i in range(0,4):
             if spose[-1] == 180:
-                open_spots.append((spose[0]-0.25, spose[1]-0.25,0.3+i*0.3))
-                open_spots.append((spose[0]-0.5, spose[1]-0.25,0.3+i*0.3))
-                open_spots.append((spose[0]-0.75, spose[1]-0.25,0.3+i*0.3))
+                open_spots.append((spose[0]-0.25, spose[1]-0.25,0.3+i*0.5))
+                open_spots.append((spose[0]-0.5, spose[1]-0.25,0.3+i*0.5))
+                open_spots.append((spose[0]-0.75, spose[1]-0.25,0.3+i*0.5))
             elif spose[-1] == 90:
-                open_spots.append((spose[0]-0.25, spose[1]+0.25,0.3+i*0.3))
-                open_spots.append((spose[0]-0.25, spose[1]+0.5,0.3+i*0.3))
-                open_spots.append((spose[0]-0.25, spose[1]+0.75,0.3+i*0.3))
+                open_spots.append((spose[0]-0.25, spose[1]+0.25,0.3+i*0.5))
+                open_spots.append((spose[0]-0.25, spose[1]+0.5,0.3+i*0.5))
+                open_spots.append((spose[0]-0.25, spose[1]+0.75,0.3+i*0.5))
             elif spose[-1] == -90:
-                open_spots.append((spose[0]+0.25, spose[1]-0.25,0.3+i*0.3))
-                open_spots.append((spose[0]+0.25, spose[1]-0.5,0.3+i*0.3))
-                open_spots.append((spose[0]+0.25, spose[1]-0.75,0.3+i*0.3))
+                open_spots.append((spose[0]+0.25, spose[1]-0.25,0.3+i*0.5))
+                open_spots.append((spose[0]+0.25, spose[1]-0.5,0.3+i*0.5))
+                open_spots.append((spose[0]+0.25, spose[1]-0.75,0.3+i*0.5))
             elif spose[-1] == 0:
                 ## Default
-                open_spots.append((spose[0]+0.25, spose[1]+0.25,0.3+i*0.3))
-                open_spots.append((spose[0]+0.5, spose[1]+0.25,0.3+i*0.3))
-                open_spots.append((spose[0]+0.75, spose[1]+0.25,0.3+i*0.3))
+                open_spots.append((spose[0]+0.25, spose[1]+0.25,0.3+i*0.5))
+                open_spots.append((spose[0]+0.5, spose[1]+0.25,0.3+i*0.5))
+                open_spots.append((spose[0]+0.75, spose[1]+0.25,0.3+i*0.5))
             else:
                 print("Bad z-axis rotation for shelf-poses : set in range [-90,180]")
+
+    
+    for i,p in enumerate(open_spots):
+        if i<100:
+            out_str += f"""<include>
+            <uri>model://cereal2</uri>
+            <name>cereal_{i}</name>
+            <static>true</static>
+            <pose degrees="true">{p[0]} {p[1]} {p[2]} 0 0 0</pose>
+        </include>"""
 
     with open('./tag_locs.txt','w') as wfile2:
 
@@ -220,6 +246,13 @@ if __name__=="__main__":
 
         for s in open_spots:
             cs.writerow(s)
+
+    out_str += sdf_store_str_tail
+
+    ## Create the sdf model
+    with open('./out_generated.sdf','w') as wfile:
+        wfile.write(out_str)
+
 
 
 
