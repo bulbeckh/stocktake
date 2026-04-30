@@ -272,7 +272,8 @@ def generate_launch_description() -> LaunchDescription:
 
     ## TODO Update world_sdf with path to sdf
     gazebo_server = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/simplestore.sdf')],
+        #cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/simplestore.sdf')],
+        cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/default.sdf')],
         output='screen',
     )
 
@@ -403,7 +404,7 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(declare_use_respawn_cmd)
 
     ld.add_action(gazebo_server)
-    #ld.add_action(gazebo_client)
+    ld.add_action(gazebo_client)
 
     ld.add_action(ros_gz_bridge_cmd)
     ld.add_action(ros_gz_bridge2_cmd)

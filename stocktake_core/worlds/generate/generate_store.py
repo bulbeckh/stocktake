@@ -1,40 +1,21 @@
 import csv
+import random
 
 sdf_store_str_head = """<?xml version="1.0" ?>
 <sdf version="1.7">
   <model name="store_layout">
 
-    <!-- Ground plane -->
-    <model name="floor">
-		<static>true</static>
-		<pose>7 5 0 0 0 0</pose>
-      <link name="link">
+    <include>
+        <uri>model://floor</uri>
+        <name>floor</name>
+        <static>true</static>
+    </include>
 
-        <collision name="collision">
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>14 10</size>
-            </plane>
-          </geometry>
-        </collision>
-
-        <visual name="visual">
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>14 10</size>
-            </plane>
-			</geometry>
-
-			<material>
-				<ambient>1 1 1 1</ambient>
-          		<diffuse>1 1 1 1</diffuse>
-          		<specular>0.1 0.1 0.1 1</specular>
-			</material>
-        </visual>
-      </link>
-    </model>
+    <include>
+        <uri>model://ceiling</uri>
+        <name>ceiling</name>
+        <static>true</static>
+    </include>
 
 	<include>
 		<uri>model://robot</uri>
@@ -231,14 +212,21 @@ if __name__=="__main__":
                 print("Bad z-axis rotation for shelf-poses : set in range [-90,180]")
 
     
-    for i,p in enumerate(open_spots):
-        if i<100:
-            out_str += f"""<include>
+    for i,p in enumerate(random.sample(open_spots, k=100)):
+        out_str += f"""<include>
             <uri>model://cereal2</uri>
             <name>cereal_{i}</name>
             <static>true</static>
             <pose degrees="true">{p[0]} {p[1]} {p[2]} 0 0 0</pose>
         </include>"""
+
+    ## add counter
+    out_str += f"""<include>
+    <uri>model://counter</uri>
+    <name>counter</name>
+    <static>true</static>
+    <pose degrees="true">11.5 1 0 0 0 0</pose>
+    </include>"""
 
     with open('./tag_locs.txt','w') as wfile2:
 

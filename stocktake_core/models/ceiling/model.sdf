@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.7">
-    <model name="floor">
+    <model name="ceiling">
 		<static>true</static>
 		<pose degrees="true">14 0 0 90 0 90</pose>
       <link name="link">
@@ -8,8 +8,8 @@
         <collision name="collision">
           <geometry>
             <plane>
-              <normal>0 1 0</normal>
-              <size>100 100</size>
+              <normal>0 0 1</normal>
+              <size>9.5 6</size>
             </plane>
           </geometry>
         </collision>
@@ -17,7 +17,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://floor/meshes/floor.glb</uri>
+            <uri>model://ceiling/meshes/ceiling.glb</uri>
           </mesh>
         </geometry>
 		</visual>
