@@ -11,11 +11,11 @@ sdf_store_str_head = """<?xml version="1.0" ?>
         <static>true</static>
     </include>
 
-    <include>
+    <!--include>
         <uri>model://ceiling</uri>
         <name>ceiling</name>
         <static>true</static>
-    </include>
+    </include-->
 
 	<include>
 		<uri>model://robot</uri>
@@ -131,7 +131,6 @@ if __name__=="__main__":
     out_str = sdf_store_str_head
 
     for i,p in enumerate(shelf_poses):
-
         out_str += f"""<include>
       <uri>model://shelf-a</uri>
       <name>shelf_{i}</name>
@@ -153,19 +152,16 @@ if __name__=="__main__":
     <uri>model://wall-east</uri>
     <name>wall_east</name>
     <static>true</static>
-    <pose degrees="true">0 10 0 0 0 180</pose>
 </include>
 <include>
     <uri>model://wall-south</uri>
     <name>wall_south</name>
     <static>true</static>
-    <pose degrees="true">0 0 0 0 0 0</pose>
 </include>
 <include>
     <uri>model://wall-north</uri>
     <name>wall_north</name>
     <static>true</static>
-    <pose degrees="true">14 10.1 0 0 0 0</pose>
 </include>"""
 
     ## Add lights
@@ -213,6 +209,7 @@ if __name__=="__main__":
 
     
     for i,p in enumerate(random.sample(open_spots, k=100)):
+        continue
         out_str += f"""<include>
             <uri>model://cereal2</uri>
             <name>cereal_{i}</name>

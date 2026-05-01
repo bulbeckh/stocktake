@@ -2,19 +2,20 @@
 <sdf version="1.7">
     <model name="floor">
 		<static>true</static>
-		<pose degrees="true">14 0 0 90 0 90</pose>
       <link name="link">
 
         <collision name="collision">
+		<pose degrees="true">0 0 0 0 0 0</pose>
           <geometry>
             <plane>
-              <normal>0 1 0</normal>
+              <normal>0 0 1</normal>
               <size>100 100</size>
             </plane>
           </geometry>
         </collision>
 
       <visual name="visual">
+		<pose degrees="true">14 0 0 90 0 90</pose>
         <geometry>
           <mesh>
             <uri>model://floor/meshes/floor.glb</uri>

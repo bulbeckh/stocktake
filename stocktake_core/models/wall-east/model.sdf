@@ -4,8 +4,8 @@
 	<static>true</static>
 
 	<link name="link">
-	  <pose degrees="true">0 0 0 90 0 0</pose>
       <collision name="collision">
+	  <pose degrees="true">-0.05 5 1.5 0 0 0</pose>
         <geometry>
           <box>
 			<size>0.1 10 3</size>
@@ -14,10 +14,11 @@
       </collision>
 
       <visual name="visual">
+		  <pose degrees="true">0 10 0 90 0 180</pose>
         <geometry>
           <mesh>
             <uri>model://wall-east/meshes/wall-east.glb</uri>
-          </mesh>
+		  </mesh>
         </geometry>
 	</visual>
 
