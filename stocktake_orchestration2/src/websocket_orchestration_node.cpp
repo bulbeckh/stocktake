@@ -1,5 +1,6 @@
 #include "stocktake_orchestration2/websocket_orchestration_node.hpp"
 
+#include <cmath>
 #include <functional>
 #include <utility>
 
@@ -194,10 +195,15 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
 : Node("stocktake_orchestration"),
   io_context_(1),
   acceptor_(io_context_),
+  tf_buffer_(get_clock()),
+  tf_listener_(tf_buffer_, this, false),
   state_(WorkflowState::IDLE),
   paused_(false),
   explore_resume_enabled_(false),
-  explore_resume_true_sent_(false)
+  explore_resume_true_sent_(false),
+  has_stored_waypoint_graph_(false),
+  navigation_current_world_x_(0.0),
+  navigation_current_world_y_(0.0)
 {
   const auto host = declare_parameter<std::string>("host", "127.0.0.1");
   const auto port = declare_parameter<int>("port", 9002);
@@ -213,6 +219,8 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   saved_map_base_path_ = "/tmp/stocktake_map";
   saved_map_image_path_ = saved_map_base_path_ + ".png";
 
+  navigate_to_pose_client_ = rclcpp_action::create_client<NavigateToPose>(
+    this, "/navigate_to_pose");
   map_saver_client_ = create_client<nav2_msgs::srv::SaveMap>("/map_saver/save_map");
   generate_waypoint_graph_client_ =
     create_client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>(
@@ -267,6 +275,15 @@ void WebsocketOrchestrationNode::mark_route_construction_complete()
     io_context_,
     [this]() {
       handle_route_construction_complete_on_io_thread();
+    });
+}
+
+void WebsocketOrchestrationNode::mark_navigation_complete()
+{
+  boost::asio::post(
+    io_context_,
+    [this]() {
+      handle_navigation_complete_on_io_thread();
     });
 }
 
@@ -330,6 +347,22 @@ void WebsocketOrchestrationNode::handle_client_message(
       return;
     }
     start_mapping();
+    session->send_text(make_command_ack(command, true));
+    return;
+  }
+
+  if (command == "start_stocktake") {
+    if (state_ != WorkflowState::IDLE) {
+      session->send_text(make_command_ack(
+          command, false, "Stocktake can only start while the workflow is idle."));
+      return;
+    }
+    if (!has_stored_graph()) {
+      session->send_text(make_command_ack(
+          command, false, "No waypoint graph is available. Construct a route first."));
+      return;
+    }
+    start_navigation();
     session->send_text(make_command_ack(command, true));
     return;
   }
@@ -423,6 +456,13 @@ void WebsocketOrchestrationNode::start_mapping()
   on_enter_mapping_from_idle();
 }
 
+void WebsocketOrchestrationNode::start_navigation()
+{
+  transition_to(WorkflowState::NAVIGATING, false);
+  RCLCPP_INFO(get_logger(), "State change: IDLE -> NAVIGATING");
+  on_enter_navigating_from_idle();
+}
+
 void WebsocketOrchestrationNode::pause_workflow()
 {
   transition_to(state_, true);
@@ -476,6 +516,27 @@ void WebsocketOrchestrationNode::handle_route_construction_complete_on_io_thread
 
   transition_to(WorkflowState::IDLE, false);
   RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
+}
+
+void WebsocketOrchestrationNode::handle_navigation_complete_on_io_thread()
+{
+  if (state_ != WorkflowState::NAVIGATING) {
+    RCLCPP_WARN(
+      get_logger(),
+      "Ignoring navigation completion request because current state is %s",
+      state_to_string(state_).c_str());
+    return;
+  }
+
+  if (paused_) {
+    RCLCPP_WARN(
+      get_logger(),
+      "Ignoring navigation completion request because the workflow is currently paused");
+    return;
+  }
+
+  transition_to(WorkflowState::IDLE, false);
+  RCLCPP_INFO(get_logger(), "State change: NAVIGATING -> IDLE");
 }
 
 void WebsocketOrchestrationNode::transition_to(WorkflowState new_state, bool paused)
@@ -607,7 +668,230 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
       edge.source_id, edge.target_id, edge.weight, edge.edge_type.c_str());
   }
 
+  stored_waypoint_graph_.nodes_by_id.clear();
+  stored_waypoint_graph_.adjacency_list.clear();
+
+  for (const auto & node : response->graph.nodes) {
+    stored_waypoint_graph_.nodes_by_id.emplace(
+      node.id,
+      StoredWaypointNode{
+        node.id,
+        node.world_x,
+        node.world_y,
+        node.pixel_x,
+        node.pixel_y,
+        node.node_type});
+    stored_waypoint_graph_.adjacency_list.try_emplace(node.id);
+  }
+
+  for (const auto & edge : response->graph.edges) {
+    stored_waypoint_graph_.adjacency_list[edge.source_id].push_back(
+      TraversalGraphEdge{
+        edge.target_id,
+        edge.weight,
+        edge.edge_type});
+  }
+  has_stored_waypoint_graph_ = true;
+
   mark_route_construction_complete();
+}
+
+bool WebsocketOrchestrationNode::lookup_robot_transform_in_map(
+  geometry_msgs::msg::TransformStamped & transform) const
+{
+  try {
+    transform = tf_buffer_.lookupTransform("map", "robot_base", tf2::TimePointZero);
+    return true;
+  } catch (const tf2::TransformException & ex) {
+    RCLCPP_WARN(
+      get_logger(), "Failed to lookup transform from map to robot_base: %s", ex.what());
+    return false;
+  }
+}
+
+const StoredWaypointNode * WebsocketOrchestrationNode::find_closest_node(
+  double world_x, double world_y) const
+{
+  const StoredWaypointNode * closest_node = nullptr;
+  double closest_distance = 0.0;
+
+  for (const auto & [node_id, node] : stored_waypoint_graph_.nodes_by_id) {
+    (void)node_id;
+    const double dx = (node.world_x-map_offset_x) - world_x;
+    const double dy = (node.world_y-map_offset_y) - world_y;
+    const double distance = std::hypot(dx, dy);
+
+    if (closest_node == nullptr || distance < closest_distance) {
+      closest_node = &node;
+      closest_distance = distance;
+    }
+
+    RCLCPP_INFO(
+      get_logger(),
+      "Node id=%u world_x=%.3f world_y=%.3f distance=%.3lf",
+      node.id,
+      node.world_x,
+      node.world_y,
+      distance);
+  }
+
+  return closest_node;
+}
+
+const StoredWaypointNode * WebsocketOrchestrationNode::find_closest_unvisited_node(
+  double world_x, double world_y, const std::unordered_set<uint32_t> & visited_node_ids) const
+{
+  const StoredWaypointNode * closest_node = nullptr;
+  double closest_distance = 0.0;
+
+  for (const auto & [node_id, node] : stored_waypoint_graph_.nodes_by_id) {
+    if (visited_node_ids.find(node_id) != visited_node_ids.end()) {
+      continue;
+    }
+
+    const double dx = node.world_x - world_x;
+    const double dy = node.world_y - world_y;
+    const double distance = std::hypot(dx, dy);
+
+    if (closest_node == nullptr || distance < closest_distance) {
+      closest_node = &node;
+      closest_distance = distance;
+    }
+  }
+
+  return closest_node;
+}
+
+void WebsocketOrchestrationNode::continue_navigation_workflow()
+{
+  if (state_ != WorkflowState::NAVIGATING) {
+    RCLCPP_WARN(
+      get_logger(), "Cannot continue navigation workflow while in state %s",
+      state_to_string(state_).c_str());
+    return;
+  }
+
+  if (paused_) {
+    RCLCPP_WARN(get_logger(), "Navigation workflow is paused; not sending the next goal");
+    return;
+  }
+
+  if (visited_navigation_node_ids_.size() >= stored_waypoint_graph_.nodes_by_id.size()) {
+    RCLCPP_INFO(get_logger(), "All waypoint nodes have been visited");
+    mark_navigation_complete();
+    return;
+  }
+
+  const auto * next_node = find_closest_unvisited_node(
+    navigation_current_world_x_, navigation_current_world_y_, visited_navigation_node_ids_);
+
+  if (next_node == nullptr) {
+    RCLCPP_WARN(get_logger(), "Failed to find an unvisited node during greedy navigation");
+    mark_navigation_complete();
+    return;
+  }
+
+  RCLCPP_INFO(
+    get_logger(),
+    "[%zu/%zu nodes] Greedy navigation selected node: id=%u world_x=%.3f world_y=%.3f pixel_x=%d pixel_y=%d node_type=%s",
+    visited_navigation_node_ids_.size(),
+    stored_waypoint_graph_.nodes_by_id.size(),
+    next_node->id,
+    next_node->world_x,
+    next_node->world_y,
+    next_node->pixel_x,
+    next_node->pixel_y,
+    next_node->node_type.c_str());
+
+  send_navigation_goal_to_node(*next_node);
+}
+
+void WebsocketOrchestrationNode::send_navigation_goal_to_node(const StoredWaypointNode & node)
+{
+  if (!navigate_to_pose_client_->wait_for_action_server(std::chrono::seconds(0))) {
+    RCLCPP_ERROR(get_logger(), "NavigateToPose action server /navigate_to_pose is not available");
+    mark_navigation_complete();
+    return;
+  }
+
+  NavigateToPose::Goal goal;
+  goal.pose.header.frame_id = "map";
+  goal.pose.header.stamp = now();
+  goal.pose.pose.position.x = node.world_x - static_cast<double>(map_offset_x);
+  goal.pose.pose.position.y = node.world_y - static_cast<double>(map_offset_y);
+  goal.pose.pose.position.z = 0.0;
+  goal.pose.pose.orientation.x = 0.0;
+  goal.pose.pose.orientation.y = 0.0;
+  goal.pose.pose.orientation.z = 0.0;
+  goal.pose.pose.orientation.w = 1.0;
+
+  RCLCPP_INFO(
+    get_logger(),
+    "Sending nav goal: node_id=%u goal_x=%.3f goal_y=%.3f pixel_x=%d pixel_y=%d node_type=%s",
+    node.id,
+    goal.pose.pose.position.x,
+    goal.pose.pose.position.y,
+    node.pixel_x,
+    node.pixel_y,
+    node.node_type.c_str());
+
+  rclcpp_action::Client<NavigateToPose>::SendGoalOptions options;
+  options.goal_response_callback =
+    [this, node](const NavigateToPoseGoalHandle::SharedPtr & goal_handle) {
+      if (!goal_handle) {
+        RCLCPP_ERROR(get_logger(), "NavigateToPose goal was rejected for node_id=%u", node.id);
+        mark_navigation_complete();
+        return;
+      }
+
+      RCLCPP_INFO(get_logger(), "NavigateToPose goal accepted for node_id=%u", node.id);
+    };
+  options.result_callback =
+    [this, node](const NavigateToPoseGoalHandle::WrappedResult & result) {
+      handle_navigation_goal_result(node, result);
+    };
+
+  navigate_to_pose_client_->async_send_goal(goal, options);
+}
+
+void WebsocketOrchestrationNode::handle_navigation_goal_result(
+  const StoredWaypointNode & node,
+  const NavigateToPoseGoalHandle::WrappedResult & result)
+{
+  switch (result.code) {
+    case rclcpp_action::ResultCode::SUCCEEDED: {
+        RCLCPP_INFO(get_logger(), "NavigateToPose succeeded for node_id=%u", node.id);
+        visited_navigation_node_ids_.insert(node.id);
+
+        geometry_msgs::msg::TransformStamped current_transform;
+        if (lookup_robot_transform_in_map(current_transform)) {
+          navigation_current_world_x_ = current_transform.transform.translation.x;
+          navigation_current_world_y_ = current_transform.transform.translation.y;
+        } else {
+          navigation_current_world_x_ = node.world_x;
+          navigation_current_world_y_ = node.world_y;
+        }
+
+        continue_navigation_workflow();
+        return;
+      }
+    case rclcpp_action::ResultCode::ABORTED:
+      RCLCPP_ERROR(get_logger(), "NavigateToPose aborted for node_id=%u", node.id);
+      break;
+    case rclcpp_action::ResultCode::CANCELED:
+      RCLCPP_ERROR(get_logger(), "NavigateToPose canceled for node_id=%u", node.id);
+      break;
+    default:
+      RCLCPP_ERROR(get_logger(), "NavigateToPose returned unknown result for node_id=%u", node.id);
+      break;
+  }
+
+  mark_navigation_complete();
+}
+
+bool WebsocketOrchestrationNode::has_stored_graph() const
+{
+  return has_stored_waypoint_graph_;
 }
 
 void WebsocketOrchestrationNode::broadcast_state()
@@ -658,6 +942,8 @@ std::string WebsocketOrchestrationNode::state_to_string(WorkflowState state)
       return "MAPPING";
     case WorkflowState::CONSTRUCTING_ROUTE:
       return "CONSTRUCTING_ROUTE";
+    case WorkflowState::NAVIGATING:
+      return "NAVIGATING";
     default:
       return "IDLE";
   }

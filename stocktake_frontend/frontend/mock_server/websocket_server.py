@@ -169,6 +169,25 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                     )
                 continue
 
+            if command == "start_stocktake":
+                if current_state == ServerState.IDLE and state_machine_task is None:
+                    print("Start stocktake command accepted", flush=True)
+                    await send_json(
+                        websocket,
+                        {"type": "command_ack", "command": "start_stocktake", "status": "accepted"},
+                    )
+                else:
+                    await send_json(
+                        websocket,
+                        {
+                            "type": "command_ack",
+                            "command": "start_stocktake",
+                            "status": "rejected",
+                            "reason": f"Server is currently in state {current_state}.",
+                        },
+                    )
+                continue
+
             if command == "pause":
                 success, reason = await set_pause(True)
                 await send_json(
@@ -195,7 +214,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                 )
                 continue
 
-            if command not in {"start_mapping", "pause", "resume"}:
+            if command not in {"start_mapping", "start_stocktake", "pause", "resume"}:
                 await send_json(
                     websocket,
                     {"type": "error", "message": "Unsupported command."},

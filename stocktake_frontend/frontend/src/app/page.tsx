@@ -9,7 +9,7 @@ const RETRY_INTERVAL_MS = 10_000;
 
 type ConnectionState = "idle" | "connecting" | "connected" | "retrying";
 type ServerState = "IDLE" | "MAPPING" | "CONSTRUCTING_ROUTE";
-type CommandName = "start_mapping" | "pause" | "resume";
+type CommandName = "start_mapping" | "start_stocktake" | "pause" | "resume";
 
 type ServerMessage =
   | { type: "state_update"; state: ServerState; paused: boolean }
@@ -181,6 +181,10 @@ export default function Home() {
     sendCommand("start_mapping");
   };
 
+  const startStocktake = () => {
+    sendCommand("start_stocktake");
+  };
+
   const togglePauseMapping = () => {
     sendCommand(isPaused ? "resume" : "pause");
   };
@@ -238,6 +242,14 @@ export default function Home() {
           </button>
           <button
             type="button"
+            className="actionButton"
+            onClick={startStocktake}
+            disabled={isStartMappingDisabled}
+          >
+            Start Stocktake
+          </button>
+          <button
+            type="button"
             className="actionButton actionButtonSecondary"
             onClick={togglePauseMapping}
             disabled={!canTogglePause}
@@ -253,6 +265,10 @@ export default function Home() {
 function formatCommandLabel(command: CommandName): string {
   if (command === "start_mapping") {
     return "Start mapping";
+  }
+
+  if (command === "start_stocktake") {
+    return "Start stocktake";
   }
 
   return command.charAt(0).toUpperCase() + command.slice(1);

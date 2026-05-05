@@ -8,10 +8,13 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(explore_lite_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(stocktake_nvidia_swagger_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(Threads REQUIRED)
 
@@ -35,10 +38,13 @@ add_executable(stocktake_orchestration
 )
 ament_target_dependencies(stocktake_orchestration
   explore_lite_msgs
+  geometry_msgs
   nav2_msgs
   rclcpp
+  rclcpp_action
   stocktake_nvidia_swagger_msgs
   std_msgs
+  tf2_ros
 )
 
 target_include_directories(stocktake_orchestration PRIVATE

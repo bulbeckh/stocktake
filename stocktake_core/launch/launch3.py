@@ -364,20 +364,37 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
-    ## Camera bridge
-    ros_gz_camera_bridge_cmd = Node(
+    ## Camera bridges
+    ros_gz_camera_bridge1_cmd = Node(
             package="ros_gz_image",
             executable="image_bridge",
-            name="camera_image_bridge",
+            name="left_camera_image_bridge",
             output="screen",
             arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/front_camera/image'
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image'
             ],
             parameters=[{"use_sim_time": use_sim_time}],
             remappings=[
                 (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/front_camera/image",
-                    "/camera/image_raw",
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image",
+                    "/camera/left/image_raw",
+                ),
+            ],
+    )
+
+    ros_gz_camera_bridge2_cmd = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="right_camera_image_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image'
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+            remappings=[
+                (
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image",
+                    "/camera/right/image_raw",
                 ),
             ],
     )
@@ -404,14 +421,15 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(declare_use_respawn_cmd)
 
     ld.add_action(gazebo_server)
-    ld.add_action(gazebo_client)
+    #ld.add_action(gazebo_client)
 
     ld.add_action(ros_gz_bridge_cmd)
     ld.add_action(ros_gz_bridge2_cmd)
     ld.add_action(ros_gz_bridge3_cmd)
     ld.add_action(ros_gz_bridge4_cmd)
     ld.add_action(ros_gz_bridge5_cmd)
-    ld.add_action(ros_gz_camera_bridge_cmd)
+    ld.add_action(ros_gz_camera_bridge1_cmd)
+    ld.add_action(ros_gz_camera_bridge2_cmd)
 
     # Add the actions to launch all of the navigation nodes
     #ld.add_action(start_robot_state_publisher_cmd)

@@ -11,11 +11,11 @@ sdf_store_str_head = """<?xml version="1.0" ?>
         <static>true</static>
     </include>
 
-    <!--include>
+    <include>
         <uri>model://ceiling</uri>
         <name>ceiling</name>
         <static>true</static>
-    </include-->
+    </include>
 
 	<include>
 		<uri>model://robot</uri>
@@ -209,7 +209,6 @@ if __name__=="__main__":
 
     
     for i,p in enumerate(random.sample(open_spots, k=100)):
-        continue
         out_str += f"""<include>
             <uri>model://cereal2</uri>
             <name>cereal_{i}</name>
