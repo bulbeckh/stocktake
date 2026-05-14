@@ -1,5 +1,12 @@
-## Stocktake Robot Simulation
-Recreation of capstone project in gazebo
+<div align="center">
+
+# Stocktake
+
+Autonomous stocktaking robot for retail and industrial environments
+
+</div>
+
+<img src="./docs/res/output.gif" alt="simgif" width="100%" />
 
 ### Building
 
