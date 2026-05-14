@@ -106,17 +106,17 @@ ros2 run stella_vslam_ros run_slam -v orb_vocab.fbow -c gz_camera.yaml --ros-arg
 | `stocktake_nvidia_swagger` | Nodes for waypoint generation from map, via nvidia-swagger package |
 | `stocktake_nvidia_swagger_msgs` | Custom messages for waypoint generation |
 | `stocktake_frontend` | Frontend for stocktake/robot control web interface
-| `m-explore-ros2` | ROS2 package for map exploration |
+| `explore-ros2-action` | Fork of [m-explore-ros2](https://github.com/robo-friends/m-explore-ros2) frontier-based exploration algorithm, with action server instead of node auto-start |
+| `gazebo-rfid-plugin` | RFID scanning system plugin for Gazebo sim, modelling realistic RFID scan effects |
 
+## Autonomy Stack
+NOTE: Still experimenting with mapping/navigation stacks, including visual SLAM implementations.
 
-## Navigation Stack
 `TODO` We use the [Navigation2](https://github.com/ros-navigation/navigation2) ROS2 package for the planning, control, state estimation, and behaviour tree.
 
-## Behaviour Tree Overview
-`TODO`
+Map exploration is currently done using a frontier-based exploration algorithm from `m-explore-ros`.
 
-## Map Exploration
-[m-explore-ros2](https://github.com/robo-friends/m-explore-ros2/tree/main) ROS2 Explore Lite port
+Stella-VSLAM provides us with stereo (and mono) camera-based SLAM from which we can extract a world representation.
 
 ### Libraries
 - [OpenBase](https://github.com/GUiRitter/OpenBase) Omni Wheel STL files
