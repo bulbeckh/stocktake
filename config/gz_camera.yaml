@@ -38,7 +38,9 @@ Camera:
   cols: 1024
   rows: 1024
   color_order: "RGB"
-  focal_x_baseline: 65.19
+    ## fx * distance 
+    #focal_x_baseline: 65.19
+  focal_x_baseline: 32.595
 
 StereoRectifier:
   model: "fisheye"

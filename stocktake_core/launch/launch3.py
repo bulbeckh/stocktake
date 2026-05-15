@@ -421,7 +421,7 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(declare_use_respawn_cmd)
 
     ld.add_action(gazebo_server)
-    #ld.add_action(gazebo_client)
+    ld.add_action(gazebo_client)
 
     ld.add_action(ros_gz_bridge_cmd)
     ld.add_action(ros_gz_bridge2_cmd)

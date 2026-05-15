@@ -34,8 +34,8 @@ light_str = """
     <light name="light" type="spot">
       <pose>{x} {y} {z} {phi} {theta} {psi}</pose>
       <cast_shadows>false</cast_shadows>
-      <diffuse>1.0 0.98 0.94 1.0</diffuse>
-      <specular>0.15 0.15 0.15 1.0</specular>
+      <diffuse>0.4 0.39 0.35 1.0</diffuse>
+      <specular>0.02 0.02 0.02 1.0</specular>
 
       <direction>0 0 -1</direction>
 
@@ -208,9 +208,9 @@ if __name__=="__main__":
                 print("Bad z-axis rotation for shelf-poses : set in range [-90,180]")
 
     
-    for i,p in enumerate(random.sample(open_spots, k=100)):
+    for i,p in enumerate(random.sample(open_spots, k=200)):
         out_str += f"""<include>
-            <uri>model://cereal2</uri>
+            <uri>model://cereal{'' if i%2 else 2}</uri>
             <name>cereal_{i}</name>
             <static>true</static>
             <pose degrees="true">{p[0]} {p[1]} {p[2]} 0 0 0</pose>
