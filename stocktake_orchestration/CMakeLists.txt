@@ -7,17 +7,16 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
-
-find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
-
 find_package(explore_lite_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
-
-find_package(Boost REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(stocktake_nvidia_swagger_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(Threads REQUIRED)
 
 
 if(BUILD_TESTING)
@@ -32,16 +31,31 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(stocktake_orchestration src/stocktake_orchestration.cpp)
+add_executable(stocktake_orchestration
+  src/orchestration.cpp
+  src/websocket_orchestration_node.cpp
+  src/workflow_transition_actions.cpp
+)
 ament_target_dependencies(stocktake_orchestration
-	rclcpp
-	std_msgs
-	explore_lite_msgs
-	nav2_msgs)
+  explore_lite_msgs
+  geometry_msgs
+  nav2_msgs
+  rclcpp
+  rclcpp_action
+  stocktake_nvidia_swagger_msgs
+  std_msgs
+  tf2_ros
+)
 
 target_include_directories(stocktake_orchestration PRIVATE
 	include/
 	${Boost_INCLUDE_DIRS}
+)
+
+target_compile_features(stocktake_orchestration PRIVATE cxx_std_17)
+target_link_libraries(stocktake_orchestration
+  Boost::system
+  Threads::Threads
 )
 
 install(TARGETS

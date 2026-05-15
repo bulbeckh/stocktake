@@ -7,14 +7,15 @@
   <maintainer email="henrybulbeck@gmail.com">Henry Bulbeck</maintainer>
   <license>Apache-2.0</license>
 
-	  <!--buildtool_depend>ament_python</buildtool_depend-->
-
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
   <depend>rclpy</depend>
   <depend>stocktake_nvidia_swagger_msgs</depend>
+  <depend>python3-venv</depend>
 
   <exec_depend>python3-opencv</exec_depend>
 
-  <!--export>
-    <build_type>ament_python</build_type>
-  </export-->
+  <export>
+    <build_type>ament_cmake_python</build_type>
+  </export>
+
 </package>
