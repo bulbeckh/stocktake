@@ -7,3 +7,6 @@
 [submodule "explore-ros2-action"]
 	path = explore-ros2-action
 	url = git@github.com:bulbeckh/explore-ros2-action.git
+[submodule "stocktake_core/stocktake-items"]
+	path = stocktake_core/stocktake-items
+	url = https://github.com/bulbeckh/stocktake-items
