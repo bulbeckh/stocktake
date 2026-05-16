@@ -9,18 +9,21 @@ Autonomous stocktaking robot for retail and industrial environments
 <img src="./docs/res/output.gif" alt="simgif" width="100%" />
 
 ### Building
+Currently, this repository has only been tested on Ubuntu 24.04, with ros2-jazzy and gz-harmonic. At the very least we need ROS2 Jazzy (specifically `ros2-jazzy-desktop` [instructions here](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html))and Gazeob simulator (harmonic).
 
-#### Install build dependencies
+TODO Not enoug detail here - add
+
+#### Install dependencies
+Install all package dependencies with rosdep
 ```bash
-sudo apt install python3-virtualenv
-```
+source /opt/ros/jazzy/setup.bash
+rosdep install
 
-Clone the repository
+Clone the repository and submodules
 ```bash
 mkdir -p ~/ros2_ws/src
-cd ~/ros2_ws
+cd ~/ros2_ws/src
 git clone --recurse-submodules https://github.com/bulbeckh/stocktake.git
-source /opt/ros/jazzy/setup.bash
 ```
 
 Build all packages
@@ -30,11 +33,12 @@ colcon build
 source ./install/setup.bash
 ```
 
+#### Install other dependencies
 In order to run our nvidia-swagger ROS2 node, we have a python dependency on the nvidia-swagger python package.
 
 Create virtual environment at root of our workspace folder
 ```bash
-virtualenv ./venv
+python3 -m venv .venv
 source ./venv/bin/activate
 touch ./venv/COLCON_IGNORE
 ```
