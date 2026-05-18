@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Save current directory
-ROOT_DIR="$(pwd)"
+ROOT_DIR="/root"
 
 # Create virtual environment locally
 python3 -m venv "${ROOT_DIR}/.venv"

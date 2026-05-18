@@ -9,16 +9,16 @@ Autonomous stocktaking robot for retail and industrial environments
 <img src="./docs/res/output.gif" alt="simgif" width="100%" />
 
 ### Building
-Currently, this repository has only been tested on Ubuntu 24.04, with ros2-jazzy and gz-harmonic. At the very least we need ROS2 Jazzy (specifically `ros2-jazzy-desktop` [instructions here](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html))and Gazeob simulator (harmonic).
+Currently, this repository has only been tested on Ubuntu 24.04, with ros2-jazzy and gz-harmonic. At the very least we need ROS2 Jazzy (specifically `ros2-jazzy-desktop` [instructions here](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)) and Gazeob simulator (harmonic).
 
 TODO Not enoug detail here - add
 
-#### Install dependencies
-Install all package dependencies with rosdep
+#### Docker setup
 ```bash
-source /opt/ros/jazzy/setup.bash
-rosdep install
+sudo docker build -f docker/Dockerfile -t stocktake .
+```
 
+#### Install dependencies
 Clone the repository and submodules
 ```bash
 mkdir -p ~/ros2_ws/src
@@ -26,9 +26,15 @@ cd ~/ros2_ws/src
 git clone --recurse-submodules https://github.com/bulbeckh/stocktake.git
 ```
 
+Install all package dependencies with rosdep
+```bash
+cd ~/ros2_ws
+source /opt/ros/jazzy/setup.bash
+rosdep install --from-paths src --ignore-src -y
+```
+
 Build all packages
 ```bash
-cd ~/ros_ws
 colcon build
 source ./install/setup.bash
 ```

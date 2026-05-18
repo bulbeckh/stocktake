@@ -1,0 +1,15 @@
+services:
+  dev:
+    image: my_ros2_dev
+    container_name: my_ros2_dev
+    working_dir: /workspaces/stocktake
+    volumes:
+      - ../../:/workspaces/stocktake
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    stdin_open: true
+    tty: true
+    command: bash

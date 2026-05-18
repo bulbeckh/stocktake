@@ -5,5 +5,5 @@ debug/**
 **/*.pyc
 rosbag*
 *.codex
-scripts/SWAGGER
-scripts/.venv
+docker/scripts/SWAGGER
+docker/scripts/.venv
