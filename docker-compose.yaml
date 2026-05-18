@@ -1,10 +1,11 @@
 services:
   dev:
-    image: my_ros2_dev
-    container_name: my_ros2_dev
-    working_dir: /workspaces/stocktake
+    image: stocktake
+    container_name: stocktake
+    working_dir: /workspaces/stocktake-alt
+      ## Note we have moved this to stocktake-alt because the original docker build places the .venv in /workspaces/stocktake-alt - this shouldn't be the case and we should change the Dockerfile before running docker build again
     volumes:
-      - ../../:/workspaces/stocktake
+      - ../../:/workspaces/stocktake-alt
       - /tmp/.X11-unix:/tmp/.X11-unix
 
     environment:

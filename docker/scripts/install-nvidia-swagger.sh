@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Save current directory
-ROOT_DIR="/root"
+ROOT_DIR="/workspaces/stocktake"
 
 # Create virtual environment locally
 python3 -m venv "${ROOT_DIR}/.venv"
@@ -16,24 +16,24 @@ touch "${ROOT_DIR}/.venv/COLCON_IGNORE"
 # Install system dependencies non-interactively
 sudo DEBIAN_FRONTEND=noninteractive apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    git \
-    git-lfs \
     libglib2.0-0 \
     #libgl1-mesa-glx \
+    #git \
+    #git-lfs \
 
 # Initialize git-lfs
-git lfs install --skip-repo
+#git lfs install --skip-repo
 
 # Clone SWAGGER into current directory
-if [ ! -d "${ROOT_DIR}/SWAGGER" ]; then
-    git clone https://github.com/nvidia-isaac/SWAGGER.git \
-        "${ROOT_DIR}/SWAGGER"
-fi
+#if [ ! -d "${ROOT_DIR}/SWAGGER" ]; then
+    #git clone https://github.com/nvidia-isaac/SWAGGER.git \
+        #"${ROOT_DIR}/SWAGGER"
+#fi
 
-cd "${ROOT_DIR}/SWAGGER"
+cd "/SWAGGER"
 
 # Pull large files
-git lfs pull
+#git lfs pull
 
 # Upgrade pip tooling
 pip install --upgrade pip setuptools wheel

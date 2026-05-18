@@ -15,6 +15,9 @@ RUN apt update && apt install -y \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy SWAGGER before install
+COPY SWAGGER /SWAGGER
+
 # Copy source-install scripts into the image
 COPY docker/scripts/ /tmp/install-scripts/
 

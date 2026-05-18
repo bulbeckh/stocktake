@@ -13,12 +13,11 @@ Currently, this repository has only been tested on Ubuntu 24.04, with ros2-jazzy
 
 TODO Not enoug detail here - add
 
-#### Docker setup
+We need a few dependencies first, specifically `git-lfs`
 ```bash
-sudo docker build -f docker/Dockerfile -t stocktake .
+sudo apt install git git-lfs
 ```
 
-#### Install dependencies
 Clone the repository and submodules
 ```bash
 mkdir -p ~/ros2_ws/src
@@ -26,11 +25,23 @@ cd ~/ros2_ws/src
 git clone --recurse-submodules https://github.com/bulbeckh/stocktake.git
 ```
 
+Pull our nvidia-swagger lfs
+```bash
+cd SWAGGER
+git lfs pull
+```
+
+#### Docker setup
+```bash
+sudo docker build -f docker/Dockerfile -t stocktake .
+```
+
 Install all package dependencies with rosdep
 ```bash
 cd ~/ros2_ws
 source /opt/ros/jazzy/setup.bash
-rosdep install --from-paths src --ignore-src -y
+## Important that we ignore src/SWAGGER
+rosdep install --from-paths src/stocktake --ignore-src -y
 ```
 
 Build all packages
