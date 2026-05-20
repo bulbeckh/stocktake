@@ -1,3 +1,4 @@
 ament_prepend_unique_value GZ_SIM_RESOURCE_PATH "$COLCON_CURRENT_PREFIX/share/@PROJECT_NAME@models"
 ament_prepend_unique_value GZ_SIM_RESOURCE_PATH "$COLCON_CURRENT_PREFIX/share/@PROJECT_NAME@worlds"
+ament_prepend_unique_value GZ_SIM_RESOURCE_PATH "$COLCON_CURRENT_PREFIX/share/@PROJECT_NAME@stocktake-items"
 ament_prepend_unique_value GZ_SIM_RESOURCE_PATH "$COLCON_CURRENT_PREFIX/share/@PROJECT_NAME@"

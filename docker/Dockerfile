@@ -1,4 +1,4 @@
-FROM ros:jazzy
+FROM osrf/ros:jazzy-desktop
 
 # Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
@@ -32,6 +32,16 @@ RUN chmod +x /tmp/install-scripts/*.sh && \
 # Initialize rosdep
 RUN rosdep init || true
 RUN rosdep update
+
+COPY . /tmp/stocktake
+RUN touch /tmp/stocktake/SWAGGER/COLCON_IGNORE
+
+## Install ros dependencies
+RUN rosdep install --from-paths /tmp/stocktake --ignore-src -y -r
+
+## Remove repo - will be mounted during docker compose
+RUN rm -rf /tmp/stocktake
+RUN rm -rf /SWAGGER
 
 # Default shell
 CMD ["bash"]

@@ -3,7 +3,7 @@ project(stocktake_core)
 
 find_package(ament_cmake REQUIRED)
 
-install(DIRECTORY launch models worlds
+install(DIRECTORY launch models worlds stocktake-items
   DESTINATION share/${PROJECT_NAME}
 )
 

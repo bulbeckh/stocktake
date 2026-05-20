@@ -33,24 +33,24 @@ git lfs pull
 
 #### Docker setup
 ```bash
+## Build image
 sudo docker build -f docker/Dockerfile -t stocktake .
+
+## Start container
+sudo docker compose up dev
+sudo docker compose exec dev bash
 ```
 
-Install all package dependencies with rosdep
+Build all packages NOTE rename the stockake folder from stocktake-alt (only that way because .venv was accidentally placed in /workspaces/stocktake and the mount overwrote it)
 ```bash
-cd ~/ros2_ws
-source /opt/ros/jazzy/setup.bash
-## Important that we ignore src/SWAGGER
-rosdep install --from-paths src/stocktake --ignore-src -y
-```
-
-Build all packages
-```bash
+cd /workspaces/stocktake-alt
 colcon build
 source ./install/setup.bash
 ```
 
 #### Install other dependencies
+NOTE These instructions are not required for docker now. Need to update them for users not planning to use docker
+
 In order to run our nvidia-swagger ROS2 node, we have a python dependency on the nvidia-swagger python package.
 
 Create virtual environment at root of our workspace folder

@@ -210,7 +210,7 @@ if __name__=="__main__":
     
     for i,p in enumerate(random.sample(open_spots, k=200)):
         out_str += f"""<include>
-            <uri>model://cereal{'' if i%2 else 2}</uri>
+            <uri>model://cereal{1 if i%2 else 2}</uri>
             <name>cereal_{i}</name>
             <static>true</static>
             <pose degrees="true">{p[0]} {p[1]} {p[2]} 0 0 0</pose>

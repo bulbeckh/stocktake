@@ -1,15 +1,25 @@
 services:
   dev:
-    image: stocktake
-    container_name: stocktake
+    image: stocktake-ros
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    container_name: stocktake-ros
     working_dir: /workspaces/stocktake-alt
       ## Note we have moved this to stocktake-alt because the original docker build places the .venv in /workspaces/stocktake-alt - this shouldn't be the case and we should change the Dockerfile before running docker build again
     volumes:
       - ../../:/workspaces/stocktake-alt
       - /tmp/.X11-unix:/tmp/.X11-unix
-
     environment:
       - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
     network_mode: host
     stdin_open: true
     tty: true
