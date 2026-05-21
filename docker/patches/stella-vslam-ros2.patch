@@ -1,0 +1,31 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fd05f8f..19f7509 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -251,10 +251,9 @@ if(spdlog_FOUND)
+   target_link_libraries(stella_vslam_ros_system PRIVATE
+     spdlog::spdlog)
+ endif()
+-if(NOT WIN32)
+-  ament_environment_hooks(
+-    "${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}")
+-endif()
++#if(NOT WIN32)
++	#ament_environment_hooks("${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}")
++	#endif()
+ install(TARGETS
+   stella_vslam_ros_system
+   EXPORT export_${PROJECT_NAME}
+diff --git a/src/stella_vslam_ros.h b/src/stella_vslam_ros.h
+index 35b7c16..71a8208 100644
+--- a/src/stella_vslam_ros.h
++++ b/src/stella_vslam_ros.h
+@@ -12,7 +12,7 @@
+ #include <message_filters/synchronizer.h>
+ #include <message_filters/sync_policies/approximate_time.h>
+ #include <message_filters/sync_policies/exact_time.h>
+-#include <cv_bridge/cv_bridge.h>
++#include <cv_bridge/cv_bridge.hpp>
+ #include <nav_msgs/msg/odometry.hpp>
+ #include <geometry_msgs/msg/pose_array.hpp>
+ 

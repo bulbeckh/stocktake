@@ -36,12 +36,22 @@ RUN rosdep update
 COPY . /tmp/stocktake
 RUN touch /tmp/stocktake/SWAGGER/COLCON_IGNORE
 
+## Install stella_vslam_ros -- NOTE move this to either a sub-module, a vcs import, or part of the install-stella-vlsam script
+RUN git clone --recursive -b ros2 --depth 1 https://github.com/stella-cv/stella_vslam_ros.git /workspaces/stocktake-vslam/src
+
 ## Install ros dependencies
 RUN rosdep install --from-paths /tmp/stocktake --ignore-src -y -r
+
+## Install stella-vslam-ros dependencies (NOTE should merge this into one when we do proper dependency re-write)
+RUN rosdep install --from-paths /workspaces/stocktake-vslam/src --ignore-src -y -r --skip-keys=stella_vslam
+
+COPY docker/patches/stella-vslam-ros2.patch /tmp/stella-vslam-ros2.patch
+RUN cd /workspaces/stocktake-vslam/src && git apply /tmp/stella-vslam-ros2.patch
 
 ## Remove repo - will be mounted during docker compose
 RUN rm -rf /tmp/stocktake
 RUN rm -rf /SWAGGER
+RUN rm -rf /tmp/stella-vslam-ros2.patch
 
 # Default shell
 CMD ["bash"]
