@@ -1,0 +1,424 @@
+<?xml version='1.0'?>
+<sdf version='1.11'>
+  <model name='robotmodel'>
+    <link name='robot_base'>
+      <pose>0 0 0 0 0 0</pose>
+      <visual name='robot-base-v'>
+        <!-- mesh -->
+        <geometry>
+          <mesh>
+			  <uri>model://robot-rgbd/meshes/robot_base.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-base-c'>
+        <geometry>
+          <mesh>
+			  <uri>model://robot-rgbd/meshes/robot_base.stl</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <inertial auto='true'>
+        <mass>1000</mass>
+      </inertial>
+    </link>
+
+		<link name='wheel-frontleft'>
+      <pose degrees='true'>0.1 0.075 0 90 0 0</pose>
+      <visual name='robot-frontleft-v'>
+        <!-- mesh -->
+        <geometry>
+					<cylinder>
+						<radius>0.02</radius>
+						<length>0.02</length>
+					</cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-frontleft-c'>
+        <geometry>
+					<!-- NOTE Different geometries for collision and visual --> 
+					<sphere>
+						<radius>0.02</radius>
+					</sphere>
+        </geometry>
+      </collision>
+      <inertial auto='true'>
+        <mass>1</mass>
+      </inertial>
+	</link>
+	
+	<link name='wheel-backleft'>
+      <pose degrees='true'>-0.1 0.075 0 -90 0 0</pose>
+      <visual name='robot-backleft-v'>
+        <!-- mesh -->
+        <geometry>
+					<cylinder>
+						<radius>0.02</radius>
+						<length>0.02</length>
+					</cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-backleft-c'>
+        <geometry>
+					<cylinder>
+						<radius>0.02</radius>
+						<length>0.02</length>
+					</cylinder>
+        </geometry>
+      </collision>
+      <inertial auto='true'>
+        <mass>1</mass>
+      </inertial>
+	</link>
+
+	<link name='wheel-frontright'>
+      <pose degrees='true'>0.1 -0.075 0 90 0 0</pose>
+      <visual name='robot-frontright-v'>
+        <!-- mesh -->
+        <geometry>
+			<cylinder>
+				<radius>0.02</radius>
+				<length>0.02</length>
+			</cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-frontright-c'>
+        <geometry>
+					<!-- NOTE Different geometries for collision and visual --> 
+					<sphere>
+						<radius>0.02</radius>
+					</sphere>
+        </geometry>
+      </collision>
+      <inertial auto='true'>
+        <mass>1</mass>
+      </inertial>
+	</link>
+
+	<link name='wheel-backright'>
+      <pose degrees='true'>-0.1 -0.075 0 -90 0 0</pose>
+      <visual name='robot-backright-v'>
+        <!-- mesh -->
+        <geometry>
+			<cylinder>
+				<radius>0.02</radius>
+				<length>0.02</length>
+			</cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-backright-c'>
+        <geometry>
+			<cylinder>
+				<radius>0.02</radius>
+				<length>0.02</length>
+			</cylinder>
+        </geometry>
+      </collision>
+      <inertial auto='true'>
+        <mass>1</mass>
+      </inertial>
+	</link>
+
+    <joint name='frontleft' type='ball'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>wheel-frontleft</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name='frontright' type='ball'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>wheel-frontright</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name='backleft' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>wheel-backleft</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name='backright' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>wheel-backright</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+	
+	<link name='robot_lidar'>
+		<pose>0 0 0.05 0 0 0</pose>
+      <visual name='robot-lidar-v'>
+        <!-- mesh -->
+        <geometry>
+			<cylinder>
+				<radius>0.05 </radius>
+				<length>0.02 </length>
+			</cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0 0 1</diffuse>
+          <ambient>1 0 0 1</ambient>
+          <!-- specular -->
+        </material>
+      </visual>
+      <collision name='robot-base-c'>
+        <geometry>
+			<cylinder>
+				<radius>0.05 </radius>
+				<length>0.02 </length>
+			</cylinder>
+        </geometry>
+      </collision>
+
+		<sensor name='robot_lidar' type='gpu_lidar'>
+			<topic>lidar</topic>
+			<update_rate>5</update_rate>
+			<always_on>true</always_on>
+			<visualize>true</visualize>
+			<ray>
+				<scan>
+					<horizontal>
+						<samples>360</samples>
+						<resolution>1.00</resolution>
+						<min_angle>0.000</min_angle>
+						<max_angle>6.280</max_angle>
+					</horizontal>
+				</scan>
+				<range>
+					<min>0.12</min>
+					<max>10</max>
+					<resolution>0.01500</resolution>
+				</range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+			</ray>
+		</sensor>
+	</link>
+
+    <joint name='lidarjoint' type='fixed'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>robot_lidar</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+    </joint>
+
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>backleft</left_joint>
+        <right_joint>backright</right_joint>
+        <wheel_separation>0.15</wheel_separation>
+        <wheel_radius>0.02</wheel_radius>
+
+		<!-- Only change these to the frames if we want to use the wheel odom as a sole source -->
+		<frame_id>odom</frame_id>
+		<child_frame_id>base_link</child_frame_id>
+		<tf_topic>/tf</tf_topic>
+
+        <max_linear_acceleration>1</max_linear_acceleration>
+        <min_linear_acceleration>-1</min_linear_acceleration>
+        <max_angular_acceleration>2</max_angular_acceleration>
+        <min_angular_acceleration>-2</min_angular_acceleration>
+        <max_linear_velocity>0.5</max_linear_velocity>
+        <min_linear_velocity>-0.5</min_linear_velocity>
+        <max_angular_velocity>1</max_angular_velocity>
+        <min_angular_velocity>-1</min_angular_velocity>
+      </plugin>
+
+	  <!-- camera link -->
+
+	  <link name="camera_front">
+		  <pose>0.2 0 0.1 0 0 0</pose>
+		    <inertial>
+			<mass>0.05</mass>
+			<inertia>
+			  <ixx>0.0001</ixx>
+			  <iyy>0.0001</iyy>
+			  <izz>0.0001</izz>
+			  <ixy>0</ixy>
+			  <ixz>0</ixz>
+			  <iyz>0</iyz>
+			</inertia>
+		  </inertial>
+
+		  <collision name="camera_collision">
+			<geometry>
+			  <box>
+				<size>0.03 0.03 0.03</size>
+			  </box>
+			</geometry>
+		  </collision>
+
+		  <sensor name="left_camera" type="rgbd_camera">
+			  <!-- -0.18rad is a 10degrees incline about y-axis-->
+			  <pose>0 -0.05 1 0 -0.18 0</pose>
+			<always_on>true</always_on>
+			<update_rate>30</update_rate>
+			<visualize>true</visualize>
+
+		  <camera>
+			<horizontal_fov>1.5707963</horizontal_fov> <!-- 180° -->
+			<image>
+			  <width>1024</width>
+			  <height>1024</height>
+			  <format>R8G8B8</format>
+			</image>
+			<clip>
+			  <near>0.1</near>
+			  <far>20.0</far>
+			</clip>
+
+		    <depth_camera>
+		      <clip>
+			<near>0.1</near>
+			<far>20.0</far>
+		      </clip>
+		    </depth_camera>
+
+		    <noise>
+		      <type>gaussian</type>
+		      <mean>0.0</mean>
+		      <stddev>0.007</stddev>
+		    </noise>
+		  </camera>
+
+	  </sensor>
+
+	  </link>
+
+	<link name="imu">
+		<pose>0 0 0.1 0 0 0 </pose>
+		<visual name="imu-v">
+			<geometry>
+				<box><size>0.02 0.02 0.02</size></box>
+			</geometry>
+		</visual>
+		<collision name="imu-c">
+			<geometry>
+				<box><size>0.02 0.02 0.02</size></box>
+			</geometry>
+		</collision>
+
+		<sensor name="imu-sensor" type="imu">
+			<topic>imu</topic>
+			<update_rate>100</update_rate>
+			<always_on>true</always_on>
+			<visualize>true</visualize>
+			<imu>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>2e-4</stddev>
+              <bias_mean>0.0000075</bias_mean>
+              <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>1.7e-2</stddev>
+              <bias_mean>0.1</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </z>
+        </linear_acceleration> 
+      </imu>
+		</sensor>
+	</link>
+	
+    <joint name='imujoint' type='fixed'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>imu</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+  </joint>
+
+    <joint name='camerajoint' type='fixed'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>robot_base</parent>
+      <child>camera_front</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+      </axis>
+    </joint>
+
+  </model>
+</sdf>

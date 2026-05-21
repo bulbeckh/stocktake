@@ -365,6 +365,9 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     ## Camera bridges
+
+    ### Left and right bridges
+    '''
     ros_gz_camera_bridge1_cmd = Node(
             package="ros_gz_image",
             executable="image_bridge",
@@ -395,6 +398,42 @@ def generate_launch_description() -> LaunchDescription:
                 (
                     "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image",
                     "/camera/right/image_raw",
+                ),
+            ],
+    )
+    '''
+
+    ### RGB-D bridges
+    ros_gz_camera_bridge1_cmd = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="left_camera_image_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image'
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+            remappings=[
+                (
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image",
+                    "/camera/color/image_raw",
+                ),
+            ],
+    )
+
+    ros_gz_camera_bridge2_cmd = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="right_camera_image_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image'
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+            remappings=[
+                (
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image",
+                    "/camera/depth/image_raw",
                 ),
             ],
     )

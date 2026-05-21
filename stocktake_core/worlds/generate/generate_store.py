@@ -18,7 +18,7 @@ sdf_store_str_head = """<?xml version="1.0" ?>
     </include>
 
 	<include>
-		<uri>model://robot</uri>
+		<uri>model://robot-rgbd</uri>
 		<pose degrees='true'>10 1 0.1 0 0 0</pose>
 	</include>
 """

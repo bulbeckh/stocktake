@@ -1,0 +1,100 @@
+Camera:
+  name: "gazebo_rgbd_1024"
+  setup: "RGBD"
+  model: "perspective"
+
+  fx: 512.0
+  fy: 512.0
+  cx: 511.5
+  cy: 511.5
+
+  k1: 0.0
+  k2: 0.0
+  p1: 0.0
+  p2: 0.0
+  k3: 0.0
+
+  fps: 30.0
+  cols: 1024
+  rows: 1024
+
+  color_order: "RGB"
+
+  depthmap_factor: 1000.0
+
+StereoRectifier:
+  model: "fisheye"
+
+  # Left camera intrinsics
+  K_left: [325.95, 0.0, 511.5,
+           0.0, 325.95, 511.5,
+           0.0, 0.0, 1.0]
+
+  # Fisheye distortion (Gazebo wideanglecamera is typically ideal)
+  # Keep zero unless you inject distortion
+  D_left: [0.0, 0.0, 0.0, 0.0]
+
+  # Right camera intrinsics (same as left in your case)
+  K_right: [325.95, 0.0, 511.5,
+            0.0, 325.95, 511.5,
+            0.0, 0.0, 1.0]
+
+  D_right: [0.0, 0.0, 0.0, 0.0]
+
+  # Cameras are parallel in Gazebo → identity rotations
+  R_left: [1.0, 0.0, 0.0,
+           0.0, 1.0, 0.0,
+           0.0, 0.0, 1.0]
+
+  R_right: [1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 0.0, 1.0]
+
+
+Initializer:
+  num_ransac_iterations: 200
+  min_num_valid_pts: 80
+  min_num_triangulated_pts: 50
+  parallax_deg_threshold: 0.5
+  reprojection_error_threshold: 4.0
+  num_ba_iterations: 20
+  scaling_factor: 1.0
+
+Feature:
+  name: "default ORB feature extraction setting"
+  max_num_keypoints: 1000.0
+  scale_factor: 1.2
+  num_levels: 8
+  ini_fast_threshold: 20
+  min_fast_threshold: 7
+
+Preprocessing:
+  min_size: 800
+
+Mapping:
+  backend: "g2o"
+  baseline_dist_thr_ratio: 0.02
+  redundant_obs_ratio_thr: 0.95
+  num_covisibilities_for_landmark_generation: 20
+  num_covisibilities_for_landmark_fusion: 20
+  residual_deg_thr: 0.4
+
+Tracking:
+  backend: "g2o"
+
+LoopDetector:
+  backend: "g2o"
+  enabled: true
+  reject_by_graph_distance: true
+  min_distance_on_graph: 50
+
+GraphOptimizer:
+  min_num_shared_lms: 200
+
+GlobalOptimizer:
+  thr_neighbor_keyframes: 100
+
+System:
+  map_format: "msgpack"
+  num_grid_cols: 96
+  num_grid_rows: 48

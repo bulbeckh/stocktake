@@ -15,7 +15,7 @@
     </include>
 
 	<include>
-		<uri>model://robot</uri>
+		<uri>model://robot-rgbd</uri>
 		<pose degrees='true'>10 1 0.1 0 0 0</pose>
 	</include>
 <include>
@@ -2028,1002 +2028,1002 @@
             <uri>model://cereal2</uri>
             <name>cereal_0</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.5 0.8 0 0 0</pose>
+            <pose degrees="true">4.25 2.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_1</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.25 1.8 0 0 0</pose>
+            <pose degrees="true">6.25 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_2</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.25 0.3 0 0 0</pose>
+            <pose degrees="true">4.25 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_3</name>
             <static>true</static>
-            <pose degrees="true">4.75 4.75 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_4</name>
             <static>true</static>
-            <pose degrees="true">8.75 4.75 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_5</name>
             <static>true</static>
-            <pose degrees="true">2.25 5.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 2.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_6</name>
             <static>true</static>
-            <pose degrees="true">8.25 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 4.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_7</name>
             <static>true</static>
-            <pose degrees="true">0.25 9.5 0.3 0 0 0</pose>
+            <pose degrees="true">1.0 0.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_8</name>
             <static>true</static>
-            <pose degrees="true">3.75 7.75 0.3 0 0 0</pose>
+            <pose degrees="true">3.75 0.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_9</name>
             <static>true</static>
-            <pose degrees="true">11.75 6.5 0.3 0 0 0</pose>
+            <pose degrees="true">9.75 5.0 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_10</name>
             <static>true</static>
-            <pose degrees="true">9.75 4.75 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 3.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_11</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.5 0.3 0 0 0</pose>
+            <pose degrees="true">6.25 5.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_12</name>
             <static>true</static>
-            <pose degrees="true">9.0 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">9.25 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_13</name>
             <static>true</static>
-            <pose degrees="true">3.0 2.25 1.8 0 0 0</pose>
+            <pose degrees="true">11.75 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_14</name>
             <static>true</static>
-            <pose degrees="true">4.0 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">2.25 5.0 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_15</name>
             <static>true</static>
-            <pose degrees="true">2.25 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.75 7.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_16</name>
             <static>true</static>
-            <pose degrees="true">0.25 1.5 1.8 0 0 0</pose>
+            <pose degrees="true">4.25 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_17</name>
             <static>true</static>
-            <pose degrees="true">8.25 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 5.0 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_18</name>
             <static>true</static>
-            <pose degrees="true">4.75 7.25 0.3 0 0 0</pose>
+            <pose degrees="true">8.25 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_19</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.5 1.3 0 0 0</pose>
+            <pose degrees="true">3.75 7.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_20</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.75 1.3 0 0 0</pose>
+            <pose degrees="true">9.0 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_21</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">11.75 8.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_22</name>
             <static>true</static>
-            <pose degrees="true">6.25 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">4.75 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_23</name>
             <static>true</static>
-            <pose degrees="true">6.25 2.25 0.3 0 0 0</pose>
+            <pose degrees="true">8.75 5.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_24</name>
             <static>true</static>
-            <pose degrees="true">3.0 2.75 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_25</name>
             <static>true</static>
-            <pose degrees="true">7.25 5.25 0.8 0 0 0</pose>
+            <pose degrees="true">4.25 0.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_26</name>
             <static>true</static>
-            <pose degrees="true">3.75 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">2.25 5.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_27</name>
             <static>true</static>
-            <pose degrees="true">6.0 0.25 0.8 0 0 0</pose>
+            <pose degrees="true">7.75 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_28</name>
             <static>true</static>
-            <pose degrees="true">9.0 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">5.0 7.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_29</name>
             <static>true</static>
-            <pose degrees="true">5.0 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">7.0 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_30</name>
             <static>true</static>
-            <pose degrees="true">4.0 2.75 0.3 0 0 0</pose>
+            <pose degrees="true">4.75 7.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_31</name>
             <static>true</static>
-            <pose degrees="true">2.25 5.25 1.3 0 0 0</pose>
+            <pose degrees="true">7.75 2.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_32</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.0 0.8 0 0 0</pose>
+            <pose degrees="true">9.0 2.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_33</name>
             <static>true</static>
-            <pose degrees="true">5.75 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">9.75 7.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_34</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">3.0 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_35</name>
             <static>true</static>
-            <pose degrees="true">5.0 7.75 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_36</name>
             <static>true</static>
-            <pose degrees="true">8.25 2.75 0.3 0 0 0</pose>
+            <pose degrees="true">11.75 7.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_37</name>
             <static>true</static>
-            <pose degrees="true">5.0 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 7.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_38</name>
             <static>true</static>
-            <pose degrees="true">8.75 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_39</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.5 1.8 0 0 0</pose>
+            <pose degrees="true">3.75 4.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_40</name>
             <static>true</static>
-            <pose degrees="true">2.25 4.75 1.8 0 0 0</pose>
+            <pose degrees="true">4.25 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_41</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.25 1.3 0 0 0</pose>
+            <pose degrees="true">0.25 2.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_42</name>
             <static>true</static>
-            <pose degrees="true">2.75 7.75 1.8 0 0 0</pose>
+            <pose degrees="true">9.75 2.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_43</name>
             <static>true</static>
-            <pose degrees="true">5.0 2.25 0.3 0 0 0</pose>
+            <pose degrees="true">0.25 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_44</name>
             <static>true</static>
-            <pose degrees="true">5.75 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">9.0 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_45</name>
             <static>true</static>
-            <pose degrees="true">0.25 2.75 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_46</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 4.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_47</name>
             <static>true</static>
-            <pose degrees="true">0.25 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">6.75 0.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_48</name>
             <static>true</static>
-            <pose degrees="true">7.75 2.75 1.3 0 0 0</pose>
+            <pose degrees="true">9.75 2.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_49</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.25 1.3 0 0 0</pose>
+            <pose degrees="true">9.75 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_50</name>
             <static>true</static>
-            <pose degrees="true">4.75 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">4.0 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_51</name>
             <static>true</static>
-            <pose degrees="true">6.0 4.75 1.8 0 0 0</pose>
+            <pose degrees="true">9.0 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_52</name>
             <static>true</static>
-            <pose degrees="true">2.25 4.75 0.8 0 0 0</pose>
+            <pose degrees="true">6.25 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_53</name>
             <static>true</static>
-            <pose degrees="true">7.75 4.75 1.8 0 0 0</pose>
+            <pose degrees="true">6.0 4.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_54</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.5 1.3 0 0 0</pose>
+            <pose degrees="true">9.75 7.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_55</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.5 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_56</name>
             <static>true</static>
-            <pose degrees="true">0.25 7.5 1.8 0 0 0</pose>
+            <pose degrees="true">3.0 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_57</name>
             <static>true</static>
-            <pose degrees="true">0.25 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 7.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_58</name>
             <static>true</static>
-            <pose degrees="true">8.75 2.75 0.3 0 0 0</pose>
+            <pose degrees="true">0.25 0.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_59</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">1.75 0.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_60</name>
             <static>true</static>
-            <pose degrees="true">5.25 2.75 0.3 0 0 0</pose>
+            <pose degrees="true">3.25 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_61</name>
             <static>true</static>
-            <pose degrees="true">8.0 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">6.25 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_62</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.5 1.8 0 0 0</pose>
+            <pose degrees="true">9.75 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_63</name>
             <static>true</static>
-            <pose degrees="true">7.0 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">4.75 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_64</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 2.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_65</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">4.25 7.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_66</name>
             <static>true</static>
-            <pose degrees="true">0.25 0.75 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_67</name>
             <static>true</static>
-            <pose degrees="true">9.0 7.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.5 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_68</name>
             <static>true</static>
-            <pose degrees="true">9.0 4.75 0.3 0 0 0</pose>
+            <pose degrees="true">0.25 0.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_69</name>
             <static>true</static>
-            <pose degrees="true">3.75 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">7.0 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_70</name>
             <static>true</static>
-            <pose degrees="true">7.0 7.25 1.8 0 0 0</pose>
+            <pose degrees="true">8.25 7.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_71</name>
             <static>true</static>
-            <pose degrees="true">3.0 5.25 1.3 0 0 0</pose>
+            <pose degrees="true">8.25 2.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_72</name>
             <static>true</static>
-            <pose degrees="true">4.0 7.75 0.3 0 0 0</pose>
+            <pose degrees="true">5.0 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_73</name>
             <static>true</static>
-            <pose degrees="true">3.25 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">7.0 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_74</name>
             <static>true</static>
-            <pose degrees="true">6.0 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">7.25 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_75</name>
             <static>true</static>
-            <pose degrees="true">0.25 9.5 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 7.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_76</name>
             <static>true</static>
-            <pose degrees="true">2.25 5.0 0.3 0 0 0</pose>
+            <pose degrees="true">6.75 2.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_77</name>
             <static>true</static>
-            <pose degrees="true">8.75 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 7.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_78</name>
             <static>true</static>
-            <pose degrees="true">0.25 3.5 0.3 0 0 0</pose>
+            <pose degrees="true">9.75 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_79</name>
             <static>true</static>
-            <pose degrees="true">0.25 9.5 1.3 0 0 0</pose>
+            <pose degrees="true">3.0 4.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_80</name>
             <static>true</static>
-            <pose degrees="true">5.0 0.25 1.8 0 0 0</pose>
+            <pose degrees="true">5.0 2.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_81</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.25 1.8 0 0 0</pose>
+            <pose degrees="true">9.75 4.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_82</name>
             <static>true</static>
-            <pose degrees="true">11.75 9.75 1.3 0 0 0</pose>
+            <pose degrees="true">8.0 5.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_83</name>
             <static>true</static>
-            <pose degrees="true">11.75 5.75 1.3 0 0 0</pose>
+            <pose degrees="true">9.75 2.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_84</name>
             <static>true</static>
-            <pose degrees="true">4.25 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">4.75 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_85</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.25 1.8 0 0 0</pose>
+            <pose degrees="true">9.75 7.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_86</name>
             <static>true</static>
-            <pose degrees="true">1.75 0.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_87</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.25 0.3 0 0 0</pose>
+            <pose degrees="true">11.75 6.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_88</name>
             <static>true</static>
-            <pose degrees="true">2.75 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_89</name>
             <static>true</static>
-            <pose degrees="true">11.75 7.5 0.3 0 0 0</pose>
+            <pose degrees="true">9.75 5.0 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_90</name>
             <static>true</static>
-            <pose degrees="true">6.25 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.75 0.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_91</name>
             <static>true</static>
-            <pose degrees="true">11.75 5.5 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_92</name>
             <static>true</static>
-            <pose degrees="true">2.75 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">8.0 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_93</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">9.75 2.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_94</name>
             <static>true</static>
-            <pose degrees="true">7.25 2.75 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 7.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_95</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.75 0.3 0 0 0</pose>
+            <pose degrees="true">9.75 5.0 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_96</name>
             <static>true</static>
-            <pose degrees="true">9.0 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 7.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_97</name>
             <static>true</static>
-            <pose degrees="true">6.75 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">7.75 5.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_98</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">0.25 9.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_99</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">7.75 2.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_100</name>
             <static>true</static>
-            <pose degrees="true">4.25 2.25 1.8 0 0 0</pose>
+            <pose degrees="true">9.0 7.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_101</name>
             <static>true</static>
-            <pose degrees="true">9.0 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 3.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_102</name>
             <static>true</static>
-            <pose degrees="true">0.25 0.75 0.3 0 0 0</pose>
+            <pose degrees="true">9.75 5.0 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_103</name>
             <static>true</static>
-            <pose degrees="true">3.25 4.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 0.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_104</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.75 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 1.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_105</name>
             <static>true</static>
-            <pose degrees="true">8.75 0.25 0.8 0 0 0</pose>
+            <pose degrees="true">5.75 7.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_106</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.5 1.3 0 0 0</pose>
+            <pose degrees="true">3.25 7.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_107</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.25 0.3 0 0 0</pose>
+            <pose degrees="true">3.25 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_108</name>
             <static>true</static>
-            <pose degrees="true">3.25 0.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.0 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_109</name>
             <static>true</static>
-            <pose degrees="true">2.75 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">6.25 7.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_110</name>
             <static>true</static>
-            <pose degrees="true">7.0 2.25 1.3 0 0 0</pose>
+            <pose degrees="true">6.25 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_111</name>
             <static>true</static>
-            <pose degrees="true">8.0 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 5.0 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_112</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.0 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_113</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">2.75 0.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_114</name>
             <static>true</static>
-            <pose degrees="true">2.75 4.75 1.8 0 0 0</pose>
+            <pose degrees="true">5.25 2.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_115</name>
             <static>true</static>
-            <pose degrees="true">7.75 0.25 1.3 0 0 0</pose>
+            <pose degrees="true">5.25 2.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_116</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">3.25 5.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_117</name>
             <static>true</static>
-            <pose degrees="true">2.25 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">2.25 7.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_118</name>
             <static>true</static>
-            <pose degrees="true">1.0 0.25 1.8 0 0 0</pose>
+            <pose degrees="true">11.75 8.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_119</name>
             <static>true</static>
-            <pose degrees="true">7.25 7.25 0.3 0 0 0</pose>
+            <pose degrees="true">11.75 6.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_120</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.5 1.8 0 0 0</pose>
+            <pose degrees="true">8.75 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_121</name>
             <static>true</static>
-            <pose degrees="true">7.75 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 7.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_122</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">0.25 8.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_123</name>
             <static>true</static>
-            <pose degrees="true">9.25 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_124</name>
             <static>true</static>
-            <pose degrees="true">0.25 4.5 1.8 0 0 0</pose>
+            <pose degrees="true">7.25 4.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_125</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">9.75 5.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_126</name>
             <static>true</static>
-            <pose degrees="true">2.25 4.75 0.3 0 0 0</pose>
+            <pose degrees="true">0.75 0.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_127</name>
             <static>true</static>
-            <pose degrees="true">5.75 0.25 1.8 0 0 0</pose>
+            <pose degrees="true">8.75 2.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_128</name>
             <static>true</static>
-            <pose degrees="true">7.25 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 1.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_129</name>
             <static>true</static>
-            <pose degrees="true">8.75 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">9.25 7.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_130</name>
             <static>true</static>
-            <pose degrees="true">3.75 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.75 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_131</name>
             <static>true</static>
-            <pose degrees="true">5.25 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 5.0 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_132</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.5 1.3 0 0 0</pose>
+            <pose degrees="true">8.75 4.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_133</name>
             <static>true</static>
-            <pose degrees="true">3.75 2.25 0.3 0 0 0</pose>
+            <pose degrees="true">3.75 7.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_134</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.5 0.3 0 0 0</pose>
+            <pose degrees="true">0.25 8.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_135</name>
             <static>true</static>
-            <pose degrees="true">3.0 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">2.25 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_136</name>
             <static>true</static>
-            <pose degrees="true">7.75 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">1.25 0.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_137</name>
             <static>true</static>
-            <pose degrees="true">11.75 6.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.75 5.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_138</name>
             <static>true</static>
-            <pose degrees="true">8.0 5.25 0.8 0 0 0</pose>
+            <pose degrees="true">5.75 2.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_139</name>
             <static>true</static>
-            <pose degrees="true">5.75 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">7.0 7.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_140</name>
             <static>true</static>
-            <pose degrees="true">6.0 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">11.75 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_141</name>
             <static>true</static>
-            <pose degrees="true">7.0 4.75 0.8 0 0 0</pose>
+            <pose degrees="true">8.75 2.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_142</name>
             <static>true</static>
-            <pose degrees="true">8.75 2.25 1.3 0 0 0</pose>
+            <pose degrees="true">9.0 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_143</name>
             <static>true</static>
-            <pose degrees="true">3.75 7.75 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 8.5 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_144</name>
             <static>true</static>
-            <pose degrees="true">0.25 1.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 2.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_145</name>
             <static>true</static>
-            <pose degrees="true">11.75 9.75 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 6.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_146</name>
             <static>true</static>
-            <pose degrees="true">5.0 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">0.25 6.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_147</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.5 1.8 0 0 0</pose>
+            <pose degrees="true">9.25 7.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_148</name>
             <static>true</static>
-            <pose degrees="true">11.75 5.75 1.8 0 0 0</pose>
+            <pose degrees="true">4.0 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_149</name>
             <static>true</static>
-            <pose degrees="true">6.0 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">4.75 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_150</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.25 0.3 0 0 0</pose>
+            <pose degrees="true">7.25 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_151</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.5 0.8 0 0 0</pose>
+            <pose degrees="true">5.25 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_152</name>
             <static>true</static>
-            <pose degrees="true">7.75 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">11.75 8.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_153</name>
             <static>true</static>
-            <pose degrees="true">6.75 5.25 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 4.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_154</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">5.25 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_155</name>
             <static>true</static>
-            <pose degrees="true">2.25 4.75 0.3 0 0 0</pose>
+            <pose degrees="true">9.75 7.5 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_156</name>
             <static>true</static>
-            <pose degrees="true">4.0 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 2.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_157</name>
             <static>true</static>
-            <pose degrees="true">4.0 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 7.5 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_158</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.25 1.8 0 0 0</pose>
+            <pose degrees="true">5.75 2.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_159</name>
             <static>true</static>
-            <pose degrees="true">9.25 7.75 0.3 0 0 0</pose>
+            <pose degrees="true">3.75 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_160</name>
             <static>true</static>
-            <pose degrees="true">0.25 0.75 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 4.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_161</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.5 0.3 0 0 0</pose>
+            <pose degrees="true">11.75 7.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_162</name>
             <static>true</static>
-            <pose degrees="true">4.25 7.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_163</name>
             <static>true</static>
-            <pose degrees="true">0.25 1.5 0.8 0 0 0</pose>
+            <pose degrees="true">6.75 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_164</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 7.5 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_165</name>
             <static>true</static>
-            <pose degrees="true">5.25 4.75 0.3 0 0 0</pose>
+            <pose degrees="true">5.75 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_166</name>
             <static>true</static>
-            <pose degrees="true">9.75 7.5 1.3 0 0 0</pose>
+            <pose degrees="true">7.25 7.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_167</name>
             <static>true</static>
-            <pose degrees="true">5.75 5.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_168</name>
             <static>true</static>
-            <pose degrees="true">5.0 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">5.25 4.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_169</name>
             <static>true</static>
-            <pose degrees="true">2.25 4.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.75 2.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_170</name>
             <static>true</static>
-            <pose degrees="true">4.75 5.25 0.8 0 0 0</pose>
+            <pose degrees="true">3.75 5.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_171</name>
             <static>true</static>
-            <pose degrees="true">7.25 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">7.25 2.75 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_172</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.25 1.8 0 0 0</pose>
+            <pose degrees="true">11.75 8.5 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_173</name>
             <static>true</static>
-            <pose degrees="true">0.25 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 3.75 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_174</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.75 1.3 0 0 0</pose>
+            <pose degrees="true">2.25 7.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_175</name>
             <static>true</static>
-            <pose degrees="true">4.75 2.75 1.8 0 0 0</pose>
+            <pose degrees="true">5.25 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_176</name>
             <static>true</static>
-            <pose degrees="true">8.0 0.25 1.3 0 0 0</pose>
+            <pose degrees="true">9.75 2.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_177</name>
             <static>true</static>
-            <pose degrees="true">7.25 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">0.25 1.75 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_178</name>
             <static>true</static>
-            <pose degrees="true">11.75 8.5 0.8 0 0 0</pose>
+            <pose degrees="true">7.75 2.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_179</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">8.25 7.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_180</name>
             <static>true</static>
-            <pose degrees="true">7.25 7.75 1.3 0 0 0</pose>
+            <pose degrees="true">5.75 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_181</name>
             <static>true</static>
-            <pose degrees="true">8.25 0.25 1.8 0 0 0</pose>
+            <pose degrees="true">6.25 4.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_182</name>
             <static>true</static>
-            <pose degrees="true">9.75 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">2.25 2.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_183</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.75 0.8 0 0 0</pose>
+            <pose degrees="true">6.0 7.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_184</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.0 0.8 0 0 0</pose>
+            <pose degrees="true">0.25 4.5 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_185</name>
             <static>true</static>
-            <pose degrees="true">4.0 0.25 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_186</name>
             <static>true</static>
-            <pose degrees="true">5.0 5.25 1.8 0 0 0</pose>
+            <pose degrees="true">0.25 9.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_187</name>
             <static>true</static>
-            <pose degrees="true">8.75 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">3.0 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_188</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.75 0.8 0 0 0</pose>
+            <pose degrees="true">2.75 2.25 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_189</name>
             <static>true</static>
-            <pose degrees="true">2.25 2.5 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 7.5 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_190</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">8.0 5.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_191</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.25 1.3 0 0 0</pose>
+            <pose degrees="true">7.0 0.25 0.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_192</name>
             <static>true</static>
-            <pose degrees="true">0.25 5.75 0.3 0 0 0</pose>
+            <pose degrees="true">2.25 5.0 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_193</name>
             <static>true</static>
-            <pose degrees="true">0.25 8.5 0.8 0 0 0</pose>
+            <pose degrees="true">7.75 0.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_194</name>
             <static>true</static>
-            <pose degrees="true">0.25 8.75 0.3 0 0 0</pose>
+            <pose degrees="true">8.0 2.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_195</name>
             <static>true</static>
-            <pose degrees="true">9.0 5.25 0.3 0 0 0</pose>
+            <pose degrees="true">6.0 0.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_196</name>
             <static>true</static>
-            <pose degrees="true">2.25 7.75 0.3 0 0 0</pose>
+            <pose degrees="true">7.75 5.25 1.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_197</name>
             <static>true</static>
-            <pose degrees="true">9.75 5.0 0.8 0 0 0</pose>
+            <pose degrees="true">9.75 2.75 0.3 0 0 0</pose>
         </include><include>
             <uri>model://cereal2</uri>
             <name>cereal_198</name>
             <static>true</static>
-            <pose degrees="true">0.25 9.75 0.8 0 0 0</pose>
+            <pose degrees="true">7.25 7.25 1.8 0 0 0</pose>
         </include><include>
             <uri>model://cereal1</uri>
             <name>cereal_199</name>
             <static>true</static>
-            <pose degrees="true">5.25 2.25 0.8 0 0 0</pose>
+            <pose degrees="true">8.75 0.25 0.3 0 0 0</pose>
         </include><include>
     <uri>model://counter</uri>
     <name>counter</name>

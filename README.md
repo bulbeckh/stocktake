@@ -116,7 +116,7 @@ Added stella_vslam (will replace 2D lidar soon) (https://github.com/stella-cv/st
 ```bash
 source install/setup.bash
 ## In ros2_ws dir (will move to main package soon)
-ros2 run stella_vslam_ros run_slam -v orb_vocab.fbow -c gz_camera.yaml --ros-args -p publish_tf:=false
+ros2 run stella_vslam_ros run_slam -v orb_vocab.fbow -c gz_camera_rgbd.yaml --ros-args -p publish_tf:=false
 ```
 
 ### Packages
