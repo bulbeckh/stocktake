@@ -269,6 +269,23 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
+    static_transform5_cmd = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='static_transform_publisher5',
+            namespace='',
+            output='screen',
+            arguments=[
+                '--frame-id',
+                'store_layout/robotmodel/robot_lidar/robot_lidar',
+                '--child-frame-id',
+                'store_layout/robotmodel/camera_front/left_camera'
+            ],
+            parameters=[
+                {'use_sim_time': use_sim_time}
+            ],
+    )
+
 
     ## TODO Update world_sdf with path to sdf
     gazebo_server = ExecuteProcess(
@@ -438,6 +455,40 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
+    ros_gz_camera_bridge3_cmd = Node(
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="right_camera_image_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/camera_info'
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+            remappings=[
+                (
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/camera_info",
+                    "/camera/camera_info",
+                ),
+            ],
+    )
+
+    ros_gz_bridge6_cmd = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='pointcloud_bridge',
+            output='screen',
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            ],
+            parameters=[
+                {'use_sim_time': use_sim_time}
+            ],
+            remappings=[
+                ('/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/points', '/camera/pointcloud'),
+            ],
+    )
+
+
     # Create the launch description and populate
     ld = LaunchDescription()
 
@@ -467,8 +518,10 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(ros_gz_bridge3_cmd)
     ld.add_action(ros_gz_bridge4_cmd)
     ld.add_action(ros_gz_bridge5_cmd)
+
     ld.add_action(ros_gz_camera_bridge1_cmd)
     ld.add_action(ros_gz_camera_bridge2_cmd)
+    ld.add_action(ros_gz_bridge6_cmd)
 
     # Add the actions to launch all of the navigation nodes
     #ld.add_action(start_robot_state_publisher_cmd)
@@ -477,6 +530,7 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(static_transform2_cmd)
     ld.add_action(static_transform3_cmd)
     ld.add_action(static_transform4_cmd)
+    ld.add_action(static_transform5_cmd)
 
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
