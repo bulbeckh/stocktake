@@ -11,6 +11,14 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 from nav2_common.launch import RewrittenYaml
 
+"""
+This launch file creates the core elements of the stocktake system, including:
+
+- Gazebo simulation (including optional client)
+- Static transforms 
+
+
+"""
 
 def generate_launch_description() -> LaunchDescription:
     # Get the launch directory
@@ -21,34 +29,27 @@ def generate_launch_description() -> LaunchDescription:
     stocktake_core_dir = get_package_share_directory('stocktake_core')
 
     # Create the launch configuration variables
-    slam = LaunchConfiguration('slam')
     namespace = LaunchConfiguration('namespace')
     map_yaml_file = LaunchConfiguration('map')
     graph_filepath = LaunchConfiguration('graph')
+
     use_sim_time = LaunchConfiguration('use_sim_time')
+
     params_file = LaunchConfiguration('params_file')
     slam_params_file = LaunchConfiguration('slam_params_file')
-    autostart = LaunchConfiguration('autostart')
+
     use_composition = LaunchConfiguration('use_composition')
     use_intra_process_comms = LaunchConfiguration('use_intra_process_comms')
     use_respawn = LaunchConfiguration('use_respawn')
 
     # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration('rviz_config_file')
-    use_robot_state_pub = LaunchConfiguration('use_robot_state_pub')
-    use_rviz = LaunchConfiguration('use_rviz')
-    headless = LaunchConfiguration('headless')
-
-    remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace', default_value='', description='Top-level namespace'
     )
 
-    declare_slam_cmd = DeclareLaunchArgument(
-        'slam', default_value='True', description='Whether run a SLAM'
-    )
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
@@ -78,11 +79,6 @@ def generate_launch_description() -> LaunchDescription:
         description='Full path to the ROS2 SLAM parameters',
     )
 
-    declare_autostart_cmd = DeclareLaunchArgument(
-        'autostart',
-        default_value='true',
-        description='Automatically startup the nav2 stack',
-    )
 
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition',
@@ -108,19 +104,8 @@ def generate_launch_description() -> LaunchDescription:
         description='Full path to the RVIZ config file to use',
     )
 
-    declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
-        'use_robot_state_pub',
-        default_value='False',
-        description='Whether to start the robot state publisher',
-    )
 
-    declare_use_rviz_cmd = DeclareLaunchArgument(
-        'use_rviz', default_value='True', description='Whether to start RVIZ'
-    )
 
-    declare_simulator_cmd = DeclareLaunchArgument(
-        'headless', default_value='True', description='Whether to execute gzclient)'
-    )
     
     ## Re-configure certain configuration files
     slam_params_configured = RewrittenYaml(
@@ -154,25 +139,9 @@ def generate_launch_description() -> LaunchDescription:
         convert_types=True,
     )
 
-    with open(os.path.join(stocktake_core_dir, 'models/robot/robot.sdf'), 'r') as infp:
-        robot_description = infp.read()
-
-    start_robot_state_publisher_cmd = Node(
-        condition=IfCondition(use_robot_state_pub),
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        namespace=namespace,
-        output='screen',
-        parameters=[
-            {'use_sim_time': use_sim_time, 'robot_description': robot_description }
-        ],
-        remappings=remappings,
-    )
-
+    ## Launch Rviz2 with Nav2 Rviz2 configuration
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(launch_dir, 'rviz_launch.py')),
-        condition=IfCondition(use_rviz),
         launch_arguments={
             'namespace': namespace,
             'use_sim_time': use_sim_time,
@@ -180,17 +149,18 @@ def generate_launch_description() -> LaunchDescription:
         }.items(),
     )
 
+    ## Launch Nav2 bringup
     bringup_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(os.path.join(launch_dir, 'bringup_launch.py')),
         launch_arguments={
             'namespace': namespace,
-            'slam': slam,
+            'slam': 'True',
             'map': map_yaml_file,
             'graph': graph_filepath,
             'use_sim_time': use_sim_time,
             'params_file': configured_params, ## params_file,
             'slam_params_file': slam_params_configured,
-            'autostart': autostart,
+            'autostart': 'True',
             'use_composition': use_composition,
             'use_intra_process_comms': use_intra_process_comms,
             'use_respawn': use_respawn,
@@ -488,26 +458,41 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
+    ## Octomap nodes
+    octomap_node_cmd = Node(
+            package='octomap_server',
+            executable='octomap_server_node',
+            name='octomap_server',
+            #output='screen',
+            remappings=[('cloud_in', '/camera/pointcloud')],
+    )
+
+    # TODO Either fix the LD_PRELOAD workaround (via patch) or retrieve lib directory differentely
+    octomap_rviz_cmd = Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', '/workspaces/stocktake-alt/src/stocktake/config/octomap.rviz'],
+            additional_env={
+                'LD_PRELOAD': '/opt/ros/jazzy/lib/x86_64-linux-gnu/liboctomap.so'
+            }
+    )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(declare_slam_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_graph_file_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_slam_params_file_cmd)
-    ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_intra_process_comms_cmd)
 
     ld.add_action(declare_rviz_config_file_cmd)
-    ld.add_action(declare_use_robot_state_pub_cmd)
-    ld.add_action(declare_use_rviz_cmd)
-    ld.add_action(declare_simulator_cmd)
     ld.add_action(declare_use_respawn_cmd)
 
     ld.add_action(gazebo_server)
@@ -523,9 +508,6 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(ros_gz_camera_bridge2_cmd)
     ld.add_action(ros_gz_bridge6_cmd)
 
-    # Add the actions to launch all of the navigation nodes
-    #ld.add_action(start_robot_state_publisher_cmd)
-
     ld.add_action(static_transform_cmd)
     ld.add_action(static_transform2_cmd)
     ld.add_action(static_transform3_cmd)
@@ -534,5 +516,8 @@ def generate_launch_description() -> LaunchDescription:
 
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
+
+    ld.add_action(octomap_node_cmd)
+    ld.add_action(octomap_rviz_cmd)
 
     return ld
