@@ -465,6 +465,10 @@ def generate_launch_description() -> LaunchDescription:
             name='octomap_server',
             #output='screen',
             remappings=[('cloud_in', '/camera/pointcloud')],
+            parameters=[{
+                'occupancy_max_z': 1.0,
+                'occupancy_min_z': -1.0,
+            }],
     )
 
     # TODO Either fix the LD_PRELOAD workaround (via patch) or retrieve lib directory differentely
