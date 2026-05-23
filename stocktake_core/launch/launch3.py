@@ -459,6 +459,7 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     ## Octomap nodes
+    # NOTE occupancy_{min,max}_z is used to generate the 2D occupancy grid projection - need to decide on range to use
     octomap_node_cmd = Node(
             package='octomap_server',
             executable='octomap_server_node',
