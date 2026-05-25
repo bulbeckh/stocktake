@@ -14,6 +14,30 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description() -> LaunchDescription:
 
+    ## Republish the /tf and /tf_static topic to vslam_tf
+
+    relay1_cmd = Node(
+            package='topic_tools',
+            executable='relay',
+            name='relay1',
+            output='screen',
+            arguments=[
+                '/tf',
+                '/vslam_tf'
+            ],
+    )
+
+    relay2_cmd = Node(
+            package='topic_tools',
+            executable='relay',
+            name='relay2',
+            output='screen',
+            arguments=[
+                '/tf_static',
+                '/vslam_tf_static'
+            ],
+    )
+
     ## Octomap nodes
     #TODO Don't use absolute paths for the config file. Issue is that config/ directory is not in any package
     # but rather in the wider stocktake repo root directory. Probably need to move each to a package
@@ -29,13 +53,23 @@ def generate_launch_description() -> LaunchDescription:
                 '/workspaces/stocktake-alt/src/stocktake/config/gz_camera_rgbd.yaml'
             ],
             parameters=[{
-                'publish_tf': False
+                'publish_tf': True,
+                #'camera_frame': 'store_layout/robotmodel/camera_front/left_camera',
+                'camera_frame': 'optical_camera_frame',
+                'use_sim_time': True,
+                'transform_tolerance': 1.0
             }],
+            #remappings=[
+                #('/tf', '/vslam_tf'),
+                #('/tf_static', '/vslam_tf_static')
+            #],
     )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     ld.add_action(stella_vslam_cmd)
+    ld.add_action(relay1_cmd)
+    ld.add_action(relay2_cmd)
 
     return ld

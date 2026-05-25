@@ -77,6 +77,11 @@ pip install -e .
 `TODO` Add stella_vslam instructions
 
 ### Launch
+If running in docker, need to run
+```bash
+xhost +local:docker
+```
+
 Ensure we have first built all packages and sourced the install
 ```bash
 source install/setup.bash
