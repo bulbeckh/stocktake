@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>gazebo_rfid_plugin</name>
+  <version>0.0.1</version>
+  <description>RFID Gazebo plugin, including models and RFID environment plugins</description>
+
+  <maintainer email="henrybulbeck@gmail.com">Henry Bulbeck</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <!-- NOTE Temporarily disabled this dependency. I believe it should be gz-cmake-vendor -->
+  <!--depend>gz-cmake3</depend-->
+
+  <export>
+	  <build_type>ament_cmake</build_type>
+  </export>
+
+</package>

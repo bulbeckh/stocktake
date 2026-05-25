@@ -7,6 +7,3 @@
 [submodule "stocktake_core/stocktake-items"]
 	path = stocktake_core/stocktake-items
 	url = https://github.com/bulbeckh/stocktake-items
-[submodule "SWAGGER"]
-	path = SWAGGER
-	url = https://github.com/nvidia-isaac/SWAGGER.git

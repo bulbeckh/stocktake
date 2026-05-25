@@ -636,7 +636,9 @@ def generate_launch_description() -> LaunchDescription:
                 ('/tf_static', '/vslam_tf_static')
                 ],
             additional_env={
-                'LD_PRELOAD': '/opt/ros/jazzy/lib/x86_64-linux-gnu/liboctomap.so'
+                #'LD_PRELOAD': '/opt/ros/jazzy/lib/liboctomap_rviz_plugins.so'
+                #'LD_PRELOAD': '/opt/ros/jazzy/lib/x86_64-linux-gnu/liboctomap.so'
+                'LD_PRELOAD': '/usr/lib/x86_64-linux-gnu/liboctomap.so'
             }
     )
 

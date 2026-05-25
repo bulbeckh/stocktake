@@ -1,6 +1,6 @@
 services:
   dev:
-    image: stocktake-ros
+    image: stoctake-ros
 
     deploy:
       resources:
@@ -10,11 +10,11 @@ services:
               count: all
               capabilities: [gpu]
 
-    container_name: stocktake-ros
+    container_name: stoctake-ros
     working_dir: /workspaces/stocktake-alt
       ## Note we have moved this to stocktake-alt because the original docker build places the .venv in /workspaces/stocktake-alt - this shouldn't be the case and we should change the Dockerfile before running docker build again
     volumes:
-      - ../../:/workspaces/stocktake-alt
+      - .:/workspaces/stocktake-alt/src/stocktake
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}

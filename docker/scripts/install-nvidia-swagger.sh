@@ -2,7 +2,8 @@
 set -euo pipefail
 
 # Save current directory
-ROOT_DIR="/workspaces/stocktake"
+#ROOT_DIR="/workspaces/stocktake"
+ROOT_DIR=""
 
 # Create virtual environment locally
 python3 -m venv "${ROOT_DIR}/.venv"
@@ -30,6 +31,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
         #"${ROOT_DIR}/SWAGGER"
 #fi
 
+git clone https://github.com/nvidia-isaac/SWAGGER.git /SWAGGER
+
 cd "/SWAGGER"
 
 # Pull large files
@@ -39,4 +42,7 @@ cd "/SWAGGER"
 pip install --upgrade pip setuptools wheel
 
 # Install SWAGGER into the virtual environment
-pip install -e .
+pip install .
+
+rm -rf /SWAGGER
+

@@ -16,6 +16,7 @@ def generate_launch_description() -> LaunchDescription:
 
     ## Republish the /tf and /tf_static topic to vslam_tf
 
+    '''
     relay1_cmd = Node(
             package='topic_tools',
             executable='relay',
@@ -37,6 +38,7 @@ def generate_launch_description() -> LaunchDescription:
                 '/vslam_tf_static'
             ],
     )
+    '''
 
     ## Octomap nodes
     #TODO Don't use absolute paths for the config file. Issue is that config/ directory is not in any package
@@ -69,7 +71,7 @@ def generate_launch_description() -> LaunchDescription:
     ld = LaunchDescription()
 
     ld.add_action(stella_vslam_cmd)
-    ld.add_action(relay1_cmd)
-    ld.add_action(relay2_cmd)
+    #ld.add_action(relay1_cmd)
+    #ld.add_action(relay2_cmd)
 
     return ld
