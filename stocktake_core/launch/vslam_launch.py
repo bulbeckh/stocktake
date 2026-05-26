@@ -52,7 +52,7 @@ def generate_launch_description() -> LaunchDescription:
                 '-v',
                 '/tmp/orb_vocab.fbow',
                 '-c',
-                '/workspaces/stocktake-alt/src/stocktake/config/gz_camera_rgbd.yaml'
+                '/workspaces/stocktake-alt/src/stocktake/stocktake_core/config/gz_camera_rgbd.yaml'
             ],
             parameters=[{
                 'publish_tf': True,

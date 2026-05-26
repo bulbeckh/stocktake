@@ -6,7 +6,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription,
                             OpaqueFunction, RegisterEventHandler)
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnShutdown
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
@@ -17,11 +17,34 @@ def generate_launch_description() -> LaunchDescription:
 
     stocktake_core_dir = get_package_share_directory('stocktake_core')
 
-    ## TODO Add launch-time procedural generation of world file (based on seed)
+    robot_type = LaunchConfiguration('robot_type')
+    use_client = LaunchConfiguration('use_client')
 
-    ## TODO Update world_sdf with path to sdf
+    declare_robot_type_cmd = DeclareLaunchArgument(
+        'robot_type',
+        default_value='lidar',
+        description='robot_type: lidar, rgbd, stereo, mono'
+    )
+
+    declare_use_client_cmd = DeclareLaunchArgument(
+        'use_client',
+        default_value='true',
+        description='Whether we launch the gazebo client (as opposed to just the server)'
+    )
+
+    ## TODO Add launch-time procedural generation of world file (based on seed)
+    generate_world_cmd = ExecuteProcess(
+        cmd=['python3',
+             os.path.join(stocktake_core_dir, 'worlds', 'generate', 'generate_store.py'),
+             LaunchConfiguration('robot_type'),
+             os.path.join(stocktake_core_dir, 'worlds', 'generate', 'out_generated.sdf'),
+             'randomseed',
+        ],
+        output='screen'
+    )
+
     gazebo_server = ExecuteProcess(
-        cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/default.sdf')],
+        cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds', 'default.sdf')],
         output='screen',
     )
 
@@ -32,10 +55,12 @@ def generate_launch_description() -> LaunchDescription:
                          'gz_sim.launch.py')
         ),
         launch_arguments={'gz_args': ['-v4 -g ']}.items(),
+        condition=IfCondition(use_client),
     )
 
     ## x. ROS-GZ Bridges
-    ros_gz_bridge_cmd = Node(
+    lidar_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
             package='ros_gz_bridge',
             executable='parameter_bridge',
             name='lidar_bridge',
@@ -53,23 +78,7 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
-    ros_gz_bridge2_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='odom_bridge',
-            output='screen',
-            arguments=[
-                '/model/robotmodel/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry'
-            ],
-            parameters=[
-                {'use_sim_time': True}
-            ],
-            remappings=[
-                ('/model/robotmodel/odometry', '/odom'),
-            ]
-    )
-
-    ros_gz_bridge3_cmd = Node(
+    cmd_vel_bridge_cmd = Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
             name='cmd_vel_bridge',
@@ -85,7 +94,23 @@ def generate_launch_description() -> LaunchDescription:
             ]
     )
 
-    ros_gz_bridge4_cmd = Node(
+    odom_bridge_cmd = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='odom_bridge',
+            output='screen',
+            arguments=[
+                '/model/robotmodel/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry'
+            ],
+            parameters=[
+                {'use_sim_time': True}
+            ],
+            remappings=[
+                ('/model/robotmodel/odometry', '/odom'),
+            ]
+    )
+
+    odom_tf_bridge_cmd = Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
             name='odom_tf_bridge',
@@ -98,7 +123,7 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
-    ros_gz_bridge5_cmd = Node(
+    clock_bridge_cmd = Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
             name='clock_bridge',
@@ -111,8 +136,74 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
+    ## Camera bridges
+    '''We run a sub-set of these bridges, dependent on our camera array. Stella-vslam expects images published on the following
+    topics:
+
+    Mono: /camera/image_raw
+    Stereo: /camera/left/image_raw and /camera/right/image_raw
+    RGB-D: /camera/color/image_raw and /camera/depth/image_raw
+
+    Additionally, we publish the camera_info to TODO'''
+
     ### RGB-D bridges
-    ros_gz_camera_bridge1_cmd = Node(
+    rgbd_color_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'rgbd' "])),
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="rgbd_color_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image'
+            ],
+            parameters=[{"use_sim_time": True}],
+            remappings=[
+                (
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image",
+                    "/camera/color/image_raw",
+                ),
+            ],
+    )
+
+    rgbd_depth_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'rgbd' "])),
+            package="ros_gz_image",
+            executable="image_bridge",
+            name="rgbd_depth_bridge",
+            output="screen",
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/depth_image'
+            ],
+            parameters=[{"use_sim_time": True}],
+            remappings=[
+                (
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/depth_image",
+                    "/camera/depth/image_raw",
+                ),
+            ],
+    )
+
+    rgbd_pointcloud_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'rgbd' "])),
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            name='rgbd_pointcloud_bridge',
+            output='screen',
+            arguments=[
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            ],
+            parameters=[
+                {'use_sim_time': True}
+            ],
+            remappings=[
+                ('/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/points',
+                 '/camera/pointcloud'),
+            ],
+    )
+
+    ### Stereo bridges
+    stereo_left_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'stereo' "])),
             package="ros_gz_image",
             executable="image_bridge",
             name="left_camera_image_bridge",
@@ -124,75 +215,76 @@ def generate_launch_description() -> LaunchDescription:
             remappings=[
                 (
                     "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image",
-                    "/camera/color/image_raw",
+                    "/camera/left/image_raw",
                 ),
             ],
     )
 
-    ros_gz_camera_bridge2_cmd = Node(
+    stereo_right_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'stereo' "])),
             package="ros_gz_image",
             executable="image_bridge",
             name="right_camera_image_bridge",
             output="screen",
             arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image'
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image'
             ],
             parameters=[{"use_sim_time": True}],
             remappings=[
                 (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image",
-                    "/camera/depth/image_raw",
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image",
+                    "/camera/right/image_raw",
                 ),
             ],
     )
 
-    ros_gz_camera_bridge3_cmd = Node(
+    ## TODO In the stereo and mono bridges, we need to use something like 'depth_image_proc' to produce a pointcloud2
+    ## from the images
+
+    ### Mono bridges
+    mono_bridge_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'mono' "])),
             package="ros_gz_image",
             executable="image_bridge",
-            name="right_camera_image_bridge",
+            name="mono_image_bridge",
             output="screen",
             arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/camera_info'
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image'
             ],
             parameters=[{"use_sim_time": True}],
             remappings=[
                 (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/camera_info",
-                    "/camera/camera_info",
+                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image",
+                    "/camera/image_raw",
                 ),
             ],
     )
 
-    ros_gz_bridge6_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='pointcloud_bridge',
-            output='screen',
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
-            ],
-            parameters=[
-                {'use_sim_time': True}
-            ],
-            remappings=[
-                ('/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/points', '/camera/pointcloud'),
-            ],
-    )
+    ## TODO In the stereo and mono bridges, we need to use something like 'depth_image_proc' to produce a pointcloud2
+    ## from the images
 
     ld = LaunchDescription()
 
+    ld.add_action(declare_robot_type_cmd)
+    ld.add_action(declare_use_client_cmd)
+
     ld.add_action(gazebo_server)
     ld.add_action(gazebo_client)
+    ld.add_action(generate_world_cmd)
 
-    ld.add_action(ros_gz_bridge_cmd)
-    ld.add_action(ros_gz_bridge2_cmd)
-    ld.add_action(ros_gz_bridge3_cmd)
-    ld.add_action(ros_gz_bridge4_cmd)
-    ld.add_action(ros_gz_bridge5_cmd)
+    # Standard bridges
+    ld.add_action(lidar_bridge_cmd)
+    ld.add_action(clock_bridge_cmd)
+    ld.add_action(odom_bridge_cmd)
+    ld.add_action(odom_tf_bridge_cmd)
+    ld.add_action(cmd_vel_bridge_cmd)
 
-    ld.add_action(ros_gz_camera_bridge1_cmd)
-    ld.add_action(ros_gz_camera_bridge2_cmd)
-    ld.add_action(ros_gz_camera_bridge3_cmd)
-    ld.add_action(ros_gz_bridge6_cmd)
+    # Camera bridges
+    ld.add_action(rgbd_color_bridge_cmd)
+    ld.add_action(rgbd_depth_bridge_cmd)
+    ld.add_action(rgbd_pointcloud_bridge_cmd)
+    ld.add_action(stereo_left_bridge_cmd)
+    ld.add_action(stereo_right_bridge_cmd)
+    ld.add_action(mono_bridge_cmd)
 
     return ld

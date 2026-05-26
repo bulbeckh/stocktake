@@ -1,5 +1,6 @@
 import csv
 import random
+import sys
 
 sdf_store_str_head = """<?xml version="1.0" ?>
 <sdf version="1.7">
@@ -17,8 +18,9 @@ sdf_store_str_head = """<?xml version="1.0" ?>
         <static>true</static>
     </include>
 
+    <!-- Robot type -->
 	<include>
-		<uri>model://robot-rgbd</uri>
+		<uri>model://{}</uri>
 		<pose degrees='true'>10 1 0.1 0 0 0</pose>
 	</include>
 """
@@ -85,8 +87,23 @@ def generate_light(name, x, y, z, phi, theta, psi):
     return light_str.format(name=name, x=x, y=y, z=z, phi=phi, theta=theta, psi=psi)
 
 if __name__=="__main__":
+    
+    #TODO Change to argparse
+    print("Generating store")
 
+    if (len(sys.argv)!=4):
+        print("Store generation: not enough arguments")
+        exit()
 
+    if (sys.argv[1] not in ['lidar', 'rgbd', 'stereo', 'mono']):
+        print("Store generation: bad robot_type arg")
+        exit()
+
+    robot_type = sys.argv[1]
+    output_file = sys.argv[2]
+    seed = sys.argv[3]
+
+    ## Start generation
     shelf_poses = []
 
     ## Bottom Shelves
@@ -128,7 +145,16 @@ if __name__=="__main__":
 
 
     ## Generate sdf
-    out_str = sdf_store_str_head
+    if robot_type=='lidar':
+        robot_model_filename='robot-lidar'
+    elif robot_type=='rgbd':
+        robot_model_filename='robot-rgbd'
+    elif robot_type=='stereo':
+        robot_model_filename='robot-stereo'
+    elif robot_type=='mono':
+        robot_model_filename='robot-mono'
+
+    out_str = sdf_store_str_head.format(robot_model_filename)
 
     for i,p in enumerate(shelf_poses):
         out_str += f"""<include>
@@ -224,22 +250,22 @@ if __name__=="__main__":
     <pose degrees="true">11.5 1 0 0 0 0</pose>
     </include>"""
 
+    ## NOTE Temporarily disabling writing of output tag locations
+    '''
     with open('./tag_locs.txt','w') as wfile2:
-
         cs = csv.writer(wfile2)
-
         for s in open_spots:
             cs.writerow(s)
+    '''
 
     out_str += sdf_store_str_tail
 
     ## Create the sdf model
-    with open('./out_generated.sdf','w') as wfile:
+    # NOTE The 'output_file' variable is passed through as a launch argument and contains the path to the generated world
+    # sdf file in the **install** directory, not the **src** directory. If we built with --symlink-install, it will 
+    # overwrite the symlink, but this is not an issue.
+    print(f"Store generation: writing to {output_file}")
+    with open(f'{output_file}','w') as wfile:
         wfile.write(out_str)
-
-
-
-
-
 
 

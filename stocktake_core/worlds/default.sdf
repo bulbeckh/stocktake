@@ -22,7 +22,7 @@
 	-->
 
 	<include>
-		<uri>file://worlds/generate/out_generated.sdf</uri>
+		<uri>file://generate/out_generated.sdf</uri>
 	</include>
 
 	<!-- RFID Manager Plugin -->

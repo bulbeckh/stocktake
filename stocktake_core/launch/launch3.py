@@ -1,4 +1,6 @@
 import os
+import yaml
+import tempfile
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -19,42 +21,87 @@ This launch file creates the core elements of the stocktake system, including:
 
 
 """
+def deep_merge(a: dict, b: dict) -> dict:
+    """
+    Recursively merge dict b into dict a.
+    Values in b override values in a.
+    """
+    result = dict(a)
+
+    for key, value in b.items():
+        if (
+            key in result
+            and isinstance(result[key], dict)
+            and isinstance(value, dict)
+        ):
+            result[key] = deep_merge(result[key], value)
+        else:
+            result[key] = value
+
+    return result
+
+
+def load_yaml(path: str) -> dict:
+    with open(path, "r") as f:
+        return yaml.safe_load(f) or {}
+
+
+def merge_param_files(file_a: str, file_b: str) -> str:
+    """
+    Merge two ROS 2 parameter YAML files and return
+    the path to a temporary merged YAML file.
+    """
+    params_a = load_yaml(file_a)
+    params_b = load_yaml(file_b)
+
+    merged = deep_merge(params_a, params_b)
+
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w",
+        suffix=".yaml",
+        delete=False,
+    )
+
+    yaml.safe_dump(merged, tmp)
+    tmp.close()
+
+    return tmp.name
+
+
+## TODO Early exit via RuntimeError leaves un-killed nodes. Need to fix
 def validate_robot_type(context):
     rtype = LaunchConfiguration('robot_type').perform(context)
     if rtype not in ['lidar', 'rgbd', 'stereo', 'mono']:
-        '''
         raise RuntimeError(
             f"Invalid robot type '{rtype}'. "
             f"Must be one of: lidar, rgbd, stereo, mono"
         )
-        '''
-        print('bad rtype')
 
     return []
 
 def generate_launch_description() -> LaunchDescription:
-    # Get the launch directory
-
-    bringup_dir = get_package_share_directory('nav2_bringup')
-    nav2_launch_dir = os.path.join(bringup_dir, 'launch')
-
+    # Get package directories
+    bringup_dir        = get_package_share_directory('nav2_bringup')
     stocktake_core_dir = get_package_share_directory('stocktake_core')
 
-    # Create the launch configuration variables
-    namespace = LaunchConfiguration('namespace')
-    use_namespace = LaunchConfiguration('use_namespace')
-    map_yaml_file = LaunchConfiguration('map')
-    graph_filepath = LaunchConfiguration('graph')
-    use_sim_time = LaunchConfiguration('use_sim_time')
-    params_file = LaunchConfiguration('params_file')
-    slam_params_file = LaunchConfiguration('slam_params_file')
-    use_composition = LaunchConfiguration('use_composition')
-    use_intra_process_comms = LaunchConfiguration('use_intra_process_comms')
-    use_respawn = LaunchConfiguration('use_respawn')
+    # Configures robot_type [lidar, rgbd, stereo, mono]
     robot_type = LaunchConfiguration('robot_type')
 
-    # Launch configuration variables specific to simulation
-    rviz_config_file = LaunchConfiguration('rviz_config_file')
+    # Create the launch configuration variables
+    namespace     = LaunchConfiguration('namespace')
+    use_namespace = LaunchConfiguration('use_namespace')
+    use_sim_time  = LaunchConfiguration('use_sim_time')
+
+    ## TODO These are now not used as the params yaml merger gets paths directly
+    params_file      = LaunchConfiguration('params_file')
+    costmaps_file    = LaunchConfiguration('costmaps_file')
+    slam_params_file = LaunchConfiguration('slam_params_file')
+
+    # Nav2 configurations
+    use_composition         = LaunchConfiguration('use_composition')
+    use_intra_process_comms = LaunchConfiguration('use_intra_process_comms')
+    use_respawn             = LaunchConfiguration('use_respawn')
+
 
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -65,16 +112,6 @@ def generate_launch_description() -> LaunchDescription:
         'use_namespace', default_value='False', description='Whether we use namespace'
     )
 
-    declare_map_yaml_cmd = DeclareLaunchArgument(
-        'map',
-        default_value=os.path.join(bringup_dir, 'maps', 'tb3_sandbox.yaml'),
-    )
-
-    declare_graph_file_cmd = DeclareLaunchArgument(
-        'graph',
-        default_value=os.path.join(bringup_dir, 'graphs', 'turtlebot3_graph.geojson'),
-    )
-
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
@@ -83,16 +120,21 @@ def generate_launch_description() -> LaunchDescription:
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(bringup_dir, 'params', 'nav2_params.yaml'),
+        default_value=os.path.join(stocktake_core_dir, 'config', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes',
+    )
+
+    declare_costmaps_file_cmd = DeclareLaunchArgument(
+        'costmaps_file',
+        default_value=os.path.join(stocktake_core_dir, 'config', 'costmaps.yaml'),
+        description='Stocktake costmaps yaml file',
     )
 
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
-        default_value='/opt/ros/jazzy/share/slam_toolbox/config/mapper_params_online_sync.yaml',
+        default_value=os.path.join(stocktake_core_dir, 'config', 'slam_toolbox.yaml'),
         description='Full path to the ROS2 SLAM parameters',
     )
-
 
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition',
@@ -112,21 +154,17 @@ def generate_launch_description() -> LaunchDescription:
         description='Whether to respawn if a node crashes. Applied when composition is disabled.',
     )
 
-    declare_rviz_config_file_cmd = DeclareLaunchArgument(
-        'rviz_config_file',
-        default_value=os.path.join(bringup_dir, 'rviz', 'nav2_default_view.rviz'),
-        description='Full path to the RVIZ config file to use',
-    )
-
     declare_robot_type_cmd = DeclareLaunchArgument(
         'robot_type',
         default_value='lidar',
         description='robot_type: lidar, rgbd, stereo, mono'
     )
 
+    ## Validate that we have chosen one of the four robot types
     robot_type_validation_cmd = OpaqueFunction(function=validate_robot_type)
     
     ## Re-configure certain configuration files
+    """
     slam_params_configured = RewrittenYaml(
         source_file=slam_params_file,
         root_key=namespace,
@@ -142,9 +180,17 @@ def generate_launch_description() -> LaunchDescription:
         },
         convert_types=True,
     )
+    """
+
+    ## Merge the nav2 main and costmaps file and then overwrite some values
+    ## TODO Remove the overwrite here - just do it in the file since it is now in config/
+    merged_params_file = merge_param_files(
+            os.path.join(stocktake_core_dir, 'config', 'nav2_params.yaml'),
+            os.path.join(stocktake_core_dir, 'config', 'rgbd_costmaps.yaml'),
+    )
 
     configured_params = RewrittenYaml(
-        source_file=params_file,
+        source_file=merged_params_file,
         root_key=namespace,
         param_rewrites={
             'global_costmap.global_costmap.ros__parameters.origin_x': '-25.0',
@@ -160,37 +206,13 @@ def generate_launch_description() -> LaunchDescription:
 
     ## Launch Rviz2 with Nav2 Rviz2 configuration
     rviz_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'rviz_launch.py')),
+        PythonLaunchDescriptionSource(os.path.join(bringup_dir, 'launch', 'rviz_launch.py')),
         launch_arguments={
             'namespace': namespace,
             'use_sim_time': use_sim_time,
-            'rviz_config': rviz_config_file,
+            'rviz_config': os.path.join(stocktake_core_dir, 'config', 'nav2_default_view.rviz'),
         }.items(),
     )
-
-    ## Launch Nav2 bringup
-    '''
-    bringup_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
-        launch_arguments={
-            'namespace': namespace,
-            'slam': 'True',
-            #'use_localization': 'False',
-            'map': map_yaml_file,
-            'graph': graph_filepath,
-            'use_sim_time': use_sim_time,
-            'params_file': configured_params, ## params_file,
-            'slam_params_file': slam_params_configured,
-            'autostart': 'True',
-            'use_composition': use_composition,
-            'use_intra_process_comms': use_intra_process_comms,
-            'use_respawn': use_respawn,
-            'use_keepout_zones': 'False',
-            'use_speed_zones': 'False',
-            'container_name': 'nav2_container',
-        }.items(),
-    )
-    '''
 
     ## Remap the tf topics to relative namespaces so we can add namespace prefixes
     tf_remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
@@ -210,7 +232,7 @@ def generate_launch_description() -> LaunchDescription:
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(nav2_launch_dir, 'slam_launch.py')
+                    os.path.join(bringup_dir, 'launch', 'slam_launch.py')
                 ),
                 ## With the 2D lidar sensor, we use slam_toolbox (launched inside container)
                 condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
@@ -219,18 +241,19 @@ def generate_launch_description() -> LaunchDescription:
                     'use_sim_time': use_sim_time,
                     'autostart': 'True',
                     'use_respawn': use_respawn,
-                    'params_file': params_file,
+                    'params_file': slam_params_file,
+                    #'params_file': slam_params_configured,
                 }.items(),
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(nav2_launch_dir, 'navigation_launch.py')
+                    os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
                 ),
                 launch_arguments={
                     'namespace': namespace,
                     'use_sim_time': use_sim_time,
                     'autostart': 'True',
-                    'params_file': params_file,
+                    'params_file': configured_params,
                     'use_composition': use_composition,
                     'use_respawn': use_respawn,
                     'container_name': 'nav2_container',
@@ -630,7 +653,7 @@ def generate_launch_description() -> LaunchDescription:
             executable='rviz2',
             name='rviz2',
             output='screen',
-            arguments=['-d', '/workspaces/stocktake-alt/src/stocktake/config/octomap.rviz'],
+            arguments=['-d', '/workspaces/stocktake-alt/src/stocktake/stocktake_core/config/octomap.rviz'],
             remappings=[
                 ('/tf', '/vslam_tf'),
                 ('/tf_static', '/vslam_tf_static')
@@ -647,19 +670,15 @@ def generate_launch_description() -> LaunchDescription:
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(declare_map_yaml_cmd)
-    ld.add_action(declare_graph_file_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_params_file_cmd)
+    ld.add_action(declare_costmaps_file_cmd)
     ld.add_action(declare_slam_params_file_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_intra_process_comms_cmd)
 
-    ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_respawn_cmd)
 
-    ld.add_action(gazebo_server)
-    ld.add_action(gazebo_client)
 
     ld.add_action(ros_gz_bridge_cmd)
     ld.add_action(ros_gz_bridge2_cmd)
@@ -673,6 +692,9 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(alt_ros_gz_camera_bridge1_cmd)
     ld.add_action(alt_ros_gz_camera_bridge2_cmd)
 
+
+    ld.add_action(gazebo_server)
+    ld.add_action(gazebo_client)
 
     ld.add_action(ros_gz_camera_bridge3_cmd)
 
@@ -688,7 +710,6 @@ def generate_launch_description() -> LaunchDescription:
 
 
     ld.add_action(rviz_cmd)
-    #ld.add_action(bringup_cmd)
 
     ld.add_action(octomap_node_cmd)
     ld.add_action(octomap_rviz_cmd)
