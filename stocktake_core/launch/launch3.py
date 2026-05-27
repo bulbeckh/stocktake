@@ -6,7 +6,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription,
                             OpaqueFunction, RegisterEventHandler, GroupAction)
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition 
 from launch.event_handlers import OnShutdown
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
@@ -225,7 +225,7 @@ def generate_launch_description() -> LaunchDescription:
                 name='nav2_container',
                 package='rclcpp_components',
                 executable='component_container_isolated',
-                parameters=[configured_params, {'autostart': 'True'}],
+                parameters=[merged_params_file, {'autostart': 'True'}],
                 arguments=['--ros-args', '--log-level', 'info'],
                 remappings=tf_remappings,
                 output='screen',
@@ -247,13 +247,19 @@ def generate_launch_description() -> LaunchDescription:
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
+                    # NOTE We use our own modified navigation_launch.py in which we remove the collision_monitor.
+                    # This is only for the non-lidar sensors and is due to a current issue where we get ~0.8Hz rate
+                    # for the pointcloud gz to ros bridge. Once fixed, we can bring back in. Also note, since we
+                    # removed the collision monitor, we bridge cmd_vel on /cmd_vel_smoothed (output of velocity_smoother)
+                    # rather than /cmd_vel (output of collision monitor)
+                    #os.path.join(bringup_dir, 'launch', 'navigation_launch.py')
+                    os.path.join(stocktake_core_dir, 'launch', 'navigation_launch.py')
                 ),
                 launch_arguments={
                     'namespace': namespace,
                     'use_sim_time': use_sim_time,
                     'autostart': 'True',
-                    'params_file': configured_params,
+                    'params_file': merged_params_file,
                     'use_composition': use_composition,
                     'use_respawn': use_respawn,
                     'container_name': 'nav2_container',
@@ -274,7 +280,7 @@ def generate_launch_description() -> LaunchDescription:
                 respawn=use_respawn,
                 respawn_delay=2.0,
                 arguments=['--ros-args', '--log-level', 'info'],
-                parameters=[configured_params],
+                parameters=[merged_params_file],
             ),
             Node(
                 package='nav2_lifecycle_manager',
@@ -287,24 +293,24 @@ def generate_launch_description() -> LaunchDescription:
         ]
     )
 
-    static_transform_cmd = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='static_transform_publisher1',
-            namespace='',
-            output='screen',
-            arguments=[
-                '--frame-id',
-                'robot_lidar',
-                '--child-frame-id',
-                'store_layout/robotmodel/robot_lidar/robot_lidar'
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-    )
+    ## Transform tree
+    # NOTE We could use robot_state_publisher for this but less control over transforms
+    #
+    # in lidar mode we have the following tf's:
+    #
+    # map -> odom (slam_toolbox)
+    # odom -> base_link (wheel odom bridge from gz)
+    # base_link -> lidar (static)
+    # 
+    # in the vslam modes (rgbd, stereo, mono) we have the following tf's:
+    # map -> <camera_frames> (stella-vslam) (NOTE How exactly are two stereo camera frames transformed to optical frame)
+    # odom -> base_link (wheel odom) (NOTE is this redundant for vslam)
+    # base_link -> <camera_frames> (static)
+    # <camera_frames> -> camera_optical (static, this is required 
+    #       to correct the frame convention between opencv and ros2)
 
-    static_transform2_cmd = Node(
+    base_lidar_static_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
             package='tf2_ros',
             executable='static_transform_publisher',
             name='static_transform_publisher2',
@@ -321,42 +327,27 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
-    static_transform3_cmd = Node(
+    base_link_robot_base_cmd = Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            name='static_transform_publisher3',
+            name='base_link_robot_base_transform',
             namespace='',
             output='screen',
             arguments=[
                 '--frame-id',
                 'base_link',
                 '--child-frame-id',
-                'robot_base'
+                'robot_base',
             ],
             parameters=[
                 {'use_sim_time': use_sim_time}
             ],
     )
+    
+    ## NOTE May be able to override the camera frame id
 
-    ## TODO We should be changing the frame parameters in nav2 stack rather than have static bridge - need to change
-    static_transform4_cmd = Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='static_transform_publisher4',
-            namespace='',
-            output='screen',
-            arguments=[
-                '--frame-id',
-                'base_link',
-                '--child-frame-id',
-                'base_footprint'
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-    )
-
-    static_transform5_cmd = Node(
+    base_front_camera_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' in ['rgbd','mono'] "])),
             package='tf2_ros',
             executable='static_transform_publisher',
             name='static_transform_publisher5',
@@ -364,16 +355,17 @@ def generate_launch_description() -> LaunchDescription:
             output='screen',
             arguments=[
                 '--frame-id',
-                'store_layout/robotmodel/robot_lidar/robot_lidar',
+                'robot_base',
                 '--child-frame-id',
-                'store_layout/robotmodel/camera_front/left_camera'
+                'store_layout/robotmodel/camera_front/camera'
             ],
             parameters=[
                 {'use_sim_time': use_sim_time}
             ],
     )
 
-    static_transform6_cmd = Node(
+    front_camera_optical_cmd = Node(
+            condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' in ['rgbd','mono'] "])),
             package='tf2_ros',
             executable='static_transform_publisher',
             name='static_transform_publisher6',
@@ -382,7 +374,7 @@ def generate_launch_description() -> LaunchDescription:
             arguments=[
                 '0', '0', '0', # x y z
                 '-1.57079632679', '0', '-1.57079632679',  # roll pitch yaw
-                'store_layout/robotmodel/camera_front/left_camera',
+                'store_layout/robotmodel/camera_front/camera',
                 'optical_camera_frame'
             ],
             parameters=[
@@ -390,247 +382,17 @@ def generate_launch_description() -> LaunchDescription:
             ],
     )
 
-    ## TODO Update world_sdf with path to sdf
-    gazebo_server = ExecuteProcess(
-        #cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/simplestore.sdf')],
-        cmd=['gz', 'sim', '-r', '-s', os.path.join(stocktake_core_dir, 'worlds/default.sdf')],
-        output='screen',
+    simulation_launch_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(stocktake_core_dir, 'launch', 'simulation.py')),
+        launch_arguments={
+            'robot_type': robot_type,
+        }.items(),
     )
 
-    gazebo_client = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('ros_gz_sim'),
-                         'launch',
-                         'gz_sim.launch.py')
-        ),
-        launch_arguments={'gz_args': ['-v4 -g ']}.items(),
-    )
-
-    ## x. ROS-GZ Bridges
-    ros_gz_bridge_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='lidar_bridge',
-            output='screen',
-            arguments=[
-                '/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time,
-                 'expand_gz_topic_names': True,
-                 }
-            ],
-            remappings=[
-                # Optional: remap gz topic to ROS topic
-                ('/lidar', '/scan'),
-            ],
-    )
-
-    ros_gz_bridge2_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='odom_bridge',
-            output='screen',
-            arguments=[
-                '/model/robotmodel/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry'
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-            remappings=[
-                ('/model/robotmodel/odometry', '/odom'),
-            ]
-    )
-
-    ros_gz_bridge3_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='cmd_vel_bridge',
-            output='screen',
-            arguments=[
-                '/model/robotmodel/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist'
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-            remappings=[
-                ('/model/robotmodel/cmd_vel', '/cmd_vel'),
-            ]
-    )
-
-    ros_gz_bridge4_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='odom_tf_bridge',
-            output='screen',
-            arguments=[
-                '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V'
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-    )
-
-    ros_gz_bridge5_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='clock_bridge',
-            output='screen',
-            arguments=[
-                '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-    )
-
-    ## Camera bridges
-
-    ### Left and right bridges
-    '''
-    ros_gz_camera_bridge1_cmd = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            name="left_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image'
-            ],
-            parameters=[{"use_sim_time": use_sim_time}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image",
-                    "/camera/left/image_raw",
-                ),
-            ],
-    )
-
-    ros_gz_camera_bridge2_cmd = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            name="right_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image'
-            ],
-            parameters=[{"use_sim_time": use_sim_time}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/right_camera/image",
-                    "/camera/right/image_raw",
-                ),
-            ],
-    )
-    '''
-
-    ### RGB-D bridges
-    ros_gz_camera_bridge1_cmd = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            name="left_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image'
-            ],
-            parameters=[{"use_sim_time": use_sim_time}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image",
-                    "/camera/color/image_raw",
-                ),
-            ],
-    )
-
-    ros_gz_camera_bridge2_cmd = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            name="right_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image'
-            ],
-            parameters=[{"use_sim_time": use_sim_time}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image",
-                    "/camera/depth/image_raw",
-                ),
-            ],
-    )
-
-    ros_gz_camera_bridge3_cmd = Node(
-            package="ros_gz_image",
-            executable="image_bridge",
-            name="right_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/camera_info'
-            ],
-            parameters=[{"use_sim_time": use_sim_time}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/camera_info",
-                    "/camera/camera_info",
-                ),
-            ],
-    )
-
-    ## alternate construction with parameter bridge and renamed frames
-    alt_ros_gz_camera_bridge1_cmd = Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            name="left_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image@sensor_msgs/msg/Image@gz.msgs.Image'],
-            parameters=[{"use_sim_time": use_sim_time,
-                         "override_frame_id": 'optical_camera_frame'}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/image",
-                    "/camera/color/image_raw",
-                ),
-            ],
-    )
-    alt_ros_gz_camera_bridge2_cmd = Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            name="right_camera_image_bridge",
-            output="screen",
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image'
-            ],
-            parameters=[{"use_sim_time": use_sim_time,
-                         "override_frame_id": 'optical_camera_frame'}],
-            remappings=[
-                (
-                    "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/depth_image",
-                    "/camera/depth/image_raw",
-                ),
-            ],
-    )
-
-    ##########
-
-    ros_gz_bridge6_cmd = Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            name='pointcloud_bridge',
-            output='screen',
-            arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
-            ],
-            parameters=[
-                {'use_sim_time': use_sim_time}
-            ],
-            remappings=[
-                ('/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/left_camera/points', '/camera/pointcloud'),
-            ],
-    )
-
-    ## Octomap nodes
+    ## Octomap nodes (only run when not using 'lidar' robot_type)
     # NOTE occupancy_{min,max}_z is used to generate the 2D occupancy grid projection - need to decide on range to use
     octomap_node_cmd = Node(
+            condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
             package='octomap_server',
             executable='octomap_server_node',
             name='octomap_server',
@@ -639,28 +401,22 @@ def generate_launch_description() -> LaunchDescription:
                 ('cloud_in', '/camera/pointcloud'),
                 ('projected_map', '/map'),
                 ('projected_map_updates', '/map_updates'),
-                        ],
+            ],
             parameters=[{
                 'occupancy_max_z': 1.0,
                 'occupancy_min_z': -1.0,
             }],
     )
 
-    # TODO Remove the /vslam_tf remaps
     # TODO Either fix the LD_PRELOAD workaround (via patch) or retrieve lib directory differentely
     octomap_rviz_cmd = Node(
+            condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
             package='rviz2',
             executable='rviz2',
             name='rviz2',
             output='screen',
-            arguments=['-d', '/workspaces/stocktake-alt/src/stocktake/stocktake_core/config/octomap.rviz'],
-            remappings=[
-                ('/tf', '/vslam_tf'),
-                ('/tf_static', '/vslam_tf_static')
-                ],
+            arguments=['-d', os.path.join(stocktake_core_dir, 'config', 'octomap.rviz')],
             additional_env={
-                #'LD_PRELOAD': '/opt/ros/jazzy/lib/liboctomap_rviz_plugins.so'
-                #'LD_PRELOAD': '/opt/ros/jazzy/lib/x86_64-linux-gnu/liboctomap.so'
                 'LD_PRELOAD': '/usr/lib/x86_64-linux-gnu/liboctomap.so'
             }
     )
@@ -679,34 +435,13 @@ def generate_launch_description() -> LaunchDescription:
 
     ld.add_action(declare_use_respawn_cmd)
 
-
-    ld.add_action(ros_gz_bridge_cmd)
-    ld.add_action(ros_gz_bridge2_cmd)
-    ld.add_action(ros_gz_bridge3_cmd)
-    ## gz -> ros tf bridge (odom)
-    ld.add_action(ros_gz_bridge4_cmd)
-    ld.add_action(ros_gz_bridge5_cmd)
-
-    #ld.add_action(ros_gz_camera_bridge1_cmd)
-    #ld.add_action(ros_gz_camera_bridge2_cmd)
-    ld.add_action(alt_ros_gz_camera_bridge1_cmd)
-    ld.add_action(alt_ros_gz_camera_bridge2_cmd)
-
-
-    ld.add_action(gazebo_server)
-    ld.add_action(gazebo_client)
-
-    ld.add_action(ros_gz_camera_bridge3_cmd)
-
-    ld.add_action(ros_gz_bridge6_cmd)
-
-    ld.add_action(static_transform_cmd)
-    ld.add_action(static_transform2_cmd)
-    ld.add_action(static_transform3_cmd)
-    ld.add_action(static_transform4_cmd)
-    ld.add_action(static_transform5_cmd)
-
-    ld.add_action(static_transform6_cmd)
+    ld.add_action(simulation_launch_cmd)
+    
+    ## static transforms
+    ld.add_action(base_lidar_static_cmd)
+    ld.add_action(base_link_robot_base_cmd)
+    ld.add_action(base_front_camera_cmd) # Used on mono and rgbd camera setups
+    ld.add_action(front_camera_optical_cmd)
 
 
     ld.add_action(rviz_cmd)

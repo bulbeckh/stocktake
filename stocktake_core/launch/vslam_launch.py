@@ -56,7 +56,7 @@ def generate_launch_description() -> LaunchDescription:
             ],
             parameters=[{
                 'publish_tf': True,
-                #'camera_frame': 'store_layout/robotmodel/camera_front/left_camera',
+                #'camera_frame': 'store_layout/robotmodel/camera_front/camera',
                 'camera_frame': 'optical_camera_frame',
                 'use_sim_time': True,
                 'transform_tolerance': 1.0

@@ -71,7 +71,7 @@ def generate_launch_description() -> LaunchDescription:
             parameters=[
                 {'use_sim_time': True,
                  'expand_gz_topic_names': True,
-                 }
+                 'override_frame_id': 'robot_lidar'}
             ],
             remappings=[
                 ('/lidar', '/scan'),
@@ -90,7 +90,9 @@ def generate_launch_description() -> LaunchDescription:
                 {'use_sim_time': True}
             ],
             remappings=[
-                ('/model/robotmodel/cmd_vel', '/cmd_vel'),
+                ## NOTE Need to do this since we turned off collision monitor
+                #('/model/robotmodel/cmd_vel', '/cmd_vel'),
+                ('/model/robotmodel/cmd_vel', '/cmd_vel_smoothed'),
             ]
     )
 
@@ -149,14 +151,17 @@ def generate_launch_description() -> LaunchDescription:
     ### RGB-D bridges
     rgbd_color_bridge_cmd = Node(
             condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'rgbd' "])),
-            package="ros_gz_image",
-            executable="image_bridge",
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
             name="rgbd_color_bridge",
             output="screen",
             arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image'
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image@sensor_msgs/msg/Image[gz.msgs.Image'
             ],
-            parameters=[{"use_sim_time": True}],
+            parameters=[{
+                "use_sim_time": True,
+                "override_frame_id": "optical_camera_frame",
+            }],
             remappings=[
                 (
                     "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/image",
@@ -167,14 +172,17 @@ def generate_launch_description() -> LaunchDescription:
 
     rgbd_depth_bridge_cmd = Node(
             condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'rgbd' "])),
-            package="ros_gz_image",
-            executable="image_bridge",
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
             name="rgbd_depth_bridge",
             output="screen",
             arguments=[
-                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/depth_image'
+                '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image'
             ],
-            parameters=[{"use_sim_time": True}],
+            parameters=[{
+                "use_sim_time": True,
+                "override_frame_id": "optical_camera_frame",
+            }],
             remappings=[
                 (
                     "/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/depth_image",
@@ -192,9 +200,14 @@ def generate_launch_description() -> LaunchDescription:
             arguments=[
                 '/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             ],
-            parameters=[
-                {'use_sim_time': True}
-            ],
+            parameters=[{
+                'use_sim_time': True,
+                'qos_overrides./points.publisher.reliability': 'best_effort',
+                'qos_overrides./points.publisher.durability': 'volatile',
+                'qos_overrides./points.publisher.history': 'keep_last',
+                'qos_overrides./points.publisher.depth': 1,
+                #"override_frame_id": "optical_camera_frame",
+            }],
             remappings=[
                 ('/world/default/model/store_layout/model/robotmodel/link/camera_front/sensor/camera/points',
                  '/camera/pointcloud'),
