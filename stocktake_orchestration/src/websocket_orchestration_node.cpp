@@ -199,8 +199,6 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   tf_listener_(tf_buffer_, this, false),
   state_(WorkflowState::IDLE),
   paused_(false),
-  explore_resume_enabled_(false),
-  explore_resume_true_sent_(false),
   has_stored_waypoint_graph_(false),
   navigation_current_world_x_(0.0),
   navigation_current_world_y_(0.0)
@@ -219,19 +217,13 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   saved_map_base_path_ = "/tmp/stocktake_map";
   saved_map_image_path_ = saved_map_base_path_ + ".png";
 
+  explore_client_ = rclcpp_action::create_client<Explore>(this, "/explore");
   navigate_to_pose_client_ = rclcpp_action::create_client<NavigateToPose>(
     this, "/navigate_to_pose");
   map_saver_client_ = create_client<nav2_msgs::srv::SaveMap>("/map_saver/save_map");
   generate_waypoint_graph_client_ =
     create_client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>(
     "/generate_waypoint_graph");
-  explore_resume_publisher_ = create_publisher<std_msgs::msg::Bool>("/explore/resume", 10);
-  explore_status_subscription_ = create_subscription<explore_lite_msgs::msg::ExploreStatus>(
-    "/explore/status", 10,
-    std::bind(&WebsocketOrchestrationNode::handle_explore_status, this, std::placeholders::_1));
-  explore_resume_timer_ = create_wall_timer(
-    std::chrono::seconds(1),
-    std::bind(&WebsocketOrchestrationNode::publish_explore_resume_state, this));
 
   RCLCPP_INFO(
     get_logger(), "Starting websocket server on ws://%s:%d/ws", host.c_str(),
@@ -541,49 +533,111 @@ void WebsocketOrchestrationNode::handle_navigation_complete_on_io_thread()
 
 void WebsocketOrchestrationNode::transition_to(WorkflowState new_state, bool paused)
 {
-  const bool next_explore_resume_enabled = (new_state == WorkflowState::MAPPING && !paused);
-
   state_ = new_state;
   paused_ = (new_state == WorkflowState::IDLE) ? false : paused;
-  explore_resume_enabled_.store(next_explore_resume_enabled);
-
-  if (next_explore_resume_enabled) {
-    if (!explore_resume_true_sent_.exchange(true)) {
-      publish_explore_resume_once(true);
-    }
-  } else {
-    explore_resume_true_sent_.store(false);
-  }
 
   broadcast_state();
 }
 
-void WebsocketOrchestrationNode::publish_explore_resume_state()
+void WebsocketOrchestrationNode::send_explore_goal()
 {
-  if (explore_resume_enabled_.load()) {
+  if (!explore_client_->wait_for_action_server(std::chrono::seconds(0))) {
+    RCLCPP_ERROR(get_logger(), "Explore action server /explore is not available");
+    return_mapping_to_idle();
     return;
   }
 
-  std_msgs::msg::Bool message;
-  message.data = false;
-  explore_resume_publisher_->publish(message);
+  Explore::Goal goal;
+  goal.return_to_init = false;
+
+  rclcpp_action::Client<Explore>::SendGoalOptions options;
+  options.goal_response_callback =
+    std::bind(
+    &WebsocketOrchestrationNode::handle_explore_goal_response, this, std::placeholders::_1);
+  options.feedback_callback =
+    std::bind(
+    &WebsocketOrchestrationNode::handle_explore_feedback, this, std::placeholders::_1,
+    std::placeholders::_2);
+  options.result_callback =
+    std::bind(&WebsocketOrchestrationNode::handle_explore_result, this, std::placeholders::_1);
+
+  RCLCPP_INFO(get_logger(), "Sending Explore goal to /explore");
+  explore_client_->async_send_goal(goal, options);
 }
 
-void WebsocketOrchestrationNode::publish_explore_resume_once(bool enabled)
+void WebsocketOrchestrationNode::handle_explore_goal_response(
+  const ExploreGoalHandle::SharedPtr & goal_handle)
 {
-  std_msgs::msg::Bool message;
-  message.data = enabled;
-  explore_resume_publisher_->publish(message);
-}
-
-void WebsocketOrchestrationNode::handle_explore_status(
-  const explore_lite_msgs::msg::ExploreStatus::SharedPtr message)
-{
-  RCLCPP_INFO(get_logger(), "Received /explore/status: %s", message->status.c_str());
-
-  if (message->status == explore_lite_msgs::msg::ExploreStatus::EXPLORATION_COMPLETE) {
-    mark_mapping_complete();
+  if (!goal_handle) {
+    RCLCPP_ERROR(get_logger(), "Explore goal was rejected");
+    return_mapping_to_idle();
+    return;
   }
+
+  RCLCPP_INFO(get_logger(), "Explore goal accepted");
+}
+
+void WebsocketOrchestrationNode::handle_explore_feedback(
+  ExploreGoalHandle::SharedPtr,
+  const std::shared_ptr<const Explore::Feedback> feedback)
+{
+  RCLCPP_INFO(
+    get_logger(),
+    "Explore feedback: status=%s frontier_count_discovered=%u frontier_count_blacklisted=%u",
+    feedback->status.status.c_str(),
+    feedback->frontier_count_discovered,
+    feedback->frontier_count_blacklisted);
+}
+
+void WebsocketOrchestrationNode::handle_explore_result(
+  const ExploreGoalHandle::WrappedResult & result)
+{
+  switch (result.code) {
+    case rclcpp_action::ResultCode::SUCCEEDED:
+      if (result.result->success) {
+        RCLCPP_INFO(
+          get_logger(),
+          "Explore action succeeded: status=%s message=%s frontier_count_visited=%u",
+          result.result->status.status.c_str(),
+          result.result->message.c_str(),
+          result.result->frontier_count_visited);
+        mark_mapping_complete();
+        return;
+      } else {
+        RCLCPP_WARN(
+          get_logger(),
+          "Explore action completed unsuccessfully: status=%s message=%s frontier_count_visited=%u",
+          result.result->status.status.c_str(),
+          result.result->message.c_str(),
+          result.result->frontier_count_visited);
+      }
+      break;
+    case rclcpp_action::ResultCode::ABORTED:
+      RCLCPP_ERROR(get_logger(), "Explore action aborted");
+      break;
+    case rclcpp_action::ResultCode::CANCELED:
+      RCLCPP_ERROR(get_logger(), "Explore action canceled");
+      break;
+    default:
+      RCLCPP_ERROR(get_logger(), "Explore action returned unknown result");
+      break;
+  }
+
+  return_mapping_to_idle();
+}
+
+void WebsocketOrchestrationNode::return_mapping_to_idle()
+{
+  boost::asio::post(
+    io_context_,
+    [this]() {
+      if (state_ != WorkflowState::MAPPING) {
+        return;
+      }
+
+      transition_to(WorkflowState::IDLE, false);
+      RCLCPP_INFO(get_logger(), "State change: MAPPING -> IDLE");
+    });
 }
 
 void WebsocketOrchestrationNode::request_map_save()

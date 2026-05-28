@@ -1,7 +1,6 @@
 #ifndef STOCKTAKE_ORCHESTRATION2__WEBSOCKET_ORCHESTRATION_NODE_HPP_
 #define STOCKTAKE_ORCHESTRATION2__WEBSOCKET_ORCHESTRATION_NODE_HPP_
 
-#include <atomic>
 #include <deque>
 #include <memory>
 #include <string>
@@ -17,7 +16,7 @@
 #include <boost/beast/http/string_body.hpp>
 #include <boost/beast/websocket/stream.hpp>
 
-#include <explore_lite_msgs/msg/explore_status.hpp>
+#include <explore_lite_msgs/action/explore.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
@@ -25,7 +24,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <stocktake_nvidia_swagger_msgs/srv/generate_waypoint_graph.hpp>
-#include <std_msgs/msg/bool.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
@@ -125,6 +123,8 @@ private:
 class WebsocketOrchestrationNode : public rclcpp::Node
 {
 public:
+  using Explore = explore_lite_msgs::action::Explore;
+  using ExploreGoalHandle = rclcpp_action::ClientGoalHandle<Explore>;
   using NavigateToPose = nav2_msgs::action::NavigateToPose;
   using NavigateToPoseGoalHandle = rclcpp_action::ClientGoalHandle<NavigateToPose>;
   using tcp = boost::asio::ip::tcp;
@@ -170,8 +170,13 @@ private:
   void on_enter_constructing_route_from_mapping();
   void on_enter_navigating_from_idle();
   void run_navigation_workflow();
-  void handle_explore_status(
-    const explore_lite_msgs::msg::ExploreStatus::SharedPtr message);
+  void send_explore_goal();
+  void handle_explore_goal_response(const ExploreGoalHandle::SharedPtr & goal_handle);
+  void handle_explore_feedback(
+    ExploreGoalHandle::SharedPtr,
+    const std::shared_ptr<const Explore::Feedback> feedback);
+  void handle_explore_result(const ExploreGoalHandle::WrappedResult & result);
+  void return_mapping_to_idle();
   void request_map_save();
   void handle_map_save_response(rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedFuture future);
   void request_waypoint_graph_generation(const std::string & map_image_path);
@@ -186,8 +191,6 @@ private:
   void handle_navigation_goal_result(
     const StoredWaypointNode & node,
     const NavigateToPoseGoalHandle::WrappedResult & result);
-  void publish_explore_resume_state();
-  void publish_explore_resume_once(bool enabled);
   bool has_stored_graph() const;
 
   void broadcast_state();
@@ -207,18 +210,14 @@ private:
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
   std::unordered_set<std::shared_ptr<WebSocketSession>> sessions_;
+  rclcpp_action::Client<Explore>::SharedPtr explore_client_;
   rclcpp_action::Client<NavigateToPose>::SharedPtr navigate_to_pose_client_;
   rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedPtr map_saver_client_;
   rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedPtr
     generate_waypoint_graph_client_;
-  rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr explore_resume_publisher_;
-  rclcpp::Subscription<explore_lite_msgs::msg::ExploreStatus>::SharedPtr explore_status_subscription_;
-  rclcpp::TimerBase::SharedPtr explore_resume_timer_;
 
   WorkflowState state_;
   bool paused_;
-  std::atomic<bool> explore_resume_enabled_;
-  std::atomic<bool> explore_resume_true_sent_;
   std::string saved_map_base_path_;
   std::string saved_map_image_path_;
   TraversalGraph stored_waypoint_graph_;
