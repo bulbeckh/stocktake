@@ -52,6 +52,7 @@ def generate_launch_description() -> LaunchDescription:
                 '-v',
                 '/tmp/orb_vocab.fbow',
                 '-c',
+                ## TODO Make this configurable based on the robot_type (rgbd, stereo, and mono should all have different yamls)
                 '/workspaces/stocktake-alt/src/stocktake/stocktake_core/config/gz_camera_rgbd.yaml'
             ],
             parameters=[{

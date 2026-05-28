@@ -427,6 +427,7 @@ def generate_launch_description() -> LaunchDescription:
             parameters=[{
                 'occupancy_max_z': 1.0,
                 'occupancy_min_z': -1.0,
+                'base_frame_id': 'robot_base',
             }],
     )
 

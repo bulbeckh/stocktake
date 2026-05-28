@@ -77,15 +77,53 @@ pip install -e .
 `TODO` Add stella_vslam instructions
 
 ### Launch
-If running in docker, need to run
+We have four different robot types to choose from, each differing based on the camera array. Currently, `rgbd` is the most stable.
+
+| Robot Type | Description |
+| --- | --- |
+| `lidar` | Lidar scanner, slam_toolbox, nav2 |
+| `rgbd` | Depth camera, stella-vslam, nav2 |
+| `stereo` | Dual color cameras, stella-vslam, nav2 |
+| `mono` | Single color camera, stella-vslam, nav2 |
+
+If running in docker, need to run on the host:
 ```bash
 xhost +local:docker
 ```
 
-Ensure we have first built all packages and sourced the install
+We can get a bash terminal in our container with
 ```bash
+sudo docker compose exec dev bash
+```
+
+We should first build our packages. It is important that we use --symlink-install. 
+```bash
+# Inside container
+source /opt/ros/jazzy/setup.bash
+cd /workspaces/stocktake-alt
+colcon build --symlink-install
 source install/setup.bash
 ```
+
+If we are using anything other robot type than `lidar`, we need to also build stella-vslam-ros. TODO just move vslam into the stocktake-alt workspace - all dependencies are satisfied through the dockerfile anyway and it is a very quick colcon build.
+```bash
+# Inside container
+cd /workspaces/stocktake-vslam
+colcon build --symlink-install
+source install/setup.bash
+```
+
+#### Launching navigation
+Our `stocktake_core` packages handles all the simulation bringup and navigation stack. We supply the robot type here as a launch arg.
+```bash
+ros2 launch stocktake_core launch3.py robot_type:=<lidar, rgbd, stereo, mono>
+```
+
+#### Launching orchestration
+TODO
+
+#### Launching frontend
+TODO
 
 NOTE Each of these will soon be launched together via a single launch file
 NOTE Using stocktake_orchestration2 package - will soon remove original and replace with 'stocktake_orchestration2'

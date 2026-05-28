@@ -23,6 +23,28 @@ sdf_store_str_head = """<?xml version="1.0" ?>
 		<uri>model://{}</uri>
 		<pose degrees='true'>10 1 0.1 0 0 0</pose>
 	</include>
+    
+    <!-- TEMPORARY WALL WEST -->
+    <model name="wall_west">
+        <static>true</static>
+        <pose>14.1 5 1.5 0 0 0</pose>
+        <link name="link">
+          <visual name="visual">
+            <geometry>
+              <box>
+                <size>0.2 10 3</size>
+              </box>
+            </geometry>
+          </visual>
+          <collision name="collision">
+            <geometry>
+              <box>
+                <size>0.2 10 3</size>
+              </box>
+            </geometry>
+          </collision>
+        </link>
+    </model>
 """
 
 sdf_store_str_tail = """
@@ -214,32 +236,33 @@ if __name__=="__main__":
 
         for i in range(0,4):
             if spose[-1] == 180:
-                open_spots.append((spose[0]-0.25, spose[1]-0.25,0.3+i*0.5))
-                open_spots.append((spose[0]-0.5, spose[1]-0.25,0.3+i*0.5))
-                open_spots.append((spose[0]-0.75, spose[1]-0.25,0.3+i*0.5))
+                open_spots.append((spose[0]-0.25, spose[1]-0.25,0.3+i*0.5,0,0,-90))
+                open_spots.append((spose[0]-0.5, spose[1]-0.25,0.3+i*0.5,0,0,-90))
+                open_spots.append((spose[0]-0.75, spose[1]-0.25,0.3+i*0.5,0,0,-90))
             elif spose[-1] == 90:
-                open_spots.append((spose[0]-0.25, spose[1]+0.25,0.3+i*0.5))
-                open_spots.append((spose[0]-0.25, spose[1]+0.5,0.3+i*0.5))
-                open_spots.append((spose[0]-0.25, spose[1]+0.75,0.3+i*0.5))
+                open_spots.append((spose[0]-0.25, spose[1]+0.25,0.3+i*0.5,0,0,180))
+                open_spots.append((spose[0]-0.25, spose[1]+0.5,0.3+i*0.5,0,0,180))
+                open_spots.append((spose[0]-0.25, spose[1]+0.75,0.3+i*0.5,0,0,180))
             elif spose[-1] == -90:
-                open_spots.append((spose[0]+0.25, spose[1]-0.25,0.3+i*0.5))
-                open_spots.append((spose[0]+0.25, spose[1]-0.5,0.3+i*0.5))
-                open_spots.append((spose[0]+0.25, spose[1]-0.75,0.3+i*0.5))
+                open_spots.append((spose[0]+0.25, spose[1]-0.25,0.3+i*0.5,0,0,0))
+                open_spots.append((spose[0]+0.25, spose[1]-0.5,0.3+i*0.5,0,0,0))
+                open_spots.append((spose[0]+0.25, spose[1]-0.75,0.3+i*0.5,0,0,0))
             elif spose[-1] == 0:
                 ## Default
-                open_spots.append((spose[0]+0.25, spose[1]+0.25,0.3+i*0.5))
-                open_spots.append((spose[0]+0.5, spose[1]+0.25,0.3+i*0.5))
-                open_spots.append((spose[0]+0.75, spose[1]+0.25,0.3+i*0.5))
+                open_spots.append((spose[0]+0.25, spose[1]+0.25,0.3+i*0.5,0,0,90))
+                open_spots.append((spose[0]+0.5, spose[1]+0.25,0.3+i*0.5,0,0, 90))
+                open_spots.append((spose[0]+0.75, spose[1]+0.25,0.3+i*0.5,0,0, 90))
             else:
                 print("Bad z-axis rotation for shelf-poses : set in range [-90,180]")
 
-    
+
+    ## Generate 200 random
     for i,p in enumerate(random.sample(open_spots, k=200)):
         out_str += f"""<include>
-            <uri>model://cereal{1 if i%2 else 2}</uri>
+            <uri>model://cereal{1+(i%4)}</uri>
             <name>cereal_{i}</name>
             <static>true</static>
-            <pose degrees="true">{p[0]} {p[1]} {p[2]} 0 0 0</pose>
+            <pose degrees="true">{p[0]} {p[1]} {p[2]+0.15} {p[3]} {p[4]} {p[5]}</pose>
         </include>"""
 
     ## add counter
