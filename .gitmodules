@@ -7,3 +7,6 @@
 [submodule "stocktake_core/stocktake-items"]
 	path = stocktake_core/stocktake-items
 	url = https://github.com/bulbeckh/stocktake-items
+[submodule "ros_gz"]
+	path = ros_gz
+	url = git@github.com:bulbeckh/ros_gz.git
