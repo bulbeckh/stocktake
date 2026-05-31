@@ -8,27 +8,24 @@ Autonomous stocktaking robot for retail and industrial environments
 
 <img src="./docs/res/output.gif" alt="simgif" width="100%" />
 
-### Building
-Currently, this repository has only been tested on Ubuntu 24.04, with ros2-jazzy and gz-harmonic. At the very least we need ROS2 Jazzy (specifically `ros2-jazzy-desktop` [instructions here](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)) and Gazeob simulator (harmonic).
+**Stocktake** is a simulation of RFID-aided autonomous stocktake, intended for use in retail and industrial environments. It is able to autonomously map new environments, conduct rounds of simulated RFID scanning, and then display the results to the end-user over a web interface.
 
-TODO Not enoug detail here - add
+For the simulation, we use `gazebo (harmonic)`, with a custom `gazebo-rfid-plugin` that is able to simulate realistic RFID interaction between tag and reader. We also procedurally generate the simulated environment (currently a retail store) at launch-time. Included in the simulation is a set of models of common stocktake items, supplied with RFID tag to represent scannable objects.
 
-We need a few dependencies first, specifically `git-lfs`
-```bash
-sudo apt install git git-lfs
-```
+Our stocktake process is split into a mapping/route construction phase, and a stocktake phase. We use ROS2 as the middleware for this implementation, with a `stocktake-orchestration` node for maintaining an internal state-machine and providing a server endpoint for control via the web interface, `stocktake-frontend` which is a simple next.js UI.
 
-Clone the repository and submodules
+We can select between four different robot models, each with a different sensor array: lidar, depth camera, stereo cameras, mono camera.
+
+For the autonomy stack, we use `Nav2` for path planning and local control of the robot, which is differential wheeled robot. For the lidar-based robot, we use `slam-toolbox` for mapping and for the other models, we use `stella-vslam` for visual-slam mapping. The latter also use `octomap` for an efficient octree-based map representation from which we extract a 2D occupancy grid. All robot models use a fork of `m-explore-ros2`, which has a frontier-based algorithm for map exploration. Lastly, we use `nvidia-swagger` for waypoint and route construction in our mapped environment.
+
+## Installation
+Currently, the only tested/supported combination is Ubuntu 24.04, with ros2-jazzy and gz-harmonic. At the very least we need ROS2 Jazzy (specifically [ros2-jazzy-desktop](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)) and Gazebo simulator (harmonic).
+
+To clone the repository and submodules
 ```bash
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
 git clone --recurse-submodules https://github.com/bulbeckh/stocktake.git
-```
-
-Pull our nvidia-swagger lfs
-```bash
-cd SWAGGER
-git lfs pull
 ```
 
 #### Docker setup
@@ -39,44 +36,19 @@ sudo docker build -f docker/Dockerfile -t stocktake .
 ## Start container
 sudo docker compose up dev
 sudo docker compose exec dev bash
+
+## Source our ROS2 env
+source /opt/ros/jazzy/setup.bash
 ```
 
-Build all packages NOTE rename the stockake folder from stocktake-alt (only that way because .venv was accidentally placed in /workspaces/stocktake and the mount overwrote it)
+Build our packages
 ```bash
 cd /workspaces/stocktake-alt
-colcon build
+colcon build --symlink-install
 source ./install/setup.bash
 ```
 
-#### Install other dependencies
-NOTE These instructions are not required for docker now. Need to update them for users not planning to use docker
-
-In order to run our nvidia-swagger ROS2 node, we have a python dependency on the nvidia-swagger python package.
-
-Create virtual environment at root of our workspace folder
-```bash
-python3 -m venv .venv
-source ./venv/bin/activate
-touch ./venv/COLCON_IGNORE
-```
-
-Install the nvidia-swagger python package (while in the virtual env). You can find full install install instructions [in the repo](https://github.com/nvidia-isaac/SWAGGER).
-```bash
-cd ~
-git clone git@github.com:nvidia-isaac/SWAGGER.git
-cd SWAGGER
-git lfs pull
-
-## Install nvidia-swagger deps
-sudo apt update && sudo apt install -y libgl1-mesa-glx libglib2.0-0
-
-## Install package in our virtual environment
-pip install -e .
-```
-
-`TODO` Add stella_vslam instructions
-
-### Launch
+## Launching
 We have four different robot types to choose from, each differing based on the camera array. Currently, `rgbd` is the most stable.
 
 | Robot Type | Description |
@@ -91,78 +63,47 @@ If running in docker, need to run on the host:
 xhost +local:docker
 ```
 
-We can get a bash terminal in our container with
-```bash
-sudo docker compose exec dev bash
-```
-
-We should first build our packages. It is important that we use --symlink-install. 
-```bash
-# Inside container
-source /opt/ros/jazzy/setup.bash
-cd /workspaces/stocktake-alt
-colcon build --symlink-install
-source install/setup.bash
-```
-
-If we are using anything other robot type than `lidar`, we need to also build stella-vslam-ros. TODO just move vslam into the stocktake-alt workspace - all dependencies are satisfied through the dockerfile anyway and it is a very quick colcon build.
-```bash
-# Inside container
-cd /workspaces/stocktake-vslam
-colcon build --symlink-install
-source install/setup.bash
-```
-
 #### Launching navigation
 Our `stocktake_core` packages handles all the simulation bringup and navigation stack. We supply the robot type here as a launch arg.
 ```bash
 ros2 launch stocktake_core launch3.py robot_type:=<lidar, rgbd, stereo, mono>
 ```
 
+If we are using a visual-slam based robot model (rgbd, stereo, or mono), we need to run stella-vslam.
+```bash
+source /workspaces/stocktake-vslam/install.setup.bash
+ros2 launch stocktake_core vslam_launch.py
+```
+
 #### Launching orchestration
-TODO
+Our orchestration node handles transitions between stocktake phases and web interface communication.
+```bash
+ros2 run stocktake_orchestration stocktake_orchestration
+```
 
 #### Launching frontend
-TODO
-
-NOTE Each of these will soon be launched together via a single launch file
-NOTE Using stocktake_orchestration2 package - will soon remove original and replace with 'stocktake_orchestration2'
+Our frontend a simple next.js web UI.
 ```bash
-# Run orchestration
-ros2 run stocktake_orchestration2 stocktake_orchestration
+cd /workspaces/stocktake-alt/src/stocktake/stocktake-frontend/frontend
 
-# Launch core + navigation
-ros2 launch stocktake_core launch3.py
-
-# Run the explore-lite node (orchestration attempts to make it start in paused state) (NOTE Default launch file for now but will soon use an updated launch command)
-ros2 launch explore_lite explore.launch.py
-```
-
-We also need to run the swagger server node but this requires us to be using our virtual environment
-```bash
-cd ~/ros2_ws
-source ./venv/bin/activate
-
-# Run the SWAGGER server node
-ros2 run stocktake_nvidia_swagger server_node
-```
-
-We then start the web interface, navigate to the web page, which should automatically connect to the orchestration node websocket.
-```bash
-# Start the web interface
-cd stocktake/stocktake_frontend/frontend
+## Run npm server
 npm run dev
 ```
 
-TODO
-Added stella_vslam (will replace 2D lidar soon) (https://github.com/stella-cv/stella_vslam_ros)
+#### Launching explore
+TODO This needs to be launched as part of the 'core' bringup, not as a standalone node
 ```bash
-source install/setup.bash
-## In ros2_ws dir (will move to main package soon)
-ros2 run stella_vslam_ros run_slam -v orb_vocab.fbow -c gz_camera_rgbd.yaml --ros-args -p publish_tf:=false
+ros2 launch explore_lite explore.launch.py
 ```
 
-### Packages
+#### Launch swagger node
+The swagger nodes requires us to be in the virtual env that contains the `nvidia-swagger` python package.
+```bash
+source /.venv/bin/active
+ros2 run stocktake_nvidia_swagger server_node
+```
+
+## Packages and dependencies
 | Package | Description |
 | --- | --- |
 | `stocktake_core` | Nodes for mapping and autonomous navigation (Nav2) and simulation (Gazebo) |

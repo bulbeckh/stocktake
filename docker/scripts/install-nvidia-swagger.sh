@@ -39,7 +39,7 @@ cd "/SWAGGER"
 #git lfs pull
 
 # Upgrade pip tooling
-pip install --upgrade pip setuptools wheel
+pip install --upgrade pip setuptools wheel pyyaml
 
 # Install SWAGGER into the virtual environment
 pip install .

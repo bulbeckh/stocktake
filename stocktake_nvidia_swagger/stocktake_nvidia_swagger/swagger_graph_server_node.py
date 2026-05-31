@@ -70,6 +70,9 @@ class SwaggerGraphServer(Node):
                 rotation=rotation,
             )
 
+            ## Write to output png
+            self._generator.visualize_graph(output_dir='/tmp', output_filename='swagger_generated_graph.png')
+
             ros_graph = self._convert_networkx_to_ros_graph(graph_nx)
 
             response.graph = ros_graph
