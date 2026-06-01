@@ -85,8 +85,11 @@ class SwaggerGraphServer(Node):
                 rotation=rotation,
             )
 
+            ## TODO Add check for the request.output_dir that it falls under a valid /maps folder
+            ## NOTE Will this automatically create the folder if it doesn't exist?
+
             ## Write to output png
-            self._generator.visualize_graph(output_dir='/tmp', output_filename='swagger_generated_graph.png')
+            self._generator.visualize_graph(output_dir=request.output_dir, output_filename='swagger_generated_graph.png')
 
             ros_graph = self._convert_networkx_to_ros_graph(graph_nx)
 

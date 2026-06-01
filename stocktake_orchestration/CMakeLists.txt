@@ -12,6 +12,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(slam_toolbox REQUIRED)
 find_package(stocktake_nvidia_swagger_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
@@ -41,6 +42,7 @@ ament_target_dependencies(stocktake_orchestration
   nav2_msgs
   rclcpp
   rclcpp_action
+  slam_toolbox
   stocktake_nvidia_swagger_msgs
   tf2_ros
 )

@@ -5,10 +5,16 @@
 #include <cctype>
 #include <cmath>
 #include <cstdint>
+#include <chrono>
+#include <filesystem>
 #include <fstream>
 #include <functional>
+#include <future>
+#include <iterator>
 #include <optional>
+#include <regex>
 #include <sstream>
+#include <type_traits>
 #include <utility>
 
 #include <boost/asio/dispatch.hpp>
@@ -31,6 +37,8 @@ namespace stocktake_orchestration2
 namespace
 {
 
+namespace fs = std::filesystem;
+
 struct SavedMapMetadata
 {
   double resolution;
@@ -40,6 +48,24 @@ struct SavedMapMetadata
   uint32_t image_width;
   uint32_t image_height;
 };
+
+template<typename RequestT, typename = void>
+struct has_output_dir : std::false_type {};
+
+template<typename RequestT>
+struct has_output_dir<RequestT, std::void_t<decltype(std::declval<RequestT>().output_dir)>>
+: std::true_type {};
+
+template<typename RequestT>
+void set_output_dir_if_supported(RequestT & request, const std::string & output_dir)
+{
+  if constexpr (has_output_dir<RequestT>::value) {
+    request.output_dir = output_dir;
+  } else {
+    (void)request;
+    (void)output_dir;
+  }
+}
 
 std::string trim_copy(const std::string & value)
 {
@@ -93,6 +119,68 @@ bool parse_yaml_origin(
   std::istringstream stream(origin_text);
   stream >> origin_x >> origin_y >> origin_yaw;
   return !stream.fail();
+}
+
+std::optional<std::string> extract_json_string(
+  const std::string & payload,
+  const std::string & key)
+{
+  const auto key_pos = payload.find("\"" + key + "\"");
+  if (key_pos == std::string::npos) {
+    return std::nullopt;
+  }
+
+  const auto colon_pos = payload.find(':', key_pos);
+  if (colon_pos == std::string::npos) {
+    return std::nullopt;
+  }
+
+  const auto first_quote = payload.find('"', colon_pos + 1);
+  if (first_quote == std::string::npos) {
+    return std::nullopt;
+  }
+
+  std::string value;
+  bool escaping = false;
+  for (auto index = first_quote + 1; index < payload.size(); ++index) {
+    const char ch = payload[index];
+    if (escaping) {
+      switch (ch) {
+        case '"':
+        case '\\':
+        case '/':
+          value += ch;
+          break;
+        case 'n':
+          value += '\n';
+          break;
+        case 'r':
+          value += '\r';
+          break;
+        case 't':
+          value += '\t';
+          break;
+        default:
+          value += ch;
+          break;
+      }
+      escaping = false;
+      continue;
+    }
+
+    if (ch == '\\') {
+      escaping = true;
+      continue;
+    }
+
+    if (ch == '"') {
+      return value;
+    }
+
+    value += ch;
+  }
+
+  return std::nullopt;
 }
 
 std::optional<std::array<uint32_t, 2>> read_png_dimensions(const std::string & image_path)
@@ -383,6 +471,11 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
 {
   const auto host = declare_parameter<std::string>("host", "127.0.0.1");
   const auto port = declare_parameter<int>("port", 9002);
+  maps_directory_ = declare_parameter<std::string>("maps_directory", "/maps");
+  map_server_load_service_name_ = declare_parameter<std::string>(
+    "map_server_load_service", "/map_server/load_map");
+  mapping_backend_pause_service_name_ = declare_parameter<std::string>(
+    "mapping_backend_pause_service", "/slam_toolbox/pause_new_measurements");
 
   const auto address = boost::asio::ip::make_address(host);
   const tcp::endpoint endpoint(address, static_cast<unsigned short>(port));
@@ -392,6 +485,8 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   acceptor_.bind(endpoint);
   acceptor_.listen(boost::asio::socket_base::max_listen_connections);
 
+  active_map_id_.clear();
+  active_map_directory_.clear();
   saved_map_base_path_ = "/tmp/stocktake_map";
   saved_map_image_path_ = saved_map_base_path_ + ".png";
   saved_map_metadata_path_ = saved_map_base_path_ + ".yaml";
@@ -400,6 +495,11 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   navigate_to_pose_client_ = rclcpp_action::create_client<NavigateToPose>(
     this, "/navigate_to_pose");
   map_saver_client_ = create_client<nav2_msgs::srv::SaveMap>("/map_saver/save_map");
+  map_loader_client_ = create_client<nav2_msgs::srv::LoadMap>(map_server_load_service_name_);
+  if (!mapping_backend_pause_service_name_.empty()) {
+    mapping_backend_pause_client_ =
+      create_client<slam_toolbox::srv::Pause>(mapping_backend_pause_service_name_);
+  }
   generate_waypoint_graph_client_ =
     create_client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>(
     "/generate_waypoint_graph");
@@ -510,6 +610,66 @@ void WebsocketOrchestrationNode::handle_client_message(
   }
 
   const std::string command = payload.substr(first_quote + 1, second_quote - first_quote - 1);
+
+  if (command == "list_maps") {
+    session->send_text(make_maps_list_message());
+    return;
+  }
+
+  if (command == "select_map") {
+    if (state_ != WorkflowState::IDLE) {
+      session->send_text(make_command_ack(
+          command, false, "Maps can only be selected while the workflow is idle."));
+      return;
+    }
+
+    const auto map_id = extract_json_string(payload, "map_id");
+    if (!map_id.has_value() || map_id->empty()) {
+      session->send_text(make_command_ack(command, false, "Missing map_id."));
+      return;
+    }
+
+    const auto previous_graph = stored_waypoint_graph_;
+    const bool previous_has_graph = has_stored_waypoint_graph_;
+    const std::string previous_map_id = active_map_id_;
+    const std::string previous_map_directory = active_map_directory_;
+    const std::string previous_map_base_path = saved_map_base_path_;
+    const std::string previous_map_image_path = saved_map_image_path_;
+    const std::string previous_map_metadata_path = saved_map_metadata_path_;
+
+    const auto restore_previous_map = [this, previous_graph, previous_has_graph, previous_map_id,
+        previous_map_directory, previous_map_base_path, previous_map_image_path,
+        previous_map_metadata_path]() {
+        stored_waypoint_graph_ = previous_graph;
+        has_stored_waypoint_graph_ = previous_has_graph;
+        active_map_id_ = previous_map_id;
+        active_map_directory_ = previous_map_directory;
+        saved_map_base_path_ = previous_map_base_path;
+        saved_map_image_path_ = previous_map_image_path;
+        saved_map_metadata_path_ = previous_map_metadata_path;
+      };
+
+    if (!load_stored_map(*map_id)) {
+      session->send_text(make_command_ack(command, false, "Failed to load stored map."));
+      return;
+    }
+
+    if (!disable_mapping_backend()) {
+      restore_previous_map();
+      session->send_text(make_command_ack(command, false, "Failed to disable mapping backend."));
+      return;
+    }
+
+    if (!load_map_into_map_server(saved_map_metadata_path_)) {
+      restore_previous_map();
+      session->send_text(make_command_ack(command, false, "Failed to load map into map server."));
+      return;
+    }
+
+    session->send_text(make_command_ack(command, true));
+    session->send_text(make_map_selected_message(*map_id));
+    return;
+  }
 
   if (command == "start_mapping") {
     if (state_ != WorkflowState::IDLE) {
@@ -821,6 +981,19 @@ void WebsocketOrchestrationNode::return_mapping_to_idle()
 
 void WebsocketOrchestrationNode::request_map_save()
 {
+  if (!prepare_new_map_directory()) {
+    RCLCPP_ERROR(get_logger(), "Failed to prepare map output directory under %s", maps_directory_.c_str());
+    boost::asio::post(
+      io_context_,
+      [this]() {
+        if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
+          transition_to(WorkflowState::IDLE, false);
+          RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
+        }
+      });
+    return;
+  }
+
   if (!map_saver_client_->service_is_ready()) {
     RCLCPP_WARN(get_logger(), "Map saver service /map_saver/save_map is not available");
     return;
@@ -865,6 +1038,7 @@ void WebsocketOrchestrationNode::request_waypoint_graph_generation(const std::st
   auto request =
     std::make_shared<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph::Request>();
   request->map_path = map_image_path;
+  set_output_dir_if_supported(*request, active_map_directory_);
 
   generate_waypoint_graph_client_->async_send_request(
     request,
@@ -986,7 +1160,345 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
   }
   has_stored_waypoint_graph_ = true;
 
+  if (!persist_current_map_artifacts(response->graph.nodes.size(), response->graph.edges.size())) {
+    RCLCPP_ERROR(get_logger(), "Failed to persist generated map artifacts");
+    has_stored_waypoint_graph_ = false;
+    stored_waypoint_graph_.nodes_by_id.clear();
+    stored_waypoint_graph_.adjacency_list.clear();
+    boost::asio::post(
+      io_context_,
+      [this]() {
+        if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
+          transition_to(WorkflowState::IDLE, false);
+          RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
+        }
+      });
+    return;
+  }
+
   mark_route_construction_complete();
+}
+
+bool WebsocketOrchestrationNode::prepare_new_map_directory()
+{
+  try {
+    fs::create_directories(maps_directory_);
+
+    const auto now = std::chrono::system_clock::now();
+    const auto timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+      now.time_since_epoch()).count();
+
+    for (int attempt = 0; attempt < 100; ++attempt) {
+      const std::string candidate_id =
+        (attempt == 0) ? "map_" + std::to_string(timestamp) :
+        "map_" + std::to_string(timestamp) + "_" + std::to_string(attempt);
+      const fs::path candidate_dir = fs::path(maps_directory_) / candidate_id;
+      if (fs::exists(candidate_dir)) {
+        continue;
+      }
+
+      fs::create_directories(candidate_dir);
+      active_map_id_ = candidate_id;
+      active_map_directory_ = candidate_dir.string();
+      saved_map_base_path_ = (candidate_dir / "map").string();
+      saved_map_image_path_ = (candidate_dir / "map.png").string();
+      saved_map_metadata_path_ = (candidate_dir / "map.yaml").string();
+
+      RCLCPP_INFO(
+        get_logger(),
+        "Prepared map output directory %s",
+        active_map_directory_.c_str());
+      return true;
+    }
+  } catch (const std::exception & ex) {
+    RCLCPP_ERROR(get_logger(), "Failed to create map directory: %s", ex.what());
+    return false;
+  }
+
+  RCLCPP_ERROR(get_logger(), "Failed to choose a unique map directory name");
+  return false;
+}
+
+bool WebsocketOrchestrationNode::persist_current_map_artifacts(
+  std::size_t node_count,
+  std::size_t edge_count) const
+{
+  if (active_map_id_.empty() || active_map_directory_.empty()) {
+    return false;
+  }
+
+  try {
+    const fs::path map_dir(active_map_directory_);
+    fs::create_directories(map_dir);
+
+    const fs::path generated_graph_source("/tmp/swagger_generated_graph.png");
+    const fs::path generated_graph_destination = map_dir / "swagger_generated_graph.png";
+    if (fs::exists(generated_graph_source) && !fs::exists(generated_graph_destination)) {
+      fs::copy_file(
+        generated_graph_source,
+        generated_graph_destination,
+        fs::copy_options::overwrite_existing);
+    }
+
+    const fs::path graph_path = map_dir / "waypoint_graph.json";
+    std::ofstream graph_stream(graph_path);
+    if (!graph_stream) {
+      return false;
+    }
+
+    graph_stream << "{\n";
+    graph_stream << "  \"nodes\": [\n";
+    bool first_node = true;
+    for (const auto & [node_id, node] : stored_waypoint_graph_.nodes_by_id) {
+      (void)node_id;
+      if (!first_node) {
+        graph_stream << ",\n";
+      }
+      first_node = false;
+      graph_stream << "    {\"id\":" << node.id
+                   << ",\"world_x\":" << node.world_x
+                   << ",\"world_y\":" << node.world_y
+                   << ",\"pixel_x\":" << node.pixel_x
+                   << ",\"pixel_y\":" << node.pixel_y
+                   << ",\"node_type\":\"" << escape_json(node.node_type) << "\"}";
+    }
+    graph_stream << "\n  ],\n";
+    graph_stream << "  \"edges\": [\n";
+    bool first_edge = true;
+    for (const auto & [source_id, edges] : stored_waypoint_graph_.adjacency_list) {
+      for (const auto & edge : edges) {
+        if (!first_edge) {
+          graph_stream << ",\n";
+        }
+        first_edge = false;
+        graph_stream << "    {\"source_id\":" << source_id
+                     << ",\"target_id\":" << edge.target_id
+                     << ",\"weight\":" << edge.weight
+                     << ",\"edge_type\":\"" << escape_json(edge.edge_type) << "\"}";
+      }
+    }
+    graph_stream << "\n  ]\n";
+    graph_stream << "}\n";
+    graph_stream.close();
+    if (!graph_stream) {
+      return false;
+    }
+
+    const auto metadata = load_saved_map_metadata(saved_map_metadata_path_, saved_map_image_path_);
+    const fs::path manifest_path = map_dir / "manifest.json";
+    std::ofstream manifest_stream(manifest_path);
+    if (!manifest_stream) {
+      return false;
+    }
+
+    const std::string timestamp_text = active_map_id_.rfind("map_", 0) == 0 ?
+      active_map_id_.substr(4) : "";
+    manifest_stream << "{\n";
+    manifest_stream << "  \"id\":\"" << escape_json(active_map_id_) << "\",\n";
+    manifest_stream << "  \"created_unix\":\"" << escape_json(timestamp_text) << "\",\n";
+    manifest_stream << "  \"map_image\":\"map.png\",\n";
+    manifest_stream << "  \"map_yaml\":\"map.yaml\",\n";
+    manifest_stream << "  \"swagger_graph_image\":\"swagger_generated_graph.png\",\n";
+    manifest_stream << "  \"waypoint_graph\":\"waypoint_graph.json\",\n";
+    manifest_stream << "  \"node_count\":" << node_count << ",\n";
+    manifest_stream << "  \"edge_count\":" << edge_count;
+    if (metadata.has_value()) {
+      manifest_stream << ",\n";
+      manifest_stream << "  \"resolution\":" << metadata->resolution << ",\n";
+      manifest_stream << "  \"origin\":[" << metadata->origin_x << "," << metadata->origin_y <<
+        "," << metadata->origin_yaw << "]";
+    }
+    manifest_stream << "\n}\n";
+    manifest_stream.close();
+    return static_cast<bool>(manifest_stream);
+  } catch (const std::exception & ex) {
+    RCLCPP_ERROR(get_logger(), "Failed to persist map artifacts: %s", ex.what());
+    return false;
+  }
+}
+
+bool WebsocketOrchestrationNode::load_stored_map(const std::string & map_id)
+{
+  if (map_id.find('/') != std::string::npos || map_id.find("..") != std::string::npos) {
+    RCLCPP_WARN(get_logger(), "Rejecting invalid map id: %s", map_id.c_str());
+    return false;
+  }
+
+  const fs::path map_dir = fs::path(maps_directory_) / map_id;
+  const fs::path graph_path = map_dir / "waypoint_graph.json";
+  const fs::path image_path = map_dir / "map.png";
+  const fs::path metadata_path = map_dir / "map.yaml";
+
+  if (!fs::is_directory(map_dir) || !fs::exists(graph_path) ||
+    !fs::exists(image_path) || !fs::exists(metadata_path))
+  {
+    RCLCPP_WARN(get_logger(), "Stored map %s is missing required artifacts", map_id.c_str());
+    return false;
+  }
+
+  std::ifstream graph_stream(graph_path);
+  if (!graph_stream) {
+    return false;
+  }
+
+  const std::string graph_text(
+    (std::istreambuf_iterator<char>(graph_stream)),
+    std::istreambuf_iterator<char>());
+
+  TraversalGraph loaded_graph;
+  try {
+    const std::regex node_pattern(
+      R"json(\{"id":(\d+),"world_x":([-+0-9.eE]+),"world_y":([-+0-9.eE]+),"pixel_x":(-?\d+),"pixel_y":(-?\d+),"node_type":"([^"]*)"\})json");
+    for (std::sregex_iterator it(graph_text.begin(), graph_text.end(), node_pattern), end;
+      it != end; ++it)
+    {
+      const auto & match = *it;
+      const auto id = static_cast<uint32_t>(std::stoul(match[1].str()));
+      loaded_graph.nodes_by_id.emplace(
+        id,
+        StoredWaypointNode{
+          id,
+          std::stod(match[2].str()),
+          std::stod(match[3].str()),
+          static_cast<int32_t>(std::stoi(match[4].str())),
+          static_cast<int32_t>(std::stoi(match[5].str())),
+          match[6].str()});
+      loaded_graph.adjacency_list.try_emplace(id);
+    }
+
+    const std::regex edge_pattern(
+      R"json(\{"source_id":(\d+),"target_id":(\d+),"weight":([-+0-9.eE]+),"edge_type":"([^"]*)"\})json");
+    for (std::sregex_iterator it(graph_text.begin(), graph_text.end(), edge_pattern), end;
+      it != end; ++it)
+    {
+      const auto & match = *it;
+      const auto source_id = static_cast<uint32_t>(std::stoul(match[1].str()));
+      const auto target_id = static_cast<uint32_t>(std::stoul(match[2].str()));
+      if (loaded_graph.nodes_by_id.find(source_id) == loaded_graph.nodes_by_id.end() ||
+        loaded_graph.nodes_by_id.find(target_id) == loaded_graph.nodes_by_id.end())
+      {
+        RCLCPP_WARN(get_logger(), "Stored map %s contains an edge with unknown node ids", map_id.c_str());
+        return false;
+      }
+
+      loaded_graph.adjacency_list[source_id].push_back(
+        TraversalGraphEdge{
+          target_id,
+          std::stod(match[3].str()),
+          match[4].str()});
+    }
+  } catch (const std::exception & ex) {
+    RCLCPP_ERROR(get_logger(), "Failed to parse stored waypoint graph: %s", ex.what());
+    return false;
+  }
+
+  if (loaded_graph.nodes_by_id.empty()) {
+    RCLCPP_WARN(get_logger(), "Stored map %s has no waypoint nodes", map_id.c_str());
+    return false;
+  }
+
+  stored_waypoint_graph_ = std::move(loaded_graph);
+  has_stored_waypoint_graph_ = true;
+  active_map_id_ = map_id;
+  active_map_directory_ = map_dir.string();
+  saved_map_base_path_ = (map_dir / "map").string();
+  saved_map_image_path_ = image_path.string();
+  saved_map_metadata_path_ = metadata_path.string();
+
+  RCLCPP_INFO(
+    get_logger(),
+    "Loaded stored map %s with %zu waypoint nodes",
+    active_map_id_.c_str(),
+    stored_waypoint_graph_.nodes_by_id.size());
+  return true;
+}
+
+bool WebsocketOrchestrationNode::disable_mapping_backend()
+{
+  if (mapping_backend_pause_service_name_.empty()) {
+    RCLCPP_INFO(get_logger(), "No mapping backend pause service configured; skipping mapping disable");
+    return true;
+  }
+
+  if (!mapping_backend_pause_client_) {
+    RCLCPP_ERROR(get_logger(), "Mapping backend pause client is not initialized");
+    return false;
+  }
+
+  if (!mapping_backend_pause_client_->wait_for_service(std::chrono::seconds(2))) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "Mapping backend pause service %s is not available",
+      mapping_backend_pause_service_name_.c_str());
+    return false;
+  }
+
+  auto request = std::make_shared<slam_toolbox::srv::Pause::Request>();
+  auto future = mapping_backend_pause_client_->async_send_request(request);
+  if (future.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "Timed out waiting for mapping backend pause service %s",
+      mapping_backend_pause_service_name_.c_str());
+    return false;
+  }
+
+  const auto response = future.get();
+  if (!response->status) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "Mapping backend pause service %s returned failure",
+      mapping_backend_pause_service_name_.c_str());
+    return false;
+  }
+
+  RCLCPP_INFO(
+    get_logger(),
+    "Disabled further mapping via %s",
+    mapping_backend_pause_service_name_.c_str());
+  return true;
+}
+
+bool WebsocketOrchestrationNode::load_map_into_map_server(const std::string & map_yaml_path)
+{
+  if (!map_loader_client_->wait_for_service(std::chrono::seconds(2))) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "Map server load service %s is not available",
+      map_server_load_service_name_.c_str());
+    return false;
+  }
+
+  auto request = std::make_shared<nav2_msgs::srv::LoadMap::Request>();
+  request->map_url = map_yaml_path;
+
+  RCLCPP_INFO(
+    get_logger(),
+    "Requesting map server load of %s via %s",
+    request->map_url.c_str(),
+    map_server_load_service_name_.c_str());
+
+  auto future = map_loader_client_->async_send_request(request);
+  if (future.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "Timed out waiting for map server load service %s",
+      map_server_load_service_name_.c_str());
+    return false;
+  }
+
+  const auto response = future.get();
+  if (response->result != nav2_msgs::srv::LoadMap::Response::RESULT_SUCCESS) {
+    RCLCPP_ERROR(
+      get_logger(),
+      "Map server failed to load %s with result code %u",
+      map_yaml_path.c_str(),
+      static_cast<unsigned int>(response->result));
+    return false;
+  }
+
+  RCLCPP_INFO(get_logger(), "Map server loaded %s", map_yaml_path.c_str());
+  return true;
 }
 
 bool WebsocketOrchestrationNode::lookup_robot_transform_in_map(
@@ -1187,6 +1699,57 @@ bool WebsocketOrchestrationNode::has_stored_graph() const
   return has_stored_waypoint_graph_;
 }
 
+std::string WebsocketOrchestrationNode::make_maps_list_message() const
+{
+  std::vector<fs::path> map_directories;
+  try {
+    if (fs::is_directory(maps_directory_)) {
+      for (const auto & entry : fs::directory_iterator(maps_directory_)) {
+        if (!entry.is_directory()) {
+          continue;
+        }
+
+        const auto map_id = entry.path().filename().string();
+        if (map_id.rfind("map_", 0) != 0) {
+          continue;
+        }
+
+        map_directories.push_back(entry.path());
+      }
+    }
+  } catch (const std::exception & ex) {
+    RCLCPP_ERROR(get_logger(), "Failed to list maps under %s: %s", maps_directory_.c_str(), ex.what());
+  }
+
+  std::sort(map_directories.begin(), map_directories.end());
+
+  std::string body = "{\"type\":\"maps_list\",\"maps\":[";
+  bool first = true;
+  for (const auto & map_dir : map_directories) {
+    const auto map_id = map_dir.filename().string();
+    if (!first) {
+      body += ",";
+    }
+    first = false;
+
+    const bool has_graph = fs::exists(map_dir / "waypoint_graph.json");
+    const bool has_map = fs::exists(map_dir / "map.yaml") && fs::exists(map_dir / "map.png");
+    body += "{\"id\":\"" + escape_json(map_id) + "\",\"path\":\"" +
+      escape_json(map_dir.string()) + "\",\"has_graph\":" + (has_graph ? "true" : "false") +
+      ",\"has_map\":" + (has_map ? "true" : "false") +
+      ",\"selected\":" + (map_id == active_map_id_ ? "true" : "false") + "}";
+  }
+  body += "]}";
+  return body;
+}
+
+std::string WebsocketOrchestrationNode::make_map_selected_message(const std::string & map_id) const
+{
+  return "{\"type\":\"map_selected\",\"map_id\":\"" + escape_json(map_id) +
+         "\",\"state\":\"" + state_to_string(state_) +
+         "\",\"paused\":" + (paused_ ? "true" : "false") + "}";
+}
+
 void WebsocketOrchestrationNode::broadcast_state()
 {
   const std::string message = make_state_update_message();
@@ -1198,13 +1761,15 @@ void WebsocketOrchestrationNode::broadcast_state()
 std::string WebsocketOrchestrationNode::make_state_update_message() const
 {
   return "{\"type\":\"state_update\",\"state\":\"" + state_to_string(state_) +
-         "\",\"paused\":" + (paused_ ? "true" : "false") + "}";
+         "\",\"paused\":" + (paused_ ? "true" : "false") +
+         ",\"map_id\":\"" + escape_json(active_map_id_) + "\"}";
 }
 
 std::string WebsocketOrchestrationNode::make_healthcheck_body() const
 {
   return "{\"status\":\"ok\",\"state\":\"" + state_to_string(state_) +
-         "\",\"paused\":" + (paused_ ? "true" : "false") + "}";
+         "\",\"paused\":" + (paused_ ? "true" : "false") +
+         ",\"map_id\":\"" + escape_json(active_map_id_) + "\"}";
 }
 
 std::string WebsocketOrchestrationNode::make_command_ack(

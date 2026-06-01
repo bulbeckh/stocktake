@@ -13,6 +13,7 @@
   <depend>explore_lite_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>nav2_msgs</depend>
+  <depend>slam_toolbox</depend>
   <depend>stocktake_nvidia_swagger_msgs</depend>
   <depend>rclcpp_action</depend>
   <depend>tf2_ros</depend>

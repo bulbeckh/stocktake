@@ -20,9 +20,11 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
+#include <nav2_msgs/srv/load_map.hpp>
 #include <nav2_msgs/srv/save_map.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
+#include <slam_toolbox/srv/pause.hpp>
 #include <stocktake_nvidia_swagger_msgs/srv/generate_waypoint_graph.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
@@ -192,6 +194,13 @@ private:
     const StoredWaypointNode & node,
     const NavigateToPoseGoalHandle::WrappedResult & result);
   bool has_stored_graph() const;
+  bool prepare_new_map_directory();
+  bool persist_current_map_artifacts(std::size_t node_count, std::size_t edge_count) const;
+  bool load_stored_map(const std::string & map_id);
+  bool disable_mapping_backend();
+  bool load_map_into_map_server(const std::string & map_yaml_path);
+  std::string make_maps_list_message() const;
+  std::string make_map_selected_message(const std::string & map_id) const;
 
   void broadcast_state();
   std::string make_state_update_message() const;
@@ -213,11 +222,18 @@ private:
   rclcpp_action::Client<Explore>::SharedPtr explore_client_;
   rclcpp_action::Client<NavigateToPose>::SharedPtr navigate_to_pose_client_;
   rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedPtr map_saver_client_;
+  rclcpp::Client<nav2_msgs::srv::LoadMap>::SharedPtr map_loader_client_;
+  rclcpp::Client<slam_toolbox::srv::Pause>::SharedPtr mapping_backend_pause_client_;
   rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedPtr
     generate_waypoint_graph_client_;
 
   WorkflowState state_;
   bool paused_;
+  std::string maps_directory_;
+  std::string map_server_load_service_name_;
+  std::string mapping_backend_pause_service_name_;
+  std::string active_map_id_;
+  std::string active_map_directory_;
   std::string saved_map_base_path_;
   std::string saved_map_image_path_;
   std::string saved_map_metadata_path_;

@@ -9,11 +9,25 @@ const RETRY_INTERVAL_MS = 10_000;
 
 type ConnectionState = "idle" | "connecting" | "connected" | "retrying";
 type ServerState = "IDLE" | "MAPPING" | "CONSTRUCTING_ROUTE";
-type CommandName = "start_mapping" | "start_stocktake" | "pause" | "resume";
+type CommandName =
+  | "start_mapping"
+  | "start_stocktake"
+  | "pause"
+  | "resume"
+  | "list_maps"
+  | "select_map";
+type MapInfo = {
+  id: string;
+  path: string;
+  has_graph: boolean;
+  has_map: boolean;
+  selected: boolean;
+};
 
 type ServerMessage =
   | { type: "state_update"; state: ServerState; paused: boolean }
   | { type: "command_ack"; command: CommandName; status: "accepted" | "rejected"; reason?: string | null }
+  | { type: "maps_list"; maps: MapInfo[] }
   | { type: "error"; message: string };
 
 export default function Home() {
@@ -26,6 +40,8 @@ export default function Home() {
   const [serverState, setServerState] = useState<ServerState>("IDLE");
   const [isPaused, setIsPaused] = useState(false);
   const [commandStatus, setCommandStatus] = useState("Waiting for server");
+  const [availableMaps, setAvailableMaps] = useState<MapInfo[]>([]);
+  const [selectedMapId, setSelectedMapId] = useState("no map");
   const websocketUrl = `ws://${WS_HOST}:${WS_PORT}${WS_PATH}`;
   const isSocketOpen = wsRef.current?.readyState === WebSocket.OPEN;
 
@@ -74,6 +90,7 @@ export default function Home() {
       updateConnectionState("connected");
       setConnectionStatus(`Connected to ${websocketUrl}`);
       setCommandStatus("Connected to server");
+      sendCommand("list_maps", socket);
     };
 
     socket.onmessage = (event) => {
@@ -103,6 +120,15 @@ export default function Home() {
               ? `${formatCommandLabel(message.command)} accepted by server`
               : message.reason ?? `${formatCommandLabel(message.command)} rejected by server`,
           );
+          return;
+        }
+
+        if (message.type === "maps_list") {
+          const selectedMap = message.maps.find((map) => map.selected);
+
+          setAvailableMaps(message.maps);
+          setSelectedMapId(selectedMap?.id ?? "no map");
+          setCommandStatus(`${message.maps.length} map${message.maps.length === 1 ? "" : "s"} available`);
           return;
         }
 
@@ -162,8 +188,12 @@ export default function Home() {
     };
   }, []);
 
-  const sendCommand = (command: CommandName) => {
-    if (wsRef.current?.readyState !== WebSocket.OPEN) {
+  const sendCommand = (
+    command: CommandName,
+    socket = wsRef.current,
+    extraPayload: Record<string, string> = {},
+  ) => {
+    if (socket?.readyState !== WebSocket.OPEN) {
       setCommandStatus("Cannot send command while websocket is disconnected");
       return;
     }
@@ -171,9 +201,10 @@ export default function Home() {
     const payload = {
       type: "command",
       command,
+      ...extraPayload,
     };
 
-    wsRef.current.send(JSON.stringify(payload));
+    socket.send(JSON.stringify(payload));
     setCommandStatus(`${formatCommandLabel(command)} command sent`);
   };
 
@@ -187,6 +218,16 @@ export default function Home() {
 
   const togglePauseMapping = () => {
     sendCommand(isPaused ? "resume" : "pause");
+  };
+
+  const selectMap = (mapId: string) => {
+    setSelectedMapId(mapId || "no map");
+
+    if (!mapId) {
+      return;
+    }
+
+    sendCommand("select_map", wsRef.current, { map_id: mapId });
   };
 
   const indicatorClassName =
@@ -231,6 +272,30 @@ export default function Home() {
           <p className="statusText">{commandStatus}</p>
         </section>
 
+        <section className="stateSection">
+          <div>
+            <p className="statusLabel">Selected map</p>
+            <div className="mapLabel">{selectedMapId}</div>
+          </div>
+          <label className="mapSelectLabel" htmlFor="map-select">
+            Map ID
+          </label>
+          <select
+            id="map-select"
+            className="mapSelect"
+            value={selectedMapId === "no map" ? "" : selectedMapId}
+            onChange={(event) => selectMap(event.target.value)}
+            disabled={!isSocketOpen || availableMaps.length === 0}
+          >
+            <option value="">No map</option>
+            {availableMaps.map((map) => (
+              <option key={map.id} value={map.id}>
+                {map.id}
+              </option>
+            ))}
+          </select>
+        </section>
+
         <div className="actionRow">
           <button
             type="button"
@@ -269,6 +334,14 @@ function formatCommandLabel(command: CommandName): string {
 
   if (command === "start_stocktake") {
     return "Start stocktake";
+  }
+
+  if (command === "list_maps") {
+    return "List maps";
+  }
+
+  if (command === "select_map") {
+    return "Select map";
   }
 
   return command.charAt(0).toUpperCase() + command.slice(1);

@@ -10,7 +10,8 @@ from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnShutdown
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import Node, SetParameter, PushROSNamespace
+from launch_ros.actions import Node, SetParameter, PushROSNamespace, ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
 from nav2_common.launch import RewrittenYaml
 
 """
@@ -185,13 +186,14 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
     )
 
     ## Start map server if we are not using slam_toolbox (originally launched alongside slam_toolbox in slam_launch.py)
-    start_map_server = GroupAction(
+    start_map_saver = GroupAction(
         condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' != 'lidar' "])),
         actions=[
             SetParameter('use_sim_time', 'True'),
             Node(
                 package='nav2_map_server',
                 executable='map_saver_server',
+                name='map_saver',
                 output='screen',
                 respawn=LaunchConfiguration('use_respawn'),
                 respawn_delay=2.0,
@@ -208,8 +210,40 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
             ),
         ]
     )
+    
+    ## Map server
+    map_server_container = ComposableNodeContainer(
+        name='map_container',
+        namespace='',
+        package='rclcpp_components',
+        executable='component_container_isolated',
+        output='screen',
+        composable_node_descriptions=[
+            ComposableNode(
+                package='nav2_map_server',
+                plugin='nav2_map_server::MapServer',
+                name='map_server',
+                parameters=[{
+                    'yaml_filename': '',
+                    'use_sim_time': False,
+                }],
+            ),
+        ],
+    )
 
-    return [start_map_server, navigation_lidar_slam_cmd, rviz_cmd]
+    map_server_lifecycle_manager = Node(
+        package='nav2_lifecycle_manager',
+        executable='lifecycle_manager',
+        name='lifecycle_manager_map',
+        output='screen',
+        parameters=[{
+            'use_sim_time': False,
+            'autostart': True,
+            'node_names': ['map_server'],
+        }],
+    )
+
+    return [start_map_saver, navigation_lidar_slam_cmd, rviz_cmd, map_server_container, map_server_lifecycle_manager]
 
 def generate_launch_description() -> LaunchDescription:
     # Get package directories

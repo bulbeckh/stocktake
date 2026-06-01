@@ -1,4 +1,5 @@
 string map_path
+string output_dir
 ---
 stocktake_nvidia_swagger_msgs/WaypointGraph graph
 bool success
