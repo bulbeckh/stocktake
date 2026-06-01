@@ -220,17 +220,12 @@ private:
   bool paused_;
   std::string saved_map_base_path_;
   std::string saved_map_image_path_;
+  std::string saved_map_metadata_path_;
   TraversalGraph stored_waypoint_graph_;
   bool has_stored_waypoint_graph_;
   std::unordered_set<uint32_t> visited_navigation_node_ids_;
   double navigation_current_world_x_;
   double navigation_current_world_y_;
-
-  // Used to convert between the swagger node world coordinates (which start at (0,0) and the
-  // actual Nav2 map coordinates.
-  // TODO '5' is hardcoded here but we should instead pull the map sizes when using map_saver
-  uint32_t map_offset_x{5};
-  uint32_t map_offset_y{5};
 
 };
 

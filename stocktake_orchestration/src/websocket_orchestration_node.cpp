@@ -1,7 +1,14 @@
 #include "stocktake_orchestration2/websocket_orchestration_node.hpp"
 
+#include <algorithm>
+#include <array>
+#include <cctype>
 #include <cmath>
+#include <cstdint>
+#include <fstream>
 #include <functional>
+#include <optional>
+#include <sstream>
 #include <utility>
 
 #include <boost/asio/dispatch.hpp>
@@ -20,6 +27,177 @@ using tcp = boost::asio::ip::tcp;
 
 namespace stocktake_orchestration2
 {
+
+namespace
+{
+
+struct SavedMapMetadata
+{
+  double resolution;
+  double origin_x;
+  double origin_y;
+  double origin_yaw;
+  uint32_t image_width;
+  uint32_t image_height;
+};
+
+std::string trim_copy(const std::string & value)
+{
+  auto first = value.begin();
+  while (first != value.end() && std::isspace(static_cast<unsigned char>(*first))) {
+    ++first;
+  }
+
+  auto last = value.end();
+  while (last != first && std::isspace(static_cast<unsigned char>(*(last - 1)))) {
+    --last;
+  }
+
+  return std::string(first, last);
+}
+
+bool parse_yaml_scalar(
+  const std::string & line,
+  const std::string & key,
+  double & value)
+{
+  const std::string prefix = key + ":";
+  if (line.rfind(prefix, 0) != 0) {
+    return false;
+  }
+
+  value = std::stod(trim_copy(line.substr(prefix.size())));
+  return true;
+}
+
+bool parse_yaml_origin(
+  const std::string & line,
+  double & origin_x,
+  double & origin_y,
+  double & origin_yaw)
+{
+  const std::string prefix = "origin:";
+  if (line.rfind(prefix, 0) != 0) {
+    return false;
+  }
+
+  auto origin_text = trim_copy(line.substr(prefix.size()));
+  if (!origin_text.empty() && origin_text.front() == '[') {
+    origin_text.erase(origin_text.begin());
+  }
+  if (!origin_text.empty() && origin_text.back() == ']') {
+    origin_text.pop_back();
+  }
+
+  std::replace(origin_text.begin(), origin_text.end(), ',', ' ');
+  std::istringstream stream(origin_text);
+  stream >> origin_x >> origin_y >> origin_yaw;
+  return !stream.fail();
+}
+
+std::optional<std::array<uint32_t, 2>> read_png_dimensions(const std::string & image_path)
+{
+  std::ifstream stream(image_path, std::ios::binary);
+  if (!stream) {
+    return std::nullopt;
+  }
+
+  std::array<unsigned char, 24> header{};
+  stream.read(reinterpret_cast<char *>(header.data()), static_cast<std::streamsize>(header.size()));
+  if (stream.gcount() != static_cast<std::streamsize>(header.size())) {
+    return std::nullopt;
+  }
+
+  constexpr std::array<unsigned char, 8> png_signature{
+    0x89, 'P', 'N', 'G', '\r', '\n', 0x1a, '\n'};
+  for (std::size_t i = 0; i < png_signature.size(); ++i) {
+    if (header[i] != png_signature[i]) {
+      return std::nullopt;
+    }
+  }
+
+  const auto read_u32_be = [&header](std::size_t offset) {
+      return (static_cast<uint32_t>(header[offset]) << 24) |
+             (static_cast<uint32_t>(header[offset + 1]) << 16) |
+             (static_cast<uint32_t>(header[offset + 2]) << 8) |
+             static_cast<uint32_t>(header[offset + 3]);
+    };
+
+  return std::array<uint32_t, 2>{read_u32_be(16), read_u32_be(20)};
+}
+
+std::optional<SavedMapMetadata> load_saved_map_metadata(
+  const std::string & metadata_path,
+  const std::string & image_path)
+{
+  std::ifstream metadata_stream(metadata_path);
+  if (!metadata_stream) {
+    return std::nullopt;
+  }
+
+  SavedMapMetadata metadata{};
+  bool has_resolution = false;
+  bool has_origin = false;
+
+  try {
+    std::string line;
+    while (std::getline(metadata_stream, line)) {
+      line = trim_copy(line);
+      if (line.empty() || line.front() == '#') {
+        continue;
+      }
+
+      if (parse_yaml_scalar(line, "resolution", metadata.resolution)) {
+        has_resolution = true;
+        continue;
+      }
+
+      if (parse_yaml_origin(line, metadata.origin_x, metadata.origin_y, metadata.origin_yaw)) {
+        has_origin = true;
+        continue;
+      }
+    }
+  } catch (const std::exception &) {
+    return std::nullopt;
+  }
+
+  const auto dimensions = read_png_dimensions(image_path);
+  if (!has_resolution || !has_origin || !dimensions.has_value() || metadata.resolution <= 0.0) {
+    return std::nullopt;
+  }
+
+  metadata.image_width = (*dimensions)[0];
+  metadata.image_height = (*dimensions)[1];
+  return metadata;
+}
+
+bool image_pixel_to_nav2_map_coordinates(
+  int32_t image_x,
+  int32_t image_y,
+  const SavedMapMetadata & metadata,
+  double & map_x,
+  double & map_y)
+{
+  if (image_x < 0 || image_y < 0 ||
+    static_cast<uint32_t>(image_x) >= metadata.image_width ||
+    static_cast<uint32_t>(image_y) >= metadata.image_height)
+  {
+    return false;
+  }
+
+  const double local_x = (static_cast<double>(image_x) + 0.5) * metadata.resolution;
+  const double local_y =
+    (static_cast<double>(metadata.image_height) - static_cast<double>(image_y) - 0.5) *
+    metadata.resolution;
+  const double cos_yaw = std::cos(metadata.origin_yaw);
+  const double sin_yaw = std::sin(metadata.origin_yaw);
+
+  map_x = metadata.origin_x + cos_yaw * local_x - sin_yaw * local_y;
+  map_y = metadata.origin_y + sin_yaw * local_x + cos_yaw * local_y;
+  return true;
+}
+
+}  // namespace
 
 WebSocketSession::WebSocketSession(
   tcp::socket socket,
@@ -216,6 +394,7 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
 
   saved_map_base_path_ = "/tmp/stocktake_map";
   saved_map_image_path_ = saved_map_base_path_ + ".png";
+  saved_map_metadata_path_ = saved_map_base_path_ + ".yaml";
 
   explore_client_ = rclcpp_action::create_client<Explore>(this, "/explore");
   navigate_to_pose_client_ = rclcpp_action::create_client<NavigateToPose>(
@@ -708,30 +887,86 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
     get_logger(), "Waypoint graph generation complete: %zu nodes, %zu edges",
     response->graph.nodes.size(), response->graph.edges.size());
 
-  for (const auto & node : response->graph.nodes) {
-    RCLCPP_INFO(
+  const auto map_metadata = load_saved_map_metadata(saved_map_metadata_path_, saved_map_image_path_);
+  if (!map_metadata.has_value()) {
+    RCLCPP_ERROR(
       get_logger(),
-      "Graph node: id=%u world_x=%.3f world_y=%.3f pixel_x=%d pixel_y=%d node_type=%s",
-      node.id, node.world_x, node.world_y, node.pixel_x, node.pixel_y, node.node_type.c_str());
+      "Failed to load saved map metadata from %s and image dimensions from %s",
+      saved_map_metadata_path_.c_str(),
+      saved_map_image_path_.c_str());
+    boost::asio::post(
+      io_context_,
+      [this]() {
+        if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
+          transition_to(WorkflowState::IDLE, false);
+          RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
+        }
+      });
+    return;
   }
 
-  for (const auto & edge : response->graph.edges) {
-    RCLCPP_INFO(
-      get_logger(),
-      "Graph edge: source_id=%u target_id=%u weight=%.3f edge_type=%s",
-      edge.source_id, edge.target_id, edge.weight, edge.edge_type.c_str());
-  }
+  RCLCPP_INFO(
+    get_logger(),
+    "Converting swagger graph pixels to Nav2 map frame using resolution=%.3f origin=(%.3f, %.3f, %.3f) image=%ux%u",
+    map_metadata->resolution,
+    map_metadata->origin_x,
+    map_metadata->origin_y,
+    map_metadata->origin_yaw,
+    map_metadata->image_width,
+    map_metadata->image_height);
 
   stored_waypoint_graph_.nodes_by_id.clear();
   stored_waypoint_graph_.adjacency_list.clear();
 
   for (const auto & node : response->graph.nodes) {
+    double nav2_map_x = 0.0;
+    double nav2_map_y = 0.0;
+    const int32_t image_x = node.pixel_y;
+    const int32_t image_y = node.pixel_x;
+    if (!image_pixel_to_nav2_map_coordinates(
+        image_x, image_y, *map_metadata, nav2_map_x, nav2_map_y))
+    {
+      RCLCPP_ERROR(
+        get_logger(),
+        "Rejecting waypoint graph because node id=%u has out-of-bounds swagger pixel row=%d column=%d for image %ux%u",
+        node.id,
+        node.pixel_x,
+        node.pixel_y,
+        map_metadata->image_width,
+        map_metadata->image_height);
+      stored_waypoint_graph_.nodes_by_id.clear();
+      stored_waypoint_graph_.adjacency_list.clear();
+      boost::asio::post(
+        io_context_,
+        [this]() {
+          if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
+            transition_to(WorkflowState::IDLE, false);
+            RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
+          }
+        });
+      return;
+    }
+
+    RCLCPP_INFO(
+      get_logger(),
+      "Graph node: id=%u swagger_world=(%.3f, %.3f) nav2_map=(%.3f, %.3f) swagger_pixel=(row=%d, column=%d) image_pixel=(x=%d, y=%d) node_type=%s",
+      node.id,
+      node.world_x,
+      node.world_y,
+      nav2_map_x,
+      nav2_map_y,
+      node.pixel_x,
+      node.pixel_y,
+      image_x,
+      image_y,
+      node.node_type.c_str());
+
     stored_waypoint_graph_.nodes_by_id.emplace(
       node.id,
       StoredWaypointNode{
         node.id,
-        node.world_x,
-        node.world_y,
+        nav2_map_x,
+        nav2_map_y,
         node.pixel_x,
         node.pixel_y,
         node.node_type});
@@ -739,6 +974,10 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
   }
 
   for (const auto & edge : response->graph.edges) {
+    RCLCPP_INFO(
+      get_logger(),
+      "Graph edge: source_id=%u target_id=%u weight=%.3f edge_type=%s",
+      edge.source_id, edge.target_id, edge.weight, edge.edge_type.c_str());
     stored_waypoint_graph_.adjacency_list[edge.source_id].push_back(
       TraversalGraphEdge{
         edge.target_id,
@@ -771,8 +1010,8 @@ const StoredWaypointNode * WebsocketOrchestrationNode::find_closest_node(
 
   for (const auto & [node_id, node] : stored_waypoint_graph_.nodes_by_id) {
     (void)node_id;
-    const double dx = (node.world_x-map_offset_x) - world_x;
-    const double dy = (node.world_y-map_offset_y) - world_y;
+    const double dx = node.world_x - world_x;
+    const double dy = node.world_y - world_y;
     const double distance = std::hypot(dx, dy);
 
     if (closest_node == nullptr || distance < closest_distance) {
@@ -871,8 +1110,8 @@ void WebsocketOrchestrationNode::send_navigation_goal_to_node(const StoredWaypoi
   NavigateToPose::Goal goal;
   goal.pose.header.frame_id = "map";
   goal.pose.header.stamp = now();
-  goal.pose.pose.position.x = node.world_x - static_cast<double>(map_offset_x);
-  goal.pose.pose.position.y = node.world_y - static_cast<double>(map_offset_y);
+  goal.pose.pose.position.x = node.world_x;
+  goal.pose.pose.position.y = node.world_y;
   goal.pose.pose.position.z = 0.0;
   goal.pose.pose.orientation.x = 0.0;
   goal.pose.pose.orientation.y = 0.0;

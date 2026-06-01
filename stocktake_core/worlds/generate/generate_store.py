@@ -21,13 +21,14 @@ sdf_store_str_head = """<?xml version="1.0" ?>
     <!-- Robot type -->
 	<include>
 		<uri>model://{}</uri>
-		<pose degrees='true'>10 1 0.1 0 0 0</pose>
+		<pose degrees='true'>5 1 0.1 0 0 0</pose>
 	</include>
     
     <!-- TEMPORARY WALL WEST -->
     <model name="wall_west">
         <static>true</static>
-        <pose>14.1 5 1.5 0 0 0</pose>
+        <!--pose>14.1 5 1.5 0 0 0</pose-->
+        <pose>7.6 5 1.5 0 0 0</pose>
         <link name="link">
           <visual name="visual">
             <geometry>
@@ -129,19 +130,21 @@ if __name__=="__main__":
     shelf_poses = []
 
     ## Bottom Shelves
-    for i in range(0,9):
+    #for i in range(0,9):
+    for i in range(0,5):
         shelf_poses.append((0.5+i,0,0,0,0,0))
 
     ## Middle Shelves
-    for i in range(0,7):
+    #for i in range(0,7):
+    for i in range(0,2):
         shelf_poses.append((3.5+i,2.5,0,0,0,180))
         shelf_poses.append((2.5+i,2.5,0,0,0,0))
 
-        shelf_poses.append((3.5+i,5,0,0,0,180))
-        shelf_poses.append((2.5+i,5,0,0,0,0))
+        #shelf_poses.append((3.5+i,5,0,0,0,180))
+        #shelf_poses.append((2.5+i,5,0,0,0,0))
 
-        shelf_poses.append((3.5+i,7.5,0,0,0,180))
-        shelf_poses.append((2.5+i,7.5,0,0,0,0))
+        #shelf_poses.append((3.5+i,7.5,0,0,0,180))
+        #shelf_poses.append((2.5+i,7.5,0,0,0,0))
 
     ## Top Shelves
     for i in range(0,11):
@@ -149,22 +152,27 @@ if __name__=="__main__":
         pass
 
     ## Left Shelves
-    for i in range(0,10):
+    #for i in range(0,10):
+    for i in range(0,5):
         shelf_poses.append((0,1+i,0,0,0,-90))
 
     ## Right Shelves
-    for i in range(0,5):
+    #for i in range(0,5):
+    for i in range(0,1):
         shelf_poses.append((12,5+i,0,0,0,90))
 
     ## End Shelves
         shelf_poses.append((2.5,2,0,0,0,90))
-        shelf_poses.append((2.5,4.5,0,0,0,90))
-        shelf_poses.append((2.5,7,0,0,0,90))
+        #shelf_poses.append((2.5,4.5,0,0,0,90))
+        #shelf_poses.append((2.5,7,0,0,0,90))
 
-        shelf_poses.append((9.5,3,0,0,0,-90))
-        shelf_poses.append((9.5,5.5,0,0,0,-90))
-        shelf_poses.append((9.5,8,0,0,0,-90))
+        #shelf_poses.append((9.5,3,0,0,0,-90))
+        shelf_poses.append((4.5,3,0,0,0,-90))
 
+        #shelf_poses.append((9.5,5.5,0,0,0,-90))
+        #shelf_poses.append((9.5,8,0,0,0,-90))
+
+        shelf_poses.append((7.5,0,0,0,0,90))
 
     ## Generate sdf
     if robot_type=='lidar':
@@ -208,6 +216,7 @@ if __name__=="__main__":
 </include>
 <include>
     <uri>model://wall-north</uri>
+    <pose>0 -5 0 0 0 0</pose>
     <name>wall_north</name>
     <static>true</static>
 </include>"""
@@ -270,7 +279,8 @@ if __name__=="__main__":
     <uri>model://counter</uri>
     <name>counter</name>
     <static>true</static>
-    <pose degrees="true">11.5 1 0 0 0 0</pose>
+    <pose degrees="true">7 1 0 0 0 0</pose>
+    <!--pose degrees="true">11.5 1 0 0 0 0</pose-->
     </include>"""
 
     ## NOTE Temporarily disabling writing of output tag locations

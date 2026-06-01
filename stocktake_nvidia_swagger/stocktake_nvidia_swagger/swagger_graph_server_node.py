@@ -6,7 +6,7 @@ import cv2
 import rclpy
 from rclpy.node import Node
 
-from swagger import WaypointGraphGenerator
+from swagger import WaypointGraphGenerator, WaypointGraphGeneratorConfig
 
 from stocktake_nvidia_swagger_msgs.msg import WaypointNode, WaypointEdge, WaypointGraph
 from stocktake_nvidia_swagger_msgs.srv import GenerateWaypointGraph
@@ -17,14 +17,29 @@ class SwaggerGraphServer(Node):
         super().__init__("swagger_graph_server")
 
         # Parameters controlling SWAGGER graph generation
-        self.declare_parameter("occupancy_threshold", 127)
+        #self.declare_parameter("occupancy_threshold", 127)
+        self.declare_parameter("occupancy_threshold", 250)
         self.declare_parameter("safety_distance", 0.30)
         self.declare_parameter("resolution", 0.05)
         self.declare_parameter("x_offset", 0.0)
         self.declare_parameter("y_offset", 0.0)
         self.declare_parameter("rotation", 0.0)
 
-        self._generator = WaypointGraphGenerator()
+        config = WaypointGraphGeneratorConfig(
+            skeleton_sample_distance=1.0,        # Distance between skeleton waypoints (in meters)
+            boundary_inflation_factor=2.0,       # Larger margins around obstacles
+            boundary_sample_distance=1.5,        # Distance between boundary samples (in meters)
+            free_space_sampling_threshold=2.0,   # Distance from obstacles for free space sampling (in meters)
+            merge_node_distance=1.0,             # Distance to merge nearby nodes (in meters)
+            min_subgraph_length=1.0,             # Minimum subgraph length to keep (in meters)
+            use_skeleton_graph=True,             # Create a graph along the medial axis
+            use_boundary_sampling=True,          # Sample nodes along boundaries
+            use_free_space_sampling=True,        # Sample nodes in open areas
+            use_delaunay_shortcuts=True,         # Create shortcut edges
+            prune_graph=True                     # Remove redundant nodes and edges
+        )
+
+        self._generator = WaypointGraphGenerator(config=config)
 
         self._service = self.create_service(
             GenerateWaypointGraph,
