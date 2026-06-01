@@ -116,7 +116,46 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
     ## Remap the tf topics to relative namespaces so we can add namespace prefixes
     tf_remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
-    navigation_lidar_slam_cmd = GroupAction(
+    ## Starts both amcl and slam_toolbox - both are managed via the orchestration node, not the nav2 lifecycle manager
+    slam_amcl_cmd = GroupAction(
+        [
+            PushROSNamespace(condition=IfCondition(LaunchConfiguration('use_namespace')), namespace=LaunchConfiguration('namespace')),
+            Node(
+                condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
+                package='slam_toolbox',
+                executable='sync_slam_toolbox_node',
+                name='slam_toolbox',
+                output='screen',
+                namespace='',
+                parameters=[
+                  LaunchConfiguration('slam_params_file'),
+                  {
+                    #'use_lifecycle_manager': use_lifecycle_manager,
+                    'use_sim_time': LaunchConfiguration('use_sim_time'),
+                  }
+                ],
+            ),
+            Node(
+                condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
+                package='nav2_amcl',
+                executable='amcl',
+                name='amcl',
+                output='screen',
+                respawn=LaunchConfiguration('use_respawn'),
+                respawn_delay=2.0,
+                parameters=[
+                    os.path.join(stocktake_core_dir, 'config', 'amcl.yaml'),
+                    {
+                        'use_sim_time': LaunchConfiguration('use_sim_time'),
+                    }
+                ],
+                arguments=['--ros-args', '--log-level', 'info'],
+                remappings=tf_remappings,
+            )
+        ]
+    )
+
+    navigation_cmd = GroupAction(
         [
             PushROSNamespace(condition=IfCondition(LaunchConfiguration('use_namespace')), namespace=LaunchConfiguration('namespace')),
             Node(
@@ -128,21 +167,6 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
                 arguments=['--ros-args', '--log-level', 'info'],
                 remappings=tf_remappings,
                 output='screen',
-            ),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    os.path.join(bringup_dir, 'launch', 'slam_launch.py')
-                ),
-                ## With the 2D lidar sensor, we use slam_toolbox (launched inside container)
-                condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
-                launch_arguments={
-                    'namespace': LaunchConfiguration('namespace'),
-                    'use_sim_time': LaunchConfiguration('use_sim_time'),
-                    'autostart': 'True',
-                    'use_respawn': LaunchConfiguration('use_respawn'),
-                    'params_file': LaunchConfiguration('slam_params_file'),
-                    #'params_file': slam_params_configured,
-                }.items(),
             ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
@@ -187,7 +211,7 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
 
     ## Start map server if we are not using slam_toolbox (originally launched alongside slam_toolbox in slam_launch.py)
     start_map_saver = GroupAction(
-        condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' != 'lidar' "])),
+        #condition=IfCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' != 'lidar' "])),
         actions=[
             SetParameter('use_sim_time', 'True'),
             Node(
@@ -243,7 +267,7 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
         }],
     )
 
-    return [start_map_saver, navigation_lidar_slam_cmd, rviz_cmd, map_server_container, map_server_lifecycle_manager]
+    return [start_map_saver, navigation_cmd, rviz_cmd, map_server_container, map_server_lifecycle_manager, slam_amcl_cmd]
 
 def generate_launch_description() -> LaunchDescription:
     # Get package directories

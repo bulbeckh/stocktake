@@ -19,12 +19,14 @@
 #include <explore_lite_msgs/action/explore.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
+#include <lifecycle_msgs/msg/state.hpp>
+#include <lifecycle_msgs/srv/change_state.hpp>
+#include <lifecycle_msgs/srv/get_state.hpp>
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 #include <nav2_msgs/srv/load_map.hpp>
 #include <nav2_msgs/srv/save_map.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
-#include <slam_toolbox/srv/pause.hpp>
 #include <stocktake_nvidia_swagger_msgs/srv/generate_waypoint_graph.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
@@ -127,6 +129,8 @@ class WebsocketOrchestrationNode : public rclcpp::Node
 public:
   using Explore = explore_lite_msgs::action::Explore;
   using ExploreGoalHandle = rclcpp_action::ClientGoalHandle<Explore>;
+  using ChangeState = lifecycle_msgs::srv::ChangeState;
+  using GetState = lifecycle_msgs::srv::GetState;
   using NavigateToPose = nav2_msgs::action::NavigateToPose;
   using NavigateToPoseGoalHandle = rclcpp_action::ClientGoalHandle<NavigateToPose>;
   using tcp = boost::asio::ip::tcp;
@@ -197,8 +201,14 @@ private:
   bool prepare_new_map_directory();
   bool persist_current_map_artifacts(std::size_t node_count, std::size_t edge_count) const;
   bool load_stored_map(const std::string & map_id);
-  bool disable_mapping_backend();
   bool load_map_into_map_server(const std::string & map_yaml_path);
+  void initialize_managed_lifecycle_nodes();
+  bool prepare_mapping_lifecycle();
+  bool prepare_navigation_lifecycle();
+  bool ensure_lifecycle_node_inactive(const std::string & node_name);
+  bool ensure_lifecycle_node_active(const std::string & node_name);
+  bool get_lifecycle_state(const std::string & node_name, uint8_t & state_id);
+  bool change_lifecycle_state(const std::string & node_name, uint8_t transition_id);
   std::string make_maps_list_message() const;
   std::string make_map_selected_message(const std::string & map_id) const;
 
@@ -216,6 +226,7 @@ private:
   boost::asio::io_context io_context_;
   tcp::acceptor acceptor_;
   std::thread io_thread_;
+  std::thread lifecycle_startup_thread_;
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
   std::unordered_set<std::shared_ptr<WebSocketSession>> sessions_;
@@ -223,15 +234,19 @@ private:
   rclcpp_action::Client<NavigateToPose>::SharedPtr navigate_to_pose_client_;
   rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedPtr map_saver_client_;
   rclcpp::Client<nav2_msgs::srv::LoadMap>::SharedPtr map_loader_client_;
-  rclcpp::Client<slam_toolbox::srv::Pause>::SharedPtr mapping_backend_pause_client_;
   rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedPtr
     generate_waypoint_graph_client_;
+  std::unordered_map<std::string, rclcpp::Client<ChangeState>::SharedPtr>
+    lifecycle_change_clients_;
+  std::unordered_map<std::string, rclcpp::Client<GetState>::SharedPtr>
+    lifecycle_get_clients_;
 
   WorkflowState state_;
   bool paused_;
   std::string maps_directory_;
   std::string map_server_load_service_name_;
-  std::string mapping_backend_pause_service_name_;
+  std::string slam_toolbox_lifecycle_node_name_;
+  std::string amcl_lifecycle_node_name_;
   std::string active_map_id_;
   std::string active_map_directory_;
   std::string saved_map_base_path_;

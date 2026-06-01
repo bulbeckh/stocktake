@@ -9,10 +9,10 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(explore_lite_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(lifecycle_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(slam_toolbox REQUIRED)
 find_package(stocktake_nvidia_swagger_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
@@ -33,16 +33,23 @@ endif()
 
 add_executable(stocktake_orchestration
   src/orchestration.cpp
-  src/websocket_orchestration_node.cpp
-  src/workflow_transition_actions.cpp
+  src/websocket_session.cpp
+  src/http_session.cpp
+  src/mapping.cpp
+  src/navigation.cpp
+  src/lifecycle.cpp
+  src/route_construction.cpp
+  src/websocket_message.cpp
+  src/main.cpp
+  src/transitions.cpp
 )
 ament_target_dependencies(stocktake_orchestration
   explore_lite_msgs
   geometry_msgs
+  lifecycle_msgs
   nav2_msgs
   rclcpp
   rclcpp_action
-  slam_toolbox
   stocktake_nvidia_swagger_msgs
   tf2_ros
 )
