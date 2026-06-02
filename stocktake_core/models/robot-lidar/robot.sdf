@@ -1,6 +1,16 @@
 <?xml version='1.0'?>
 <sdf version='1.11'>
-  <model name='robotmodel'>
+	<model name='robotmodel'>
+
+
+	<!-- TODO The name should determine the advertised service name. Need to update plugin -->
+	<include>
+		<name>rfid_scanner</name>
+		<uri>model://rfid-scanner</uri>
+		<pose>0 0 0.5 0 0 0</pose>
+	</include>
+
+
     <link name='robot_base'>
       <pose>0 0 0 0 0 0</pose>
       <visual name='robot-base-v'>
@@ -145,6 +155,12 @@
         <mass>1</mass>
       </inertial>
 	</link>
+
+	<joint name="scanner_joint" type="fixed">
+		<pose>0 0 0 0 0 0</pose>
+		<parent>robot_base</parent>
+		<child>rfid_scanner::rfid-scanner-link</child>
+	</joint>
 
     <joint name='frontleft' type='ball'>
       <pose>0 0 0 0 0 0</pose>

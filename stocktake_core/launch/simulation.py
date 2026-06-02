@@ -276,6 +276,18 @@ def generate_launch_description() -> LaunchDescription:
     ## TODO In the stereo and mono bridges, we need to use something like 'depth_image_proc' to produce a pointcloud2
     ## from the images
 
+    ## Gazebo RFID Scan service bridge (custom)
+    rfid_scan_service_bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            name="scan_service_bridge",
+            output="screen",
+            arguments=[
+                '/rfid_scanner/scan_request@gazebo_rfid_plugin/srv/RFIDScan@gz.msgs.Empty@gz.custom_msgs.RFIDScanResponse'
+                ],
+            parameters=[{"use_sim_time": True}],
+    )
+
     ld = LaunchDescription()
 
     ld.add_action(declare_robot_type_cmd)
@@ -299,5 +311,8 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(stereo_left_bridge_cmd)
     ld.add_action(stereo_right_bridge_cmd)
     ld.add_action(mono_bridge_cmd)
+
+    ## Scan service bridge
+    ld.add_action(rfid_scan_service_bridge)
 
     return ld

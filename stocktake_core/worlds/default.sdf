@@ -28,13 +28,6 @@
 	<!-- RFID Manager Plugin -->
 	<plugin filename="librfidPlugin" name="RFIDManagerPlugin"></plugin>
 
-	<!-- TODO Remove this - temporary -->
-	<include>
-		<uri>model://rfid-scanner</uri>
-		<pose>-2 -2 1 0 0 0</pose>
-		<static>true</static>
-	</include>
-
     <physics name="1ms" type="ignored">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
