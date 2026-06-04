@@ -245,13 +245,4 @@ const StoredWaypointNode * WebsocketOrchestrationNode::find_closest_unvisited_no
   return closest_node;
 }
 
-void WebsocketOrchestrationNode::mark_navigation_complete()
-{
-  boost::asio::post(
-    io_context_,
-    [this]() {
-      handle_navigation_complete_on_io_thread();
-    });
-}
-
 }

@@ -140,68 +140,101 @@ public:
   WebsocketOrchestrationNode();
   ~WebsocketOrchestrationNode() override;
 
-  // Call from future ROS callbacks once mapping work has completed.
-  void mark_mapping_complete();
-
-  // Call from future ROS callbacks once route construction has completed.
-  void mark_route_construction_complete();
-
-  // Call from future ROS callbacks once stocktake navigation has completed.
-  void mark_navigation_complete();
-
+  // Register websocket sessions
   void register_session(const std::shared_ptr<WebSocketSession> & session);
   void unregister_session(const WebSocketSession * session);
+
+  // Primary method for receiving websocket messages
   void handle_client_message(
     const std::shared_ptr<WebSocketSession> & session,
     const std::string & payload);
 
   response_type make_http_response(const request_type & request) const;
+
+  // Logs to console on connection close
   void log_disconnect(const boost::beast::error_code & ec) const;
 
 private:
+  // HTTP acceptance methods (http is upgraded to websocket)
   void do_accept();
   void on_accept(boost::beast::error_code ec, tcp::socket socket);
 
+  // State transition methods
   void start_mapping();
   void start_navigation();
   void pause_workflow();
   void resume_workflow();
+  void return_mapping_to_idle();
+  void return_constructing_route_to_idle();
   void transition_to(WorkflowState new_state, bool paused);
   void handle_mapping_complete_on_io_thread();
   void handle_route_construction_complete_on_io_thread();
   void handle_navigation_complete_on_io_thread();
-
-  // Placeholder transition hooks implemented in a separate translation unit.
   void on_enter_mapping_from_idle();
   void on_enter_constructing_route_from_mapping();
   void on_enter_navigating_from_idle();
-  void run_navigation_workflow();
+  void mark_mapping_complete();
+  void mark_route_construction_complete();
+  void mark_navigation_complete();
+
+  // Mapping
+  
+  /* @brief Start mapping phase by sending explore action to explore node */
   void send_explore_goal();
+
+  /* @brief Handle explore action response - either accepts action or rejects */
   void handle_explore_goal_response(const ExploreGoalHandle::SharedPtr & goal_handle);
-  void handle_explore_feedback(
-    ExploreGoalHandle::SharedPtr,
-    const std::shared_ptr<const Explore::Feedback> feedback);
+
+  /* @brief Handle explore action feedback - logs explore updates */
+  void handle_explore_feedback(ExploreGoalHandle::SharedPtr, const std::shared_ptr<const Explore::Feedback> feedback);
+
+  /* @brief Handle explore action result - transitions based on outcome */
   void handle_explore_result(const ExploreGoalHandle::WrappedResult & result);
-  void return_mapping_to_idle();
+
+  // Route construction
+
+  /* @brief Start route construction phase by calling map save service */
   void request_map_save();
-  void handle_map_save_response(rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedFuture future);
-  void request_waypoint_graph_generation(const std::string & map_image_path);
-  void handle_generate_waypoint_graph_response(
-    rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedFuture future);
-  bool lookup_robot_transform_in_map(geometry_msgs::msg::TransformStamped & transform) const;
-  const StoredWaypointNode * find_closest_node(double world_x, double world_y) const;
-  const StoredWaypointNode * find_closest_unvisited_node(
-    double world_x, double world_y, const std::unordered_set<uint32_t> & visited_node_ids) const;
-  void continue_navigation_workflow();
-  void send_navigation_goal_to_node(const StoredWaypointNode & node);
-  void handle_navigation_goal_result(
-    const StoredWaypointNode & node,
-    const NavigateToPoseGoalHandle::WrappedResult & result);
-  bool has_stored_graph() const;
+
+  /* @brief Creates map directory and artifacts */
   bool prepare_new_map_directory();
+
+  /* @brief Handle response from map_saver node - either success or failure */
+  void handle_map_save_response(rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedFuture future);
+
+  /* @brief Call swagger node service */
+  void request_waypoint_graph_generation(const std::string & map_image_path);
+
+  /* @brief Handle response from swagger node */
+  void handle_generate_waypoint_graph_response(rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedFuture future);
+
+  /* @brief Write route graph (waypoints) to map directory. Note, this is in the transformed ROS2 map coordinates and NOT the swagger graph coordinates */
   bool persist_current_map_artifacts(std::size_t node_count, std::size_t edge_count) const;
-  bool load_stored_map(const std::string & map_id);
-  bool load_map_into_map_server(const std::string & map_yaml_path);
+
+  // Navigation
+  
+  /* @brief Start navigation phase by navigating to first waypoint */
+  void run_navigation_workflow();
+
+  /* @brief Called once for each waypoint. Finds closest unvisited waypoint and calls NavigateToPose service */
+  void continue_navigation_workflow();
+
+  /* @brief Retrieves robot pose in map frame */
+  bool lookup_robot_transform_in_map(geometry_msgs::msg::TransformStamped & transform) const;
+
+  /* @brief Find closest node (euclidean distance) based on world position. Called at start of navigation phase */
+  const StoredWaypointNode * find_closest_node(double world_x, double world_y) const;
+
+  /* @brief Like 'find_closest_node' but checking visited_navigation_node_ids_ for unvisited nodes */
+  const StoredWaypointNode * find_closest_unvisited_node(double world_x, double world_y, const std::unordered_set<uint32_t> & visited_node_ids) const;
+
+  /* @brief Call NavigateToPose service */
+  void send_navigation_goal_to_node(const StoredWaypointNode & node);
+
+  /* @brief Handle response from NavigateToPose service */
+  void handle_navigation_goal_result(const StoredWaypointNode & node, const NavigateToPoseGoalHandle::WrappedResult & result);
+
+  // SLAM and AMCL lifecycle management
   void initialize_managed_lifecycle_nodes();
   bool prepare_mapping_lifecycle();
   bool prepare_navigation_lifecycle();
@@ -209,51 +242,88 @@ private:
   bool ensure_lifecycle_node_active(const std::string & node_name);
   bool get_lifecycle_state(const std::string & node_name, uint8_t & state_id);
   bool change_lifecycle_state(const std::string & node_name, uint8_t transition_id);
+
+  // Web UI interface (websocket message)
+
+  /* @brief Send current state to all websocket sessions */
+  void broadcast_state();
+
+  /* @brief Create a websocket message with the list of available maps for web UI */
   std::string make_maps_list_message() const;
+
+  /* @brief Create a websocket message of selected map id for web UI */
   std::string make_map_selected_message(const std::string & map_id) const;
 
-  void broadcast_state();
+  /* @brief Create a state update message for web UI */
   std::string make_state_update_message() const;
+
+  /* @brief Create a health-check message for web UI */
   std::string make_healthcheck_body() const;
-  static std::string make_command_ack(
-    const std::string & command,
-    bool accepted,
-    const std::string & reason = "");
+
+  /* @brief Create a command acknowledgemenet message */
+  static std::string make_command_ack(const std::string & command, bool accepted, const std::string & reason = "");
+
+  /* @brief Create error message for web UI */
   static std::string make_error(const std::string & message);
+
   static std::string state_to_string(WorkflowState state);
   static std::string escape_json(const std::string & value);
 
+  // Map selection and loading
+  bool load_stored_map(const std::string & map_id);
+  bool load_map_into_map_server(const std::string & map_yaml_path);
+
+  // Helper functions
+  bool has_stored_graph() const;
+
+  // Primary execution thread
   boost::asio::io_context io_context_;
+
+  // Networking objects
   tcp::acceptor acceptor_;
   std::thread io_thread_;
+  std::unordered_set<std::shared_ptr<WebSocketSession>> sessions_;
+
   std::thread lifecycle_startup_thread_;
+  
+  // Transform buffers for robot pose in map frame
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
-  std::unordered_set<std::shared_ptr<WebSocketSession>> sessions_;
+
+  // ROS2 Client Handlers
   rclcpp_action::Client<Explore>::SharedPtr explore_client_;
   rclcpp_action::Client<NavigateToPose>::SharedPtr navigate_to_pose_client_;
   rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedPtr map_saver_client_;
   rclcpp::Client<nav2_msgs::srv::LoadMap>::SharedPtr map_loader_client_;
-  rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedPtr
-    generate_waypoint_graph_client_;
-  std::unordered_map<std::string, rclcpp::Client<ChangeState>::SharedPtr>
-    lifecycle_change_clients_;
-  std::unordered_map<std::string, rclcpp::Client<GetState>::SharedPtr>
-    lifecycle_get_clients_;
+  rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedPtr generate_waypoint_graph_client_;
+  std::unordered_map<std::string, rclcpp::Client<ChangeState>::SharedPtr> lifecycle_change_clients_;
+  std::unordered_map<std::string, rclcpp::Client<GetState>::SharedPtr> lifecycle_get_clients_;
 
+  // State management
+
+  /* @brief Current orchestration state - one of IDLE, MAPPING, CONSTRUCTING_ROUTE, NAVIGATING */
   WorkflowState state_;
   bool paused_;
+
+  // ROS2 Parameters
   std::string maps_directory_;
   std::string map_server_load_service_name_;
   std::string slam_toolbox_lifecycle_node_name_;
   std::string amcl_lifecycle_node_name_;
+
+  // Selected map id and directory
   std::string active_map_id_;
   std::string active_map_directory_;
+
   std::string saved_map_base_path_;
   std::string saved_map_image_path_;
   std::string saved_map_metadata_path_;
+
+  // Waypoint Graph representation
   TraversalGraph stored_waypoint_graph_;
   bool has_stored_waypoint_graph_;
+
+  // Navigation phase objects
   std::unordered_set<uint32_t> visited_navigation_node_ids_;
   double navigation_current_world_x_;
   double navigation_current_world_y_;

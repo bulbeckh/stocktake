@@ -48,16 +48,16 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   navigation_current_world_x_(0.0),
   navigation_current_world_y_(0.0)
 {
+  // Setup parameters
   const auto host = declare_parameter<std::string>("host", "127.0.0.1");
   const auto port = declare_parameter<int>("port", 9002);
-  maps_directory_ = declare_parameter<std::string>("maps_directory", "/maps");
-  map_server_load_service_name_ = declare_parameter<std::string>(
-    "map_server_load_service", "/map_server/load_map");
-  slam_toolbox_lifecycle_node_name_ = declare_parameter<std::string>(
-    "slam_toolbox_lifecycle_node", "/slam_toolbox");
-  amcl_lifecycle_node_name_ = declare_parameter<std::string>(
-    "amcl_lifecycle_node", "/amcl");
 
+  maps_directory_ = declare_parameter<std::string>("maps_directory", "/maps");
+  map_server_load_service_name_ = declare_parameter<std::string>("map_server_load_service", "/map_server/load_map");
+  slam_toolbox_lifecycle_node_name_ = declare_parameter<std::string>("slam_toolbox_lifecycle_node", "/slam_toolbox");
+  amcl_lifecycle_node_name_ = declare_parameter<std::string>("amcl_lifecycle_node", "/amcl");
+
+  // Setup TCP endpoint for websocket
   const auto address = boost::asio::ip::make_address(host);
   const tcp::endpoint endpoint(address, static_cast<unsigned short>(port));
 
@@ -66,26 +66,38 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   acceptor_.bind(endpoint);
   acceptor_.listen(boost::asio::socket_base::max_listen_connections);
 
+  // Setup map parameters
   active_map_id_.clear();
   active_map_directory_.clear();
   saved_map_base_path_ = "/tmp/stocktake_map";
   saved_map_image_path_ = saved_map_base_path_ + ".png";
   saved_map_metadata_path_ = saved_map_base_path_ + ".yaml";
 
+  // Create ROS2 service and action clients
+
+  // Explore action (frontier)
   explore_client_ = rclcpp_action::create_client<Explore>(this, "/explore");
-  navigate_to_pose_client_ = rclcpp_action::create_client<NavigateToPose>(
-    this, "/navigate_to_pose");
+
+  // Navigation to set pose
+  navigate_to_pose_client_ = rclcpp_action::create_client<NavigateToPose>(this, "/navigate_to_pose");
+
+  // Map save
   map_saver_client_ = create_client<nav2_msgs::srv::SaveMap>("/map_saver/save_map");
+
+  // Map load
   map_loader_client_ = create_client<nav2_msgs::srv::LoadMap>(map_server_load_service_name_);
-  generate_waypoint_graph_client_ =
-    create_client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>(
-    "/generate_waypoint_graph");
+
+  // Swagger node service
+  generate_waypoint_graph_client_ = create_client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>("/generate_waypoint_graph");
+
   initialize_managed_lifecycle_nodes();
 
-  RCLCPP_INFO(
-    get_logger(), "Starting websocket server on ws://%s:%d/ws", host.c_str(),
-    static_cast<int>(port));
+  RCLCPP_INFO(get_logger(), "Starting websocket server on ws://%s:%d/ws", host.c_str(), static_cast<int>(port));
+
+  // Start accepting HTTP connections
   do_accept();
+
+  // Start IO thread
   io_thread_ = std::thread([this]() {io_context_.run();});
 }
 
@@ -188,6 +200,10 @@ void WebsocketOrchestrationNode::on_accept(beast::error_code ec, tcp::socket soc
   }
 }
 
+bool WebsocketOrchestrationNode::has_stored_graph() const
+{
+  return has_stored_waypoint_graph_;
+}
 
 void WebsocketOrchestrationNode::handle_mapping_complete_on_io_thread()
 {

@@ -14,8 +14,6 @@
 #include <type_traits>
 #include <utility>
 
-#include <boost/asio/post.hpp>
-
 namespace stocktake_orchestration2
 {
 namespace
@@ -213,19 +211,13 @@ void WebsocketOrchestrationNode::request_map_save()
 {
   if (!prepare_new_map_directory()) {
     RCLCPP_ERROR(get_logger(), "Failed to prepare map output directory under %s", maps_directory_.c_str());
-    boost::asio::post(
-      io_context_,
-      [this]() {
-        if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
-          transition_to(WorkflowState::IDLE, false);
-          RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
-        }
-      });
+    return_constructing_route_to_idle();
     return;
   }
 
   if (!map_saver_client_->service_is_ready()) {
     RCLCPP_WARN(get_logger(), "Map saver service /map_saver/save_map is not available");
+    // TODO Should transition state here too?
     return;
   }
 
@@ -298,14 +290,8 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
       "Failed to load saved map metadata from %s and image dimensions from %s",
       saved_map_metadata_path_.c_str(),
       saved_map_image_path_.c_str());
-    boost::asio::post(
-      io_context_,
-      [this]() {
-        if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
-          transition_to(WorkflowState::IDLE, false);
-          RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
-        }
-      });
+
+    return_constructing_route_to_idle()
     return;
   }
 
@@ -338,16 +324,11 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
         node.pixel_y,
         map_metadata->image_width,
         map_metadata->image_height);
+
       stored_waypoint_graph_.nodes_by_id.clear();
       stored_waypoint_graph_.adjacency_list.clear();
-      boost::asio::post(
-        io_context_,
-        [this]() {
-          if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
-            transition_to(WorkflowState::IDLE, false);
-            RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
-          }
-        });
+
+      return_constructing_route_to_idle()
       return;
     }
 
@@ -395,14 +376,7 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
     has_stored_waypoint_graph_ = false;
     stored_waypoint_graph_.nodes_by_id.clear();
     stored_waypoint_graph_.adjacency_list.clear();
-    boost::asio::post(
-      io_context_,
-      [this]() {
-        if (state_ == WorkflowState::CONSTRUCTING_ROUTE) {
-          transition_to(WorkflowState::IDLE, false);
-          RCLCPP_INFO(get_logger(), "State change: CONSTRUCTING_ROUTE -> IDLE");
-        }
-      });
+    return_constructing_route_to_idle()
     return;
   }
 
@@ -545,16 +519,6 @@ bool WebsocketOrchestrationNode::prepare_new_map_directory()
 
   RCLCPP_ERROR(get_logger(), "Failed to choose a unique map directory name");
   return false;
-}
-
-
-void WebsocketOrchestrationNode::mark_route_construction_complete()
-{
-  boost::asio::post(
-    io_context_,
-    [this]() {
-      handle_route_construction_complete_on_io_thread();
-    });
 }
 
 

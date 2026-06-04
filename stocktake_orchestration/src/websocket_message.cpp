@@ -112,6 +112,8 @@ void WebsocketOrchestrationNode::handle_client_message(
 
   const std::string command = payload.substr(first_quote + 1, second_quote - first_quote - 1);
 
+  /* Here is where handle each message type. Typically, we will hand-off to another method. */
+
   if (command == "list_maps") {
     session->send_text(make_maps_list_message());
     return;
@@ -130,6 +132,7 @@ void WebsocketOrchestrationNode::handle_client_message(
       return;
     }
 
+    // NOTE Does this not just pass by copy anyway in the lambda? Why do we need to copy here too
     const auto previous_graph = stored_waypoint_graph_;
     const bool previous_has_graph = has_stored_waypoint_graph_;
     const std::string previous_map_id = active_map_id_;
@@ -223,32 +226,6 @@ void WebsocketOrchestrationNode::handle_client_message(
   }
 
   session->send_text(make_error("Unsupported command."));
-}
-
-void WebsocketOrchestrationNode::start_mapping()
-{
-  transition_to(WorkflowState::MAPPING, false);
-  RCLCPP_INFO(get_logger(), "State change: IDLE -> MAPPING");
-  on_enter_mapping_from_idle();
-}
-
-void WebsocketOrchestrationNode::start_navigation()
-{
-  transition_to(WorkflowState::NAVIGATING, false);
-  RCLCPP_INFO(get_logger(), "State change: IDLE -> NAVIGATING");
-  on_enter_navigating_from_idle();
-}
-
-void WebsocketOrchestrationNode::pause_workflow()
-{
-  transition_to(state_, true);
-  RCLCPP_INFO(get_logger(), "Workflow paused");
-}
-
-void WebsocketOrchestrationNode::resume_workflow()
-{
-  transition_to(state_, false);
-  RCLCPP_INFO(get_logger(), "Workflow resumed");
 }
 
 std::string WebsocketOrchestrationNode::make_map_selected_message(const std::string & map_id) const
@@ -357,11 +334,6 @@ std::string WebsocketOrchestrationNode::state_to_string(WorkflowState state)
     default:
       return "IDLE";
   }
-}
-
-bool WebsocketOrchestrationNode::has_stored_graph() const
-{
-  return has_stored_waypoint_graph_;
 }
 
 std::string WebsocketOrchestrationNode::escape_json(const std::string & value)

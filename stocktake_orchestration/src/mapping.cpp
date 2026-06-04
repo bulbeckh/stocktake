@@ -96,28 +96,5 @@ void WebsocketOrchestrationNode::handle_explore_result(
   return_mapping_to_idle();
 }
 
-void WebsocketOrchestrationNode::return_mapping_to_idle()
-{
-  boost::asio::post(
-    io_context_,
-    [this]() {
-      if (state_ != WorkflowState::MAPPING) {
-        return;
-      }
-
-      transition_to(WorkflowState::IDLE, false);
-      RCLCPP_INFO(get_logger(), "State change: MAPPING -> IDLE");
-    });
-}
-
-void WebsocketOrchestrationNode::mark_mapping_complete()
-{
-  boost::asio::post(
-    io_context_,
-    [this]() {
-      handle_mapping_complete_on_io_thread();
-    });
-
-}
 
 }
