@@ -23,11 +23,20 @@ type MapInfo = {
   has_map: boolean;
   selected: boolean;
 };
+type RfidTagObservation = {
+  uid: string;
+  rssi: number;
+};
+type SeenRfidTag = RfidTagObservation & {
+  observations: number;
+  flashCount: number;
+};
 
 type ServerMessage =
   | { type: "state_update"; state: ServerState; paused: boolean }
   | { type: "command_ack"; command: CommandName; status: "accepted" | "rejected"; reason?: string | null }
   | { type: "maps_list"; maps: MapInfo[] }
+  | { type: "rfid_scan_observation"; waypoint_node_id: number; tags: RfidTagObservation[] }
   | { type: "error"; message: string };
 
 export default function Home() {
@@ -42,6 +51,7 @@ export default function Home() {
   const [commandStatus, setCommandStatus] = useState("Waiting for server");
   const [availableMaps, setAvailableMaps] = useState<MapInfo[]>([]);
   const [selectedMapId, setSelectedMapId] = useState("no map");
+  const [seenTags, setSeenTags] = useState<SeenRfidTag[]>([]);
   const websocketUrl = `ws://${WS_HOST}:${WS_PORT}${WS_PATH}`;
   const isSocketOpen = wsRef.current?.readyState === WebSocket.OPEN;
 
@@ -129,6 +139,39 @@ export default function Home() {
           setAvailableMaps(message.maps);
           setSelectedMapId(selectedMap?.id ?? "no map");
           setCommandStatus(`${message.maps.length} map${message.maps.length === 1 ? "" : "s"} available`);
+          return;
+        }
+
+        if (message.type === "rfid_scan_observation") {
+          setSeenTags((currentTags) => {
+            let hasChanges = false;
+            const nextTags = [...currentTags];
+
+            for (const observedTag of message.tags) {
+              const existingTagIndex = nextTags.findIndex((tag) => tag.uid === observedTag.uid);
+
+              if (existingTagIndex === -1) {
+                nextTags.push({
+                  ...observedTag,
+                  observations: 1,
+                  flashCount: 0,
+                });
+                hasChanges = true;
+                continue;
+              }
+
+              const existingTag = nextTags[existingTagIndex];
+              nextTags[existingTagIndex] = {
+                ...existingTag,
+                rssi: observedTag.rssi,
+                observations: existingTag.observations + 1,
+                flashCount: existingTag.flashCount + 1,
+              };
+              hasChanges = true;
+            }
+
+            return hasChanges ? nextTags : currentTags;
+          });
           return;
         }
 
@@ -322,6 +365,39 @@ export default function Home() {
             {isPaused ? "Resume" : "Pause"}
           </button>
         </div>
+
+        <section className="stateSection">
+          <div>
+            <p className="statusLabel">RFID observations</p>
+            <p className="statusText">{seenTags.length} unique tag{seenTags.length === 1 ? "" : "s"}</p>
+          </div>
+          <div className="tagTable" role="table" aria-label="RFID tag observations">
+            <div className="tagTableHeader" role="row">
+              <div role="columnheader">UID</div>
+              <div role="columnheader">RSSI</div>
+              <div role="columnheader">Observations</div>
+            </div>
+            <div className="tagTableBody" role="rowgroup">
+              {seenTags.length === 0 ? (
+                <div className="tagTableEmpty" role="row">
+                  <div role="cell">No tags observed</div>
+                </div>
+              ) : (
+                seenTags.map((tag) => (
+                  <div
+                    className={`tagTableRow${tag.flashCount > 0 ? " tagTableRowFlash" : ""}`}
+                    role="row"
+                    key={`${tag.uid}-${tag.flashCount}`}
+                  >
+                    <div className="tagUid" role="cell">{tag.uid}</div>
+                    <div role="cell">{tag.rssi}</div>
+                    <div role="cell">{tag.observations}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
       </section>
     </main>
   );

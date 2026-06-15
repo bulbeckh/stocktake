@@ -213,6 +213,7 @@ void WebsocketOrchestrationNode::handle_rfid_scan_response(
     "RFID scan complete at waypoint node_id=%u: observed %zu tags",
     node.id,
     response->response.scan.size());
+  broadcast_rfid_scan_observation(node, *response);
 
   for (const auto & tag : response->response.scan) {
     rfid_scan_observations_.push_back(

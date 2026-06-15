@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/asio/post.hpp>
+
 namespace stocktake_orchestration2
 {
 namespace
@@ -243,11 +245,46 @@ void WebsocketOrchestrationNode::broadcast_state()
   }
 }
 
+void WebsocketOrchestrationNode::broadcast_rfid_scan_observation(
+  const StoredWaypointNode & node,
+  const RFIDScan::Response & response)
+{
+  const std::string message = make_rfid_scan_observation_message(node, response);
+  boost::asio::post(
+    io_context_,
+    [this, message]() {
+      for (const auto & session : sessions_) {
+        session->send_text(message);
+      }
+    });
+}
+
 std::string WebsocketOrchestrationNode::make_state_update_message() const
 {
   return "{\"type\":\"state_update\",\"state\":\"" + state_to_string(state_) +
          "\",\"paused\":" + (paused_ ? "true" : "false") +
          ",\"map_id\":\"" + escape_json(active_map_id_) + "\"}";
+}
+
+std::string WebsocketOrchestrationNode::make_rfid_scan_observation_message(
+  const StoredWaypointNode & node,
+  const RFIDScan::Response & response) const
+{
+  std::string body = "{\"type\":\"rfid_scan_observation\",\"waypoint_node_id\":" +
+    std::to_string(node.id) + ",\"tags\":[";
+
+  bool first = true;
+  for (const auto & tag : response.response.scan) {
+    if (!first) {
+      body += ",";
+    }
+    first = false;
+    body += "{\"uid\":\"" + escape_json(tag.uid) + "\",\"rssi\":" + std::to_string(tag.rssi) +
+      "}";
+  }
+
+  body += "]}";
+  return body;
 }
 
 std::string WebsocketOrchestrationNode::make_healthcheck_body() const

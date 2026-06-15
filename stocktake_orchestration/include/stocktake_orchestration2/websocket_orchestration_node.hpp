@@ -267,6 +267,11 @@ private:
   /* @brief Send current state to all websocket sessions */
   void broadcast_state();
 
+  /* @brief Send RFID scan observations to all websocket sessions */
+  void broadcast_rfid_scan_observation(
+    const StoredWaypointNode & node,
+    const RFIDScan::Response & response);
+
   /* @brief Create a websocket message with the list of available maps for web UI */
   std::string make_maps_list_message() const;
 
@@ -275,6 +280,11 @@ private:
 
   /* @brief Create a state update message for web UI */
   std::string make_state_update_message() const;
+
+  /* @brief Create a websocket message for one completed RFID scan */
+  std::string make_rfid_scan_observation_message(
+    const StoredWaypointNode & node,
+    const RFIDScan::Response & response) const;
 
   /* @brief Create a health-check message for web UI */
   std::string make_healthcheck_body() const;
