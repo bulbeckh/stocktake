@@ -3,6 +3,7 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <unordered_map>
 
 #include <boost/asio/post.hpp>
 
@@ -47,6 +48,7 @@ void WebsocketOrchestrationNode::run_navigation_workflow()
     closest_node->node_type.c_str());
 
   visited_navigation_node_ids_.clear();
+  rfid_scan_observations_.clear();
   navigation_current_world_x_ = current_transform.transform.translation.x;
   navigation_current_world_y_ = current_transform.transform.translation.y;
   continue_navigation_workflow();
@@ -68,6 +70,7 @@ void WebsocketOrchestrationNode::continue_navigation_workflow()
 
   if (visited_navigation_node_ids_.size() >= stored_waypoint_graph_.nodes_by_id.size()) {
     RCLCPP_INFO(get_logger(), "All waypoint nodes have been visited");
+    log_rfid_scan_summary();
     mark_navigation_complete();
     return;
   }
@@ -162,7 +165,7 @@ void WebsocketOrchestrationNode::handle_navigation_goal_result(
           navigation_current_world_y_ = node.world_y;
         }
 
-        continue_navigation_workflow();
+        request_rfid_scan_at_node(node);
         return;
       }
     case rclcpp_action::ResultCode::ABORTED:
@@ -177,6 +180,94 @@ void WebsocketOrchestrationNode::handle_navigation_goal_result(
   }
 
   mark_navigation_complete();
+}
+
+void WebsocketOrchestrationNode::request_rfid_scan_at_node(const StoredWaypointNode & node)
+{
+  if (!rfid_scan_client_->service_is_ready()) {
+    RCLCPP_WARN(
+      get_logger(),
+      "RFID scan service /rfid_scanner/scan_request is not available at node_id=%u; continuing",
+      node.id);
+    continue_navigation_workflow();
+    return;
+  }
+
+  auto request = std::make_shared<RFIDScan::Request>();
+
+  RCLCPP_INFO(get_logger(), "Requesting RFID scan at waypoint node_id=%u", node.id);
+  rfid_scan_client_->async_send_request(
+    request,
+    [this, node](rclcpp::Client<RFIDScan>::SharedFuture future) {
+      handle_rfid_scan_response(node, future);
+    });
+}
+
+void WebsocketOrchestrationNode::handle_rfid_scan_response(
+  const StoredWaypointNode & node,
+  rclcpp::Client<RFIDScan>::SharedFuture future)
+{
+  const auto response = future.get();
+  RCLCPP_INFO(
+    get_logger(),
+    "RFID scan complete at waypoint node_id=%u: observed %zu tags",
+    node.id,
+    response->response.scan.size());
+
+  for (const auto & tag : response->response.scan) {
+    rfid_scan_observations_.push_back(
+      RFIDTagObservation{
+        node.id,
+        tag.uid,
+        tag.data,
+        tag.rssi});
+
+    RCLCPP_INFO(
+      get_logger(),
+      "RFID observation: node_id=%u uid=%s data=%s rssi=%.3f",
+      node.id,
+      tag.uid.c_str(),
+      tag.data.c_str(),
+      tag.rssi);
+  }
+
+  continue_navigation_workflow();
+}
+
+void WebsocketOrchestrationNode::log_rfid_scan_summary() const
+{
+  struct TagSummary
+  {
+    std::string uid;
+    std::string data;
+    std::size_t observation_count;
+  };
+
+  std::unordered_map<std::string, TagSummary> tags_by_uid_and_data;
+  for (const auto & observation : rfid_scan_observations_) {
+    const std::string key = observation.uid + '\n' + observation.data;
+    auto [it, inserted] = tags_by_uid_and_data.emplace(
+      key,
+      TagSummary{observation.uid, observation.data, 0});
+    (void)inserted;
+    ++it->second.observation_count;
+  }
+
+  RCLCPP_INFO(
+    get_logger(),
+    "RFID scan summary: %zu observations, %zu unique uid/data pairs",
+    rfid_scan_observations_.size(),
+    tags_by_uid_and_data.size());
+
+  for (const auto & [key, tag] : tags_by_uid_and_data) {
+    (void)key;
+    RCLCPP_INFO(
+      get_logger(),
+      "RFID tag summary: uid=%s data=%s observed_count=%zu",
+      tag.uid.c_str(),
+      tag.data.c_str(),
+      tag.observation_count);
+  }
 }
 
 bool WebsocketOrchestrationNode::lookup_robot_transform_in_map(

@@ -25,6 +25,10 @@
 		<uri>file://generate/out_generated.sdf</uri>
 	</include>
 
+	<!--include>
+		<uri>file://generate/generated_store.sdf</uri>
+	</include-->
+
 	<!-- RFID Manager Plugin -->
 	<plugin filename="librfidPlugin" name="RFIDManagerPlugin"></plugin>
 

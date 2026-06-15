@@ -291,7 +291,7 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
       saved_map_metadata_path_.c_str(),
       saved_map_image_path_.c_str());
 
-    return_constructing_route_to_idle()
+    return_constructing_route_to_idle();
     return;
   }
 
@@ -328,7 +328,7 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
       stored_waypoint_graph_.nodes_by_id.clear();
       stored_waypoint_graph_.adjacency_list.clear();
 
-      return_constructing_route_to_idle()
+      return_constructing_route_to_idle();
       return;
     }
 
@@ -376,7 +376,7 @@ void WebsocketOrchestrationNode::handle_generate_waypoint_graph_response(
     has_stored_waypoint_graph_ = false;
     stored_waypoint_graph_.nodes_by_id.clear();
     stored_waypoint_graph_.adjacency_list.clear();
-    return_constructing_route_to_idle()
+    return_constructing_route_to_idle();
     return;
   }
 

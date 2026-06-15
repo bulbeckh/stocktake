@@ -90,6 +90,9 @@ WebsocketOrchestrationNode::WebsocketOrchestrationNode()
   // Swagger node service
   generate_waypoint_graph_client_ = create_client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>("/generate_waypoint_graph");
 
+  // RFID scan service
+  rfid_scan_client_ = create_client<RFIDScan>("/rfid_scanner/scan_request");
+
   initialize_managed_lifecycle_nodes();
 
   RCLCPP_INFO(get_logger(), "Starting websocket server on ws://%s:%d/ws", host.c_str(), static_cast<int>(port));

@@ -267,12 +267,18 @@ if __name__=="__main__":
 
     ## Generate 200 random
     for i,p in enumerate(random.sample(open_spots, k=200)):
-        out_str += f"""<include>
+        out_str += f"""<model name="cereal_base_{i}">
+        <pose degrees="true">{p[0]} {p[1]} {p[2]+0.15} {p[3]} {p[4]} {p[5]}</pose>
+        <include>
             <uri>model://cereal{1+(i%4)}</uri>
             <name>cereal_{i}</name>
             <static>true</static>
-            <pose degrees="true">{p[0]} {p[1]} {p[2]+0.15} {p[3]} {p[4]} {p[5]}</pose>
-        </include>"""
+        </include>
+        <plugin filename="librfidTag" name="RFIDTagPlugin">
+            <uid>tag_{i}</uid>
+            <data>data for tag {i}</data>
+        </plugin>
+        </model>"""
 
     ## add counter
     out_str += f"""<include>

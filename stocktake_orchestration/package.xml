@@ -11,6 +11,7 @@
 
   <depend>rclcpp</depend>
   <depend>explore_lite_msgs</depend>
+  <depend>gazebo_rfid_plugin</depend>
   <depend>geometry_msgs</depend>
   <depend>lifecycle_msgs</depend>
   <depend>nav2_msgs</depend>

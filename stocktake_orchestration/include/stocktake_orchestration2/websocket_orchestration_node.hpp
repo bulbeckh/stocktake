@@ -19,6 +19,7 @@
 #include <explore_lite_msgs/action/explore.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
+#include <gazebo_rfid_plugin/srv/rfid_scan.hpp>
 #include <lifecycle_msgs/msg/state.hpp>
 #include <lifecycle_msgs/srv/change_state.hpp>
 #include <lifecycle_msgs/srv/get_state.hpp>
@@ -65,6 +66,14 @@ struct TraversalGraph
 {
   std::unordered_map<uint32_t, StoredWaypointNode> nodes_by_id;
   std::unordered_map<uint32_t, std::vector<TraversalGraphEdge>> adjacency_list;
+};
+
+struct RFIDTagObservation
+{
+  uint32_t waypoint_node_id;
+  std::string uid;
+  std::string data;
+  double rssi;
 };
 
 class WebSocketSession : public std::enable_shared_from_this<WebSocketSession>
@@ -133,6 +142,7 @@ public:
   using GetState = lifecycle_msgs::srv::GetState;
   using NavigateToPose = nav2_msgs::action::NavigateToPose;
   using NavigateToPoseGoalHandle = rclcpp_action::ClientGoalHandle<NavigateToPose>;
+  using RFIDScan = gazebo_rfid_plugin::srv::RFIDScan;
   using tcp = boost::asio::ip::tcp;
   using request_type = boost::beast::http::request<boost::beast::http::string_body>;
   using response_type = boost::beast::http::response<boost::beast::http::string_body>;
@@ -234,6 +244,15 @@ private:
   /* @brief Handle response from NavigateToPose service */
   void handle_navigation_goal_result(const StoredWaypointNode & node, const NavigateToPoseGoalHandle::WrappedResult & result);
 
+  /* @brief Request one RFID scan at the current waypoint */
+  void request_rfid_scan_at_node(const StoredWaypointNode & node);
+
+  /* @brief Store RFID scan response and continue waypoint navigation */
+  void handle_rfid_scan_response(const StoredWaypointNode & node, rclcpp::Client<RFIDScan>::SharedFuture future);
+
+  /* @brief Output aggregated RFID tag observations */
+  void log_rfid_scan_summary() const;
+
   // SLAM and AMCL lifecycle management
   void initialize_managed_lifecycle_nodes();
   bool prepare_mapping_lifecycle();
@@ -296,6 +315,7 @@ private:
   rclcpp::Client<nav2_msgs::srv::SaveMap>::SharedPtr map_saver_client_;
   rclcpp::Client<nav2_msgs::srv::LoadMap>::SharedPtr map_loader_client_;
   rclcpp::Client<stocktake_nvidia_swagger_msgs::srv::GenerateWaypointGraph>::SharedPtr generate_waypoint_graph_client_;
+  rclcpp::Client<RFIDScan>::SharedPtr rfid_scan_client_;
   std::unordered_map<std::string, rclcpp::Client<ChangeState>::SharedPtr> lifecycle_change_clients_;
   std::unordered_map<std::string, rclcpp::Client<GetState>::SharedPtr> lifecycle_get_clients_;
 
@@ -325,6 +345,7 @@ private:
 
   // Navigation phase objects
   std::unordered_set<uint32_t> visited_navigation_node_ids_;
+  std::vector<RFIDTagObservation> rfid_scan_observations_;
   double navigation_current_world_x_;
   double navigation_current_world_y_;
 

@@ -98,6 +98,9 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
         ## TODO Add new mono costmap configuration (might be same as rgbd)
         costmap_path = os.path.join(stocktake_core_dir, 'config', 'rgbd_costmaps.yaml')
 
+    ## True if we are skipping all SLAM and retrieving transform chain (map -> odom -> base_link) from gz
+    bypass_slam_val = LaunchConfiguration('bypass_slam').perform(context)
+
     merged_params_file = merge_param_files(
             os.path.join(stocktake_core_dir, 'config', 'nav2_params.yaml'),
             costmap_path
@@ -116,6 +119,22 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
     ## Remap the tf topics to relative namespaces so we can add namespace prefixes
     tf_remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
+    ## Orchestration node start
+    orchestration_run_cmd = Node(
+                package='stocktake_orchestration',
+                executable='stocktake_orchestration',
+                name='orchestration_node',
+                output='screen',
+                parameters=[
+                    ## NOTE Not necessary ?
+                    {'use_sim_time': LaunchConfiguration('use_sim_time')}
+                ],
+    )
+
+    ## Swagger node start
+
+    ## Explore node start
+    
     ## Starts both amcl and slam_toolbox - both are managed via the orchestration node, not the nav2 lifecycle manager
     slam_amcl_cmd = GroupAction(
         [
@@ -130,8 +149,9 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
                 parameters=[
                   LaunchConfiguration('slam_params_file'),
                   {
-                    #'use_lifecycle_manager': use_lifecycle_manager,
                     'use_sim_time': LaunchConfiguration('use_sim_time'),
+                    ## If we bypass the SLAM pipeline, then 
+                    'transform_publish_period': 0.0 if bypass_slam_val=='true' else 0.02
                   }
                 ],
             ),
@@ -267,7 +287,7 @@ def navigation_opaque_function(context, stocktake_core_dir, bringup_dir, *args, 
         }],
     )
 
-    return [start_map_saver, navigation_cmd, rviz_cmd, map_server_container, map_server_lifecycle_manager, slam_amcl_cmd]
+    return [start_map_saver, navigation_cmd, rviz_cmd, map_server_container, map_server_lifecycle_manager, slam_amcl_cmd, orchestration_run_cmd]
 
 def generate_launch_description() -> LaunchDescription:
     # Get package directories
@@ -292,10 +312,16 @@ def generate_launch_description() -> LaunchDescription:
     use_intra_process_comms = LaunchConfiguration('use_intra_process_comms')
     use_respawn             = LaunchConfiguration('use_respawn')
 
+    # SLAM Parameters
+    bypass_slam = LaunchConfiguration('bypass_slam')
 
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace', default_value='', description='Top-level namespace'
+    )
+
+    declare_bypass_slam_cmd = DeclareLaunchArgument(
+        'bypass_slam', default_value='False', description='Set to true to publish map -> odom transform using gazebo world pose rather than through a slam node (lidar or vslam). Used for testing/debug.'
     )
 
     declare_use_namespace_cmd = DeclareLaunchArgument(
@@ -466,40 +492,16 @@ def generate_launch_description() -> LaunchDescription:
         PythonLaunchDescriptionSource(os.path.join(stocktake_core_dir, 'launch', 'simulation.py')),
         launch_arguments={
             'robot_type': robot_type,
+            'bypass_slam': bypass_slam,
         }.items(),
     )
 
-    ## Octomap nodes (only run when not using 'lidar' robot_type)
-    # NOTE occupancy_{min,max}_z is used to generate the 2D occupancy grid projection - need to decide on range to use
-    octomap_node_cmd = Node(
-            condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
-            package='octomap_server',
-            executable='octomap_server_node',
-            name='octomap_server',
-            #output='screen',
-            remappings=[
-                ('cloud_in', '/camera/pointcloud'),
-                ('projected_map', '/map'),
-                ('projected_map_updates', '/map_updates'),
-            ],
-            parameters=[{
-                'occupancy_max_z': 1.0,
-                'occupancy_min_z': -1.0,
-                'base_frame_id': 'robot_base',
-            }],
-    )
-
-    # TODO Either fix the LD_PRELOAD workaround (via patch) or retrieve lib directory differentely
-    octomap_rviz_cmd = Node(
-            condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
-            package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            output='screen',
-            arguments=['-d', os.path.join(stocktake_core_dir, 'config', 'octomap.rviz')],
-            additional_env={
-                'LD_PRELOAD': '/usr/lib/x86_64-linux-gnu/liboctomap.so'
-            }
+    vslam_launch_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(stocktake_core_dir, 'launch', 'vslam_launch.py')),
+        condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
+        launch_arguments={
+            'robot_type': robot_type,
+        }.items(),
     )
 
     # Create the launch description and populate
@@ -515,20 +517,18 @@ def generate_launch_description() -> LaunchDescription:
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_intra_process_comms_cmd)
 
+    ld.add_action(declare_bypass_slam_cmd)
+
     ld.add_action(declare_use_respawn_cmd)
 
     ld.add_action(simulation_launch_cmd)
+    ld.add_action(vslam_launch_cmd)
     
     ## static transforms
     ld.add_action(base_lidar_static_cmd)
     ld.add_action(base_link_robot_base_cmd)
     ld.add_action(base_front_camera_cmd) # Used on mono and rgbd camera setups
     ld.add_action(front_camera_optical_cmd)
-
-
-
-    ld.add_action(octomap_node_cmd)
-    ld.add_action(octomap_rviz_cmd)
 
     #ld.add_action(start_map_server)
     #ld.add_action(navigation_lidar_slam_cmd)

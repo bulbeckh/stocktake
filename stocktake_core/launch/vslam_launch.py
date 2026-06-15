@@ -4,7 +4,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription,
                             OpaqueFunction, RegisterEventHandler)
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.event_handlers import OnShutdown
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
@@ -14,31 +14,15 @@ from nav2_common.launch import RewrittenYaml
 
 def generate_launch_description() -> LaunchDescription:
 
-    ## Republish the /tf and /tf_static topic to vslam_tf
+    stocktake_core_dir = get_package_share_directory('stocktake_core')
 
-    '''
-    relay1_cmd = Node(
-            package='topic_tools',
-            executable='relay',
-            name='relay1',
-            output='screen',
-            arguments=[
-                '/tf',
-                '/vslam_tf'
-            ],
-    )
+    robot_type = LaunchConfiguration('robot_type')
 
-    relay2_cmd = Node(
-            package='topic_tools',
-            executable='relay',
-            name='relay2',
-            output='screen',
-            arguments=[
-                '/tf_static',
-                '/vslam_tf_static'
-            ],
+    declare_robot_type_cmd = DeclareLaunchArgument(
+        'robot_type',
+        default_value='lidar',
+        description='robot_type: lidar, rgbd, stereo, mono'
     )
-    '''
 
     ## Octomap nodes
     #TODO Don't use absolute paths for the config file. Issue is that config/ directory is not in any package
@@ -62,17 +46,46 @@ def generate_launch_description() -> LaunchDescription:
                 'use_sim_time': True,
                 'transform_tolerance': 1.0
             }],
-            #remappings=[
-                #('/tf', '/vslam_tf'),
-                #('/tf_static', '/vslam_tf_static')
-            #],
+    )
+
+    ## Octomap nodes (only run when not using 'lidar' robot_type)
+    # NOTE occupancy_{min,max}_z is used to generate the 2D occupancy grid projection - need to decide on range to use
+    octomap_node_cmd = Node(
+            condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
+            package='octomap_server',
+            executable='octomap_server_node',
+            name='octomap_server',
+            #output='screen',
+            remappings=[
+                ('cloud_in', '/camera/pointcloud'),
+                ('projected_map', '/map'),
+                ('projected_map_updates', '/map_updates'),
+            ],
+            parameters=[{
+                'occupancy_max_z': 1.0,
+                'occupancy_min_z': -1.0,
+                'base_frame_id': 'robot_base',
+            }],
+    )
+
+    # TODO Either fix the LD_PRELOAD workaround (via patch) or retrieve lib directory differentely
+    octomap_rviz_cmd = Node(
+            condition=UnlessCondition(PythonExpression(["'", LaunchConfiguration('robot_type'), "' == 'lidar' "])),
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', os.path.join(stocktake_core_dir, 'config', 'octomap.rviz')],
+            additional_env={
+                'LD_PRELOAD': '/usr/lib/x86_64-linux-gnu/liboctomap.so'
+            }
     )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     ld.add_action(stella_vslam_cmd)
-    #ld.add_action(relay1_cmd)
-    #ld.add_action(relay2_cmd)
+    ld.add_action(octomap_node_cmd)
+    ld.add_action(octomap_rviz_cmd)
 
     return ld

@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(explore_lite_msgs REQUIRED)
+find_package(gazebo_rfid_plugin REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(lifecycle_msgs REQUIRED)
 find_package(nav2_msgs REQUIRED)
@@ -45,6 +46,7 @@ add_executable(stocktake_orchestration
 )
 ament_target_dependencies(stocktake_orchestration
   explore_lite_msgs
+  gazebo_rfid_plugin
   geometry_msgs
   lifecycle_msgs
   nav2_msgs
